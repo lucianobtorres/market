@@ -1,0 +1,50 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$mat-primary: (
+  //500: #EC7D10,
+  500: #11506e,
+  //A100: #6eb4ff,
+  A100: #0a3042,
+  contrast: (500: #ffffff, A100: #000000, )
+);
+
+$mat-accent: (
+  500: #C200FB,
+  A100: #ffffff,
+  contrast: (500: #ffffff, A100: #000000, )
+);
+
+$my-custom-palette: (
+  50: #c5f7d9,
+  100: #9cefb8,
+  200: #71e698,
+  300: #46de78,
+  400: #26d561,
+  500: #64ee85,
+  600: #00b732,
+  700: #008f25,
+  800: #006918,
+  900: #003d0c,
+  A100: #92f3a9,
+  A200: #64ee85,
+  A400: #36e961,
+  A700: #1ed44f,
+
+  contrast: (500: #ffffff, A100: #000000, )
+);
+
+$fi-theme-primary: mat.define-palette($mat-primary, 500, A100, 500);
+$fi-theme-accent: mat.define-palette($my-custom-palette, 500);
+
+$tipo: mat.define-typography-config($font-family: 'Roboto, "Helvetica Neue", sans-serif');
+
+$fi-theme: mat.define-light-theme((color: (primary: //$my-custom-palette,
+        $fi-theme-primary,
+        accent: $fi-theme-accent ),
+      typography: $tipo));
+
+@include mat.typography-hierarchy($tipo);
+
+@include mat.all-component-themes($fi-theme);

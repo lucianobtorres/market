@@ -1,0 +1,12 @@
+@use "theme-variables" as *;
+
+mat-card-title {
+  text-transform: capitalize;
+  color: $primary-color;
+}
+
+.menu-super {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

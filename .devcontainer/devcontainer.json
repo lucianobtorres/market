@@ -1,0 +1,51 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+{
+	"name": "Node.js & TypeScript",
+	"build": {
+		"dockerfile": "Dockerfile",
+		// Update 'VARIANT' to pick a Node version: 18, 16, 14.
+		// Append -bullseye or -buster to pin to an OS version. Use -bullseye variants on local on arm64/Apple Silicon.
+		"args": {
+			"VARIANT": "16-bullseye"
+		}
+	},
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {},
+		"ghcr.io/devcontainers-contrib/features/angular-cli:1": {
+			"version": "14.1.0"
+		}
+	},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// https://containers.dev/implementors/json_reference/#lifecycle-scripts
+	"postCreateCommand": {
+		"ngCompletion": "echo 'source <(ng completion script)' >> /home/node/.bashrc",
+		"gitSafeWorkspace": "git config --global --add safe.directory ${containerWorkspaceFolder}",
+		"npmInstall": "npm install"
+	},
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"Angular.ng-template",
+				"cyrilletuzi.angular-schematics",
+				"dbaeumer.vscode-eslint",
+				"EditorConfig.EditorConfig",
+				"pranaygp.vscode-css-peek",
+				"mrmlnc.vscode-scss",
+				"syler.sass-indented",
+				"christian-kohler.path-intellisense",
+				"johnpapa.Angular2",
+				"adrianwilczynski.csharp-to-typescript",
+				"GitLab.gitlab-workflow",
+				"ms-edgedevtools.vscode-edge-devtools",
+				"oderwat.indent-rainbow"
+			]
+		}
+	}
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}

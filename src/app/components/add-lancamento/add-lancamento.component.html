@@ -1,0 +1,79 @@
+<div class="container">
+    <mat-card class="mat-elevation-z0">
+        <mat-card-title>
+            <div class="header">
+                <button mat-raised-button color="primary" (click)="salvar()">
+                    {{ btnTexto }}
+                </button>
+                <small [ngClass]="{ 'no-display': data.lancamento }">
+                    <mat-slide-toggle [(ngModel)]="multiAdd" color="primary">+ de 1</mat-slide-toggle>
+                </small>
+                <button mat-stroked-button color="primary" (click)="cancelar()">
+                    Cancelar
+                </button>
+            </div>
+        </mat-card-title>
+        <mat-card-content>
+            <form class="form-flex">
+
+                <mat-form-field hideRequiredMarker class="item-flex-l valor" style="margin-bottom: -24px;"
+                    appearance="standard" floatLabel="always">
+                    <mat-label>Valor</mat-label>
+                    <input matInput inputmode="decimal" [formControl]="formAdd.controls.valor" currencyMask
+                        [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" />
+                </mat-form-field>
+
+                <mat-form-field class="item-flex-s" style="margin-top: 24px; margin-bottom: -24px;">
+                    <mat-label> Data </mat-label>
+                    <input matInput [matDatepicker]="picker" [formControl]="formAdd.controls.data" [disabled]="true" class="primary-color"/>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #picker [disabled]="false"> </mat-datepicker>
+                </mat-form-field>
+
+                <mat-chip-list #chipList="matChipList" multiple class="item-flex-l larger">
+                    <mat-chip #chip="matChip" *ngFor="let grupo of data.gruposConta" (click)="chip.toggleSelected()"
+                        [value]="grupo">
+                        <div class="chip">
+                            <mat-icon>
+                                {{ grupo.icone }}
+                            </mat-icon>
+                            <small>{{ grupo.title }}</small>
+                        </div>
+                    </mat-chip>
+                </mat-chip-list>
+
+                <mat-form-field class="item-flex-l">
+                    <mat-label>Tipo Conta</mat-label>
+                    <mat-select [formControl]="formAdd.controls.planConta" (selectionChange)="avaliarMeioMov()">
+                        <mat-option *ngFor="let item of planosConta" [value]="item">
+                            {{ item.title }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div class="item-flex-l movs">
+                    <mat-form-field class="mov">
+                        <mat-label>Meio Movimentação</mat-label>
+                        <mat-select [formControl]="formAdd.controls.meioMov" (opened)="avaliarMeioMov()">
+                            <mat-option *ngFor="let item of meiosMovs" [value]="item">
+                                {{ item.title }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field class="vezes" [ngClass]="{
+                        'no-display':
+                        formAdd.controls.meioMov.value !== data.meiosMovimentacao[0]
+                    }">
+                        <mat-label>Vezes</mat-label>
+                        <input inputmode="decimal" type="number" matInput [formControl]="formAdd.controls.vezes" />
+                    </mat-form-field>
+                </div>
+                <mat-form-field class="item-flex-l larger">
+                    <mat-label>Descrição</mat-label>
+                    <textarea matInput [formControl]="formAdd.controls.desc"></textarea>
+                </mat-form-field>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

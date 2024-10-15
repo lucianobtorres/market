@@ -1,0 +1,119 @@
+@use "theme-variables" as *;
+
+form {
+  padding-top: 2em;
+}
+
+.container {
+  height: 100%;
+  overflow: hidden;
+}
+
+div.container-button {
+  display: flex;
+  margin-inline: auto;
+  align-self: center;
+
+  #salvar {
+    margin-inline: auto;
+    margin-bottom: 20px;
+    width: 60%;
+    height: 48px;
+  }
+}
+
+mat-card {
+  height: 100%;
+  overflow: auto;
+}
+
+mat-card-content {
+  height: auto;
+}
+
+:host .larger {
+  flex-basis: 100%;
+}
+
+.form-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.item-flex-s {
+  flex: 1;
+  min-width: 140px;
+  align-self: center;
+}
+
+.item-flex-l {
+  flex: 2;
+  min-width: fit-content;
+  align-self: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $primary-color;
+  height: 16px;
+
+  div {
+    display: inherit;
+    gap: 16px;
+  }
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mat-chip-list {
+  width: 99%;
+  margin-bottom: 8px;
+}
+
+.mat-card-actions,
+.mat-card-footer {
+  margin: 0;
+  padding: 0;
+}
+
+.mat-chip {
+  font-size: 14px;
+
+  mat-icon {
+    font-size: 24px;
+  }
+}
+
+.movs {
+  display: flex;
+  gap: 16px;
+
+  .vezes {
+    max-width: 64px;
+  }
+}
+
+.mov {
+  width: 100%;
+}
+
+.no-display {
+  display: none;
+}
+
+.valor {
+  font-size: 24px;
+  color: $primary-color;
+  padding: 8px;
+}
+
+input.primary-color:disabled {
+  color: $primary-color;
+}

@@ -1,0 +1,40 @@
+<div class="container">
+    <mat-card class="mat-elevation-z0">
+        <mat-card-title>
+            <div class="header">
+                <div>
+                    <button mat-raised-button color="primary" (click)="salvar()">
+                        {{ btnTexto }}
+                    </button>
+                    <button mat-raised-button color="warn" (click)="deletar()">
+                        Excluir
+                    </button>
+                </div>
+                <small [ngClass]="{ 'no-display': data.item }">
+                    <mat-slide-toggle [(ngModel)]="multiAdd" color="primary">+ de 1</mat-slide-toggle>
+                </small>
+                <button mat-stroked-button color="primary" (click)="cancelar()">
+                    Cancelar
+                </button>
+            </div>
+        </mat-card-title>
+        <mat-card-content>
+            <form class="form-flex">
+
+                <mat-form-field class="item-flex-l larger">
+                    <mat-label>sigla</mat-label>
+                    <input matInput [formControl]="form.controls.sigla" />
+                </mat-form-field>
+
+                <mat-form-field class="item-flex-l larger">
+                    <mat-label>Title</mat-label>
+                    <input matInput [formControl]="form.controls.title" />
+                </mat-form-field>
+
+                <mat-checkbox [formControl]="form.controls.entrada">Entrada</mat-checkbox>
+                <mat-checkbox [formControl]="form.controls.parcelavel">Parcela</mat-checkbox>
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

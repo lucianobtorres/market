@@ -1,0 +1,36 @@
+<mat-card class="mat-elevation-z0">
+    <div fxLayoutAlign="space-between">
+        <fi-header>
+            {{ lancamento.hoje | date:'MMMM' }}
+            <ng-container subtitulo>
+                {{ lancamento.hoje | date:'yyyy' }}
+            </ng-container>
+        </fi-header>
+        <div class="features">
+            <button mat-button (click)="lancamento.mostrarSaldo = !lancamento.mostrarSaldo"
+                [matTooltip]="lancamento.mostrarSaldo ? 'ocultar saldo' : 'mostar saldo' ">
+                <div fxLayoutGap="16px" fxLayout="row" fxLayoutAlign=" center">
+                    <ng-template [ngIf]="lancamento.mostrarSaldo" [ngIfElse]="notShow">
+                        <mat-icon>visibility_off</mat-icon>
+                        <span [ngClass]="{
+                            'positivo' : lancamento.saldo > 0,
+                            'negativo': lancamento.saldo < 0,
+                            'neutro': lancamento.saldo === 0
+                        }">{{ lancamento.saldo | currency }}
+                        </span>
+                    </ng-template>
+                    <ng-template #notShow>
+                        <mat-icon>visibility</mat-icon>
+                    </ng-template>
+                </div>
+            </button>
+            <button mat-raised-button color="primary" (click)="lancamento.addLancamento()">
+                <mat-icon class="btn">add</mat-icon>
+            </button>
+        </div>
+    </div>
+    <mat-card-content>
+        <!-- <fi-timeline></fi-timeline> -->
+        <fi-lancamentos #lancamento></fi-lancamentos>
+    </mat-card-content>
+</mat-card>

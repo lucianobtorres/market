@@ -1,0 +1,60 @@
+<mat-card class="mat-elevation-z0">
+    <div fxLayoutAlign="space-between">
+        <fi-header>Extrato</fi-header>
+    </div>
+    <mat-card-content>
+        <div class="component">
+            <ng-container *ngFor="let item of map | keyvalue">
+                <div class="grupo">
+                    <div class="sticky">
+                        <div class="header">
+                            <h3>
+                                {{ getDataKey(item.key) | date:'d MMMM' }}
+                            </h3>
+                            <div>
+                                <small>Saldo: </small>
+                                <ng-container *ngIf="getSoma(item.key); let soma">
+                                    <small [ngClass]="{
+                                        'positivo' : soma > 0,
+                                        'negativo': soma < 0
+                                        }">{{ soma | currency }}</small>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="itens-financeiros">
+                        <ng-container *ngFor="let value of item.value">
+                            <mat-icon class="click" (click)="editarLancamento(value.lcto)">{{ value.grupo.icone}}
+                            </mat-icon>
+                            <div class="item click" (click)="editarLancamento(value.lcto)">
+                                <small>{{ value.meioMov.title }}</small>
+                                <span>{{ value.planConta.title }}</span>
+                            </div>
+                            <small class="click" (click)="editarLancamento(value.lcto)">{{ value.lcto.desc }}</small>
+                            <div>
+                                <span (click)="editarLancamento(value.lcto)" [ngClass]="{
+                                    'nao-realizado': value.lcto.naoRealizado,
+                                    'up': value.lcto.valor > 0,
+                                    'dw': value.lcto.valor < 0
+                                    }" class="valores click">{{ value.lcto.valor | currency }}
+                                </span>
+                            </div>
+                            <div class="actions">
+                                <button mat-icon-button disableRipple (click)="deleteLancamento(value.lcto)">
+                                    <mat-icon>clear</mat-icon>
+                                </button>
+                                <button disableRipple *ngIf="
+                                    value.lcto.naoRealizado &&
+                                    value.lcto.data.getTime() <= finalHoje.getTime()
+                                    " mat-icon-button (click)="lancamentoRealizado(value.lcto)">
+                                    <mat-icon>task_alt</mat-icon>
+                                </button>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </mat-card-content>
+</mat-card>

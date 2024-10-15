@@ -1,0 +1,10 @@
+<div class="timeline-dias">
+    <div *ngFor="let dia of dias" class="timeline-dia" [ngClass]="{'selecao-dia-hoje': dia.isHoje}">
+        <small class="timeline-semana">
+            {{ dia.diaDaSemana }}
+        </small>
+        <small class="mat-small timeline-dia-numero">
+            {{ dia.dia }}
+        </small>
+    </div>
+</div>

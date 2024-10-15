@@ -1,0 +1,49 @@
+<mat-expansion-panel #panel="matExpansionPanel" class="mat-elevation-z0" hideToggle>
+    <mat-expansion-panel-header class="mat-elevation-z0 categoria-container">
+        <div class="item-categoria">
+            <div class="categoria">
+                <mat-icon color="primary"> {{ itemGrupo.grupoConta.icone }} </mat-icon>
+                <h3>{{ itemGrupo.grupoConta.title }}</h3>
+            </div>
+            <div class="soma">
+                <div>
+                    <small>R$ </small>
+                    <span>{{ itemGrupo.valor | number: "1.2-2" }}</span>
+                </div>
+                <small>{{ itemGrupo.lastDate | date: "EEE" }} às
+                    {{ itemGrupo.lastDate | date: "HH:mm" }}</small>
+            </div>
+        </div>
+    </mat-expansion-panel-header>
+
+    <div class="itens-financeiros" *ngIf="panel.expanded">
+        <ng-container *ngFor="let plan of getLancamentos()">
+            <span class="click" (click)="editarLancamento.emit(plan.lancamento.id)" [ngClass]="{
+            'nao-realizado':
+                plan.lancamento.data.getTime() >= inicioHoje.getTime()
+            }">
+                {{ plan.lancamento.data | date: "dd-MMM" }}
+            </span>
+            <div class="item click" (click)="editarLancamento.emit(plan.lancamento.id)">
+                <small>{{ plan.meioMovimentacao.title }}</small>
+                <span>{{ plan.planoConta.title }}</span>
+            </div>
+            <small>{{ plan.lancamento.desc }}</small>
+            <span class="click" (click)="editarLancamento.emit(plan.lancamento.id)" [ngClass]="{ 'nao-realizado': plan.lancamento.naoRealizado,
+        'up': plan.lancamento.valor > 0,
+        'dw': plan.lancamento.valor < 0 }" class="valores">{{ plan.lancamento.valor | currency}}
+            </span>
+            <div class="actions">
+                <button mat-icon-button (click)="removeLancamento.emit(plan.lancamento.id)">
+                    <mat-icon>clear</mat-icon>
+                </button>
+                <button *ngIf="
+            plan.lancamento.naoRealizado &&
+            plan.lancamento.data.getTime() <= finalHoje.getTime()
+                " mat-icon-button (click)="realizar.emit(plan.lancamento.id)">
+                    <mat-icon>task_alt</mat-icon>
+                </button>
+            </div>
+        </ng-container>
+    </div>
+</mat-expansion-panel>

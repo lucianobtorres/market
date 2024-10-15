@@ -1,0 +1,43 @@
+<mat-card class="mat-elevation-z0">
+    <div class="header-container">
+        <fi-header>Plano de Contas</fi-header>
+        <div class="features">
+            <button mat-raised-button color="primary" (click)="addRow()">
+                <mat-icon class="btn">add</mat-icon>
+            </button>
+        </div>
+    </div>
+    <mat-card-content>
+        <div class="table-container mat-elevation-z8">
+
+            <mat-table class="lessons-table" [dataSource]="dataSource" matSort>
+
+                <ng-container matColumnDef="grupoContasId">
+                    <mat-header-cell *matHeaderCellDef> Grupo de Conta </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <ng-container *ngIf="row.grupoContasId | convertWithFn:getGrupoName; let grupo">
+                            <div class="grupo-contas">
+                                <mat-icon>{{ grupo.icone }}</mat-icon>
+                                <span>{{ grupo.title }}</span>
+                            </div>
+                        </ng-container>
+
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="title">
+                    <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.title}}</mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayed_columns; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayed_columns; let i = index;"
+                    (click)="editRow(row)"></mat-row>
+
+            </mat-table>
+
+            <mat-paginator class="mat-paginator-sticky" [pageSize]="10" [hidePageSize]="true" sticky></mat-paginator>
+
+        </div>
+    </mat-card-content>
+</mat-card>

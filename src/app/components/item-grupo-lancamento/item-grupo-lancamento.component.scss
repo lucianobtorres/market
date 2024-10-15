@@ -1,0 +1,97 @@
+@use "theme-variables" as *;
+
+.categoria-container {
+  background-color: $color-background;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 20px;
+}
+
+.item-categoria {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+
+  color: $color-medium-emphasis;
+
+  h3 {
+    font-weight: normal;
+  }
+}
+
+.soma {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  & span {
+    color: $primary-color;
+    font-size: xx-large;
+  }
+}
+
+.click {
+  color: $color-medium-emphasis;
+}
+
+.click:hover {
+  cursor: pointer;
+  background-color: rgba($primary-color, 10%);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-expansion-panel-header.categoria-container,
+.mat-expansion-panel-header.mat-expanded,
+.mat-expansion-panel-header.mat-expanded:focus {
+  height: auto;
+  padding-block: 16px;
+  background-color: $color-background;
+}
+
+.mat-expansion-panel-header.mat-expanded:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+:host .mat-expansion-panel-content {
+  width: 100%;
+}
+
+.itens-financeiros {
+  gap: 8px;
+  display: grid;
+  grid-template-columns: max-content repeat(2, auto) max-content min-content;
+  margin-block: 16px;
+  align-items: center;
+
+  span.valores:not(.nao-realizado) {
+    color: $primary-color;
+  }
+
+  span.valores {
+    justify-self: flex-end;
+  }
+
+  small {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: $color-disabled;
+  }
+}
+
+mat-icon {
+  color: $color-medium-emphasis;
+}
+
+.nao-realizado {
+  color: $color-low-emphasis;
+}
+
+.actions {
+  display: flex;
+}

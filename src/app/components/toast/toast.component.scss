@@ -1,0 +1,55 @@
+@use 'theme-variables' as *;
+
+:host {
+  border-radius: 16px;
+}
+
+@mixin style-color-type-msg($selector, $cor) {
+
+  :host fi-toast,
+  #{$selector},
+  #{$selector} mat-icon:not(.icon-close) {
+    background-color: $cor;
+
+    .side-bar-color {
+      background-color: $cor;
+    }
+  }
+}
+
+@include style-color-type-msg('.fi-msg-success', $color-status-resolved);
+@include style-color-type-msg('.fi-msg-warning', $color-status-pendent);
+@include style-color-type-msg('.fi-msg-error', $color-status-urgent);
+
+.base {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.toast-main {
+  display: flex;
+  gap: 16px;
+  padding-right: 16px;
+}
+
+.side-bar-color {
+  min-width: 6px;
+}
+
+mat-icon,
+fi-button-icon {
+  margin-block: auto;
+  min-width: 24px;
+}
+
+.message-box {
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+  padding-block: 12px;
+}
+
+.icon-close {
+  margin: auto;
+}
