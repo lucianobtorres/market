@@ -4,7 +4,7 @@ import { startOfToday, endOfToday, getYear, getMonth, startOfMonth, getDay, getD
 import { liveQuery } from "dexie";
 import { take } from "rxjs";
 import { AddLancamentoComponent } from "src/app/components/add-lancamento/add-lancamento.component";
-import { db } from "src/app/db/finance-db";
+import { db } from "src/app/db/model-db";
 import { MeioMovimentacao, GrupoContas, PlanoContas, Lancamento, LancamentoToService } from "src/app/models/interfaces";
 import { LancamentoService } from "src/app/services/lancamento.service";
 
@@ -12,7 +12,7 @@ type TKey = { ano: number, mes: number, dia: number };
 type TVal = { lcto: Lancamento, planConta: PlanoContas, grupo: GrupoContas, meioMov: MeioMovimentacao };
 
 @Component({
-  selector: 'fi-extrato',
+  selector: 'app-extrato',
   templateUrl: './extrato.component.html',
   styleUrls: ['./extrato.component.scss']
 })

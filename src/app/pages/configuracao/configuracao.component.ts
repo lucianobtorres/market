@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ROTAS_CONFIG } from 'src/app/app-routing.module';
 
 @Component({
-  selector: 'fi-configuracao',
+  selector: 'app-configuracao',
   templateUrl: './configuracao.component.html',
   styleUrls: ['./configuracao.component.scss']
 })

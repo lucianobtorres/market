@@ -13,7 +13,7 @@ export class ToastService {
 
   private show(data: MessageData): MatSnackBarRef<ToastComponent> {
     const config: MatSnackBarConfig = {
-      panelClass: ['fi-toast-container'],
+      panelClass: ['app-toast-container'],
       data,
       duration: TOAST_DURATION,
       verticalPosition: 'top',

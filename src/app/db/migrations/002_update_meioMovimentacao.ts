@@ -1,6 +1,6 @@
-import { FinanceDB } from "../finance-db";
+import { ModelDB } from "../model-db";
 
-export async function migrateToVersion2(db: FinanceDB) {
+export async function migrateToVersion2(db: ModelDB) {
   console.log('Atualizando para a versão 2 do banco de dados.');
 
   const meioMovimentacaoItems = await db.meioMovimentacao.toArray();

@@ -31,7 +31,7 @@ body {
 }
 
 
-snack-bar-container.fi-toast-container {
+snack-bar-container.app-toast-container {
   position: absolute;
   bottom: 90px;
   right: 16px;
@@ -78,7 +78,6 @@ $clip: polygon(50% 0%, 0% 100%, 100% 100%);
   border-left: $size-mark solid transparent;
   border-right: $size-mark solid transparent;
   border-bottom: $size-mark solid $color-status-resolved;
-  //position: $position;
   right: $right;
   top: -10px;
   vertical-align: super;

@@ -1,6 +1,6 @@
 import { Table } from 'dexie';
 import { take } from 'rxjs';
-import { db } from '../db/finance-db';
+import { db } from '../db/model-db';
 import { ToastService } from '../services/toast.service';
 
 export abstract class DBRepository<T> {

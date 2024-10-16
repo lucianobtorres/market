@@ -9,7 +9,7 @@ interface FormGrupoLancamento {
 }
 
 @Component({
-  selector: 'fi-form-grupo-conta',
+  selector: 'app-form-grupo-conta',
   templateUrl: './form-grupo-conta.component.html',
   styleUrls: ['./form-grupo-conta.component.scss']
 })

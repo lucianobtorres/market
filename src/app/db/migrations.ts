@@ -1,5 +1,5 @@
 import { IDictionary } from '../utils/idictionary';
-import { FinanceDB } from './finance-db';
+import { ModelDB } from '././model-db';
 
 import { migrateToVersion1 } from './migrations/001_initial_schema';
 import { migrateToVersion2 } from './migrations/002_update_meioMovimentacao';
@@ -7,7 +7,7 @@ import { migrateToVersion2 } from './migrations/002_update_meioMovimentacao';
 export const CURRENT_DATABASE_VERSION = 2;
 const VERSION_DB = 'db_version';
 
-type functionMigrate = (db: FinanceDB) => Promise<void>;
+type functionMigrate = (db: ModelDB) => Promise<void>;
 
 export const migrations: IDictionary<functionMigrate> = {
   1: migrateToVersion1,
@@ -15,7 +15,7 @@ export const migrations: IDictionary<functionMigrate> = {
 };
 
 export abstract class Migrations {
-  public static async createMigrations(db: FinanceDB) {
+  public static async createMigrations(db: ModelDB) {
     if (Migrations.needsMigration()) {
       await db.transaction('rw', db.tables, async () => {
         const currentVersion = Migrations.getDatabaseVersion() ?? 0;
@@ -51,7 +51,7 @@ export abstract class Migrations {
 /*/
 
 export abstract class Migrations_DB {
-  public static async createMigrations(db: FinanceDB): Promise<void> {
+  public static async createMigrations(db: ModelDB): Promise<void> {
     if (await Migrations_DB.needsMigration(db)) {
       console.log('Realizando migrações pendentes...');
 
@@ -70,7 +70,7 @@ export abstract class Migrations_DB {
     }
   }
 
-  private static async getDatabaseVersion(db: FinanceDB): Promise<number | undefined> {
+  private static async getDatabaseVersion(db: ModelDB): Promise<number | undefined> {
     const currentVersion = (await db.versionDB.get(1));
     console.log(currentVersion)
     if (!currentVersion) {
@@ -81,11 +81,11 @@ export abstract class Migrations_DB {
     return currentVersion?.version;
   }
 
-  private static async setDatabaseVersion(db: FinanceDB, version: number): Promise<void> {
+  private static async setDatabaseVersion(db: ModelDB, version: number): Promise<void> {
     await db.versionDB.update(1, { version });
   }
 
-  public static async needsMigration(db: FinanceDB): Promise<boolean> {
+  public static async needsMigration(db: ModelDB): Promise<boolean> {
     const currentVersion = await Migrations_DB.getDatabaseVersion(db) ?? 1;
     return currentVersion < CURRENT_DATABASE_VERSION;
   }

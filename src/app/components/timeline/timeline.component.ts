@@ -5,7 +5,7 @@ import { subDays, addDays, startOfDay } from 'date-fns';
 const QTD_DIAS = 3;
 
 @Component({
-  selector: 'fi-timeline',
+  selector: 'app-timeline',
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss']
 })

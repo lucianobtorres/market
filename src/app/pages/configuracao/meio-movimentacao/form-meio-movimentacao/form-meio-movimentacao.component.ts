@@ -11,7 +11,7 @@ interface FormMeioMovimentacao {
 }
 
 @Component({
-  selector: 'fi-form-meio-movimentacao',
+  selector: 'app-form-meio-movimentacao',
   templateUrl: './form-meio-movimentacao.component.html',
   styleUrls: ['./form-meio-movimentacao.component.scss']
 })

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'fi-configuracao-item',
+  selector: 'app-configuracao-item',
   template: `
   <a mat-list-item
       [routerLink]="url"

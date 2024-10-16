@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as tf from '@tensorflow/tfjs';
 import Dexie from 'dexie';
-import { IHistoricoCompras, db } from '../db/finance-db';
+import { IHistoricoCompras, db } from '../db/model-db
 
 export const dexieService = {
   async adicionarCompra(compra: IHistoricoCompras) {

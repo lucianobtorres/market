@@ -5,14 +5,13 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { liveQuery } from 'dexie';
 import { take } from 'rxjs';
-import { db } from 'src/app/db/finance-db';
+import { db } from 'src/app/db/model-db';
 import { GrupoContas, MeioMovimentacao, PlanoContas } from 'src/app/models/interfaces';
-import { MeioMovimentacaoService } from 'src/app/services/meio-movimentacao.service';
 import { PlanoContaService } from 'src/app/services/plano-conta.service';
 import { FormPlanoContaComponent } from './form-plano-conta/form-plano-conta.component';
 
 @Component({
-  selector: 'fi-plano-conta',
+  selector: 'app-plano-conta',
   templateUrl: './plano-conta.component.html',
   styleUrls: ['./plano-conta.component.scss']
 })

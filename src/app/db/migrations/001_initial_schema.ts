@@ -1,6 +1,6 @@
-import { FinanceDB } from "../finance-db";
+import { ModelDB } from "../model-db";
 
-export async function migrateToVersion1(db: FinanceDB) {
+export async function migrateToVersion1(db: ModelDB) {
   console.log('Criando a estrutura inicial do banco de dados.');
 
   await db.transaction('rw', db.tables, async () => {

@@ -5,13 +5,13 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { liveQuery } from 'dexie';
 import { take } from 'rxjs';
-import { db } from 'src/app/db/finance-db';
+import { db } from 'src/app/db/model-db';
 import { MeioMovimentacao } from 'src/app/models/interfaces';
 import { MeioMovimentacaoService } from 'src/app/services/meio-movimentacao.service';
 import { FormMeioMovimentacaoComponent } from './form-meio-movimentacao/form-meio-movimentacao.component';
 
 @Component({
-  selector: 'fi-meio-movimentacao',
+  selector: 'app-meio-movimentacao',
   templateUrl: './meio-movimentacao.component.html',
   styleUrls: ['./meio-movimentacao.component.scss']
 })

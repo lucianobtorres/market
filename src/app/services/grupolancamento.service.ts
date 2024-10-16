@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { db } from '../db/finance-db';
+import { db } from '../db/model-db';
 import { DBRepository } from '../models/db.repository';
 import { GrupoContas } from '../models/interfaces';
 import { ToastService } from './toast.service';

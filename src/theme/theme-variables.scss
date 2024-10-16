@@ -1,9 +1,9 @@
 @use "@angular/material" as mat;
 @use "sass:map";
 
-@use "./fi-theme.scss" as *;
+@use "./app-theme.scss" as *;
 
-$color-config: mat.get-color-config($fi-theme);
+$color-config: mat.get-color-config($app-theme);
 $primary-color: mat.get-color-from-palette(map.get($color-config, "primary"));
 $accent-color: mat.get-color-from-palette(map.get($color-config, "accent"));
 $secondary-color: #FFBC0A;

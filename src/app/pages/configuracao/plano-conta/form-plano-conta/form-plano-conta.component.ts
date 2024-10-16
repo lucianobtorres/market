@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from "@angular/material/bottom-sheet";
 import { liveQuery } from "dexie";
-import { db } from "src/app/db/finance-db";
+import { db } from "src/app/db/model-db";
 import { GrupoContas, PlanoContas } from "src/app/models/interfaces";
 
 interface FormPlanoConta {
@@ -11,7 +11,7 @@ interface FormPlanoConta {
 }
 
 @Component({
-  selector: 'fi-form-plano-conta',
+  selector: 'app-form-plano-conta',
   templateUrl: './form-plano-conta.component.html',
   styleUrls: ['./form-plano-conta.component.scss']
 })

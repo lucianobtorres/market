@@ -1,11 +1,11 @@
 <mat-card class="mat-elevation-z0">
     <div fxLayoutAlign="space-between">
-        <fi-header>
+        <app-header>
             {{ lancamento.hoje | date:'MMMM' }}
             <ng-container subtitulo>
                 {{ lancamento.hoje | date:'yyyy' }}
             </ng-container>
-        </fi-header>
+        </app-header>
         <div class="features">
             <button mat-button (click)="lancamento.mostrarSaldo = !lancamento.mostrarSaldo"
                 [matTooltip]="lancamento.mostrarSaldo ? 'ocultar saldo' : 'mostar saldo' ">
@@ -30,7 +30,7 @@
         </div>
     </div>
     <mat-card-content>
-        <!-- <fi-timeline></fi-timeline> -->
-        <fi-lancamentos #lancamento></fi-lancamentos>
+        <!-- <app-timeline></app-timeline> -->
+        <app-lancamentos #lancamento></app-lancamentos>
     </mat-card-content>
 </mat-card>

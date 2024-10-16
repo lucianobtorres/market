@@ -35,16 +35,16 @@ $my-custom-palette: (
   contrast: (500: #ffffff, A100: #000000, )
 );
 
-$fi-theme-primary: mat.define-palette($mat-primary, 500, A100, 500);
-$fi-theme-accent: mat.define-palette($my-custom-palette, 500);
+$app-theme-primary: mat.define-palette($mat-primary, 500, A100, 500);
+$app-theme-accent: mat.define-palette($my-custom-palette, 500);
 
 $tipo: mat.define-typography-config($font-family: 'Roboto, "Helvetica Neue", sans-serif');
 
-$fi-theme: mat.define-light-theme((color: (primary: //$my-custom-palette,
-        $fi-theme-primary,
-        accent: $fi-theme-accent ),
+$app-theme: mat.define-light-theme((color: (primary: //$my-custom-palette,
+        $app-theme-primary,
+        accent: $app-theme-accent ),
       typography: $tipo));
 
 @include mat.typography-hierarchy($tipo);
 
-@include mat.all-component-themes($fi-theme);
+@include mat.all-component-themes($app-theme);

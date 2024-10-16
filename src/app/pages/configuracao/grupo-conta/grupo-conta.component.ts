@@ -5,14 +5,14 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { liveQuery } from 'dexie';
 import { take } from 'rxjs';
-import { db } from 'src/app/db/finance-db';
+import { db } from 'src/app/db/model-db';
 import { GrupoContas } from 'src/app/models/interfaces';
 import { GrupolancamentoService } from 'src/app/services/grupolancamento.service';
 import { FormGrupoContaComponent } from './form-grupo-conta/form-grupo-conta.component';
 
 
 @Component({
-  selector: 'fi-grupo-conta',
+  selector: 'app-grupo-conta',
   templateUrl: './grupo-conta.component.html',
   styleUrls: ['./grupo-conta.component.scss']
 })

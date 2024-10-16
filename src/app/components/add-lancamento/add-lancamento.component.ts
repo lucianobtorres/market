@@ -15,7 +15,7 @@ interface FormAdd {
 }
 
 @Component({
-  selector: 'fi-add-lancamento',
+  selector: 'app-add-lancamento',
   templateUrl: './add-lancamento.component.html',
   styleUrls: ['./add-lancamento.component.scss']
 })

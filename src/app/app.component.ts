@@ -3,13 +3,13 @@ import { Router } from '@angular/router';
 import { IconsRegisterService } from './services/icons-register.service';
 
 @Component({
-  selector: 'fi-root',
+  selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements AfterViewInit {
   public iconeLogo = IconsRegisterService.LOGO;
-  title = 'Finance';
+  title = 'Market';
 
   constructor(router: Router) {
     router.canceledNavigationResolution = 'computed';
@@ -23,17 +23,17 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     //this.startup();
   }
-  ;
+
 
   startup() {
-    screen.orientation.lock("portrait")
-      .then(() => {
-        console.log('portrait')
-      }
-      )
-      .catch((error) => {
-        console.log(error)
-      });
+    // screen.orientation.lock("portrait")
+    //   .then(() => {
+    //     console.log('portrait')
+    //   }
+    //   )
+    //   .catch((error) => {
+    //     console.log(error)
+    //   });
 
     // const element = document.querySelector('body');
     // element?.addEventListener('touchstart', (e) => {

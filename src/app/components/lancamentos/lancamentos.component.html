@@ -1,6 +1,6 @@
 <div class="categorias">
-    <fi-item-grupo-lancamento (editarLancamento)="editarLancamento($event)"
+    <app-item-grupo-lancamento (editarLancamento)="editarLancamento($event)"
         (removeLancamento)="deleteLancamento($event)" (realizar)="lancamentoRealizado($event)"
         *ngFor="let itemGrupo of this.itensLancamentos.values()" [itemGrupo]="itemGrupo">
-    </fi-item-grupo-lancamento>
+    </app-item-grupo-lancamento>
 </div>

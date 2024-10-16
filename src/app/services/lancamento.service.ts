@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { db } from '../db/finance-db';
+import { db } from '../db/model-db';
 import { Lancamento, LancamentoToService, MeioMovimentacao } from '../models/interfaces';
 import { DBRepository } from '../models/db.repository';
 import { ToastService } from './toast.service';

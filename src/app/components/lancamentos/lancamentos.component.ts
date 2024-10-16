@@ -3,7 +3,8 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { lastDayOfMonth, startOfMonth } from 'date-fns';
 import { liveQuery } from 'dexie';
 import { take } from 'rxjs';
-import { db } from 'src/app/db/finance-db';
+
+import { db } from 'src/app/db/model-db';
 
 import { GrupoContas, PlanoContas, Lancamento, MeioMovimentacao, LancamentoToService } from 'src/app/models/interfaces';
 import { ItemLancamentoAgrupado, LancamentoAgrupado } from 'src/app/models/item-lancamento-agrupado';
@@ -12,7 +13,7 @@ import { LancamentoService } from 'src/app/services/lancamento.service';
 import { AddLancamentoComponent } from '../add-lancamento/add-lancamento.component';
 
 @Component({
-  selector: 'fi-lancamentos',
+  selector: 'app-lancamentos',
   templateUrl: './lancamentos.component.html',
   styleUrls: ['./lancamentos.component.scss']
 })

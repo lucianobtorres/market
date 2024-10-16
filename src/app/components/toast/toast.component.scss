@@ -6,7 +6,7 @@
 
 @mixin style-color-type-msg($selector, $cor) {
 
-  :host fi-toast,
+  :host app-toast,
   #{$selector},
   #{$selector} mat-icon:not(.icon-close) {
     background-color: $cor;
@@ -17,9 +17,9 @@
   }
 }
 
-@include style-color-type-msg('.fi-msg-success', $color-status-resolved);
-@include style-color-type-msg('.fi-msg-warning', $color-status-pendent);
-@include style-color-type-msg('.fi-msg-error', $color-status-urgent);
+@include style-color-type-msg('.app-msg-success', $color-status-resolved);
+@include style-color-type-msg('.app-msg-warning', $color-status-pendent);
+@include style-color-type-msg('.app-msg-error', $color-status-urgent);
 
 .base {
   border-radius: 16px;
@@ -37,7 +37,7 @@
 }
 
 mat-icon,
-fi-button-icon {
+app-button-icon {
   margin-block: auto;
   min-width: 24px;
 }

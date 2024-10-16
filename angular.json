@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "PWA-Finance": {
+    "PWA-Market": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:class": {
@@ -34,12 +34,12 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "fi",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/pwa-finance",
+            "outputPath": "dist/pwa-market",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -51,7 +51,7 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              "src/theme/fi-theme.scss",
+              "src/theme/app-theme.scss",
               "src/styles.scss",
               "src/assets/font/font-roboto.css",
               "src/assets/font/icon.css"
@@ -105,10 +105,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "PWA-Finance:build:production"
+              "browserTarget": "PWA-Market:build:production"
             },
             "development": {
-              "browserTarget": "PWA-Finance:build:development"
+              "browserTarget": "PWA-Market:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -116,7 +116,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "PWA-Finance:build"
+            "browserTarget": "PWA-Market:build"
           }
         },
         "test": {
@@ -133,7 +133,7 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              "src/theme/fi-theme.scss",
+              "src/theme/app-theme.scss",
               "src/styles.scss",
               "src/assets/font/font-roboto.css",
               "src/assets/font/icon.css"

@@ -5,7 +5,7 @@ import { MessageData, TypeToast } from 'src/app/models/message-data';
 import { TOAST_DURATION } from 'src/app/services/toast.service';
 
 @Component({
-  selector: 'fi-toast',
+  selector: 'app-toast',
   templateUrl: './toast.component.html',
   styleUrls: ['./toast.component.scss']
 })
@@ -27,22 +27,22 @@ export class ToastComponent implements OnInit, OnDestroy {
     switch (data.typeToast) {
       case TypeToast.SUCCESS:
         this.icon = 'check_circle';
-        this.messageClass = 'fi-msg-success';
+        this.messageClass = 'app-msg-success';
         break;
 
       case TypeToast.WARNING:
         this.icon = 'warning';
-        this.messageClass = 'fi-msg-warning';
+        this.messageClass = 'app-msg-warning';
         break;
 
       case TypeToast.ERROR:
         this.icon = 'error';
-        this.messageClass = 'fi-msg-error';
+        this.messageClass = 'app-msg-error';
         break;
 
       case TypeToast.DISMISSING:
         this.icon = 'check_circle';
-        this.messageClass = 'fi-msg-success';
+        this.messageClass = 'app-msg-success';
         this.dismissing = true;
         break;
     }
