@@ -1,0 +1,56 @@
+<div class="bottom-sheet">
+    <!-- Alça para arrastar -->
+    <div class="drag-handle" (click)="toggleExpand()"></div>
+
+    <h3>Edit Item</h3>
+
+    <!-- Edição Simples -->
+    <form [formGroup]="editForm" (ngSubmit)="save()" class="simple-edit">
+        <mat-form-field>
+            <mat-label>Nome do Item</mat-label>
+            <input matInput [formControl]="editForm.controls.nome" placeholder="Ex: Leite">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Quantidade</mat-label>
+            <input matInput type="number" [formControl]="editForm.controls.quantidade" placeholder="Ex: 3">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Unidade</mat-label>
+            <mat-select [formControl]="editForm.controls.unidade">
+                <mat-option *ngFor="let unit of units" [value]="unit">{{ unit }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <ng-container *ngIf="expanded">
+            <div class="complete-edit">
+
+                <mat-form-field>
+                    <mat-label>Preço</mat-label>
+                    <input matInput type="number" [formControl]="editForm.controls.preco" placeholder="Ex: 12.50">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Anotações</mat-label>
+                    <input matInput [formControl]="editForm.controls.anotacao">
+                </mat-form-field>
+
+                <div class="actions">
+                    <button mat-icon-button (click)="goToPreviousItem()" [disabled]="!hasPreviousItem()">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+
+                    <button mat-icon-button (click)="goToNextItem()" [disabled]="!hasNextItem()">
+                        <mat-icon>arrow_forward</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </ng-container>
+
+        <div class="actions">
+            <button mat-raised-button color="primary" type="submit">Finalizar</button>
+            <button mat-button (click)="close()">Fechar</button>
+        </div>
+    </form>
+</div>

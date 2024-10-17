@@ -3,6 +3,7 @@ import { ProductService } from 'src/app/services/product.service';
 
 // @ts-ignore
 import Quagga from 'quagga';
+import { from, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-barcode-scanner',
@@ -21,20 +22,29 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
   constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
-    this.initializeQuagga();
+    this.checkCameraAvailability().subscribe((cameraAvailable: boolean) => {
+      if (cameraAvailable) {
+        this.initializeQuagga();  // Inicia o Quagga se a câmera estiver disponível
+      } else {
+        this.isCameraAccessible = false;  // Alterna para o input manual se a câmera não estiver disponível
+      }
+    });
   }
 
   ngOnDestroy(): void {
     if (this.isCameraAccessible) Quagga.stop();
   }
 
-  initializeQuagga(): void {
-    if (!this.targetElement) {
-      this.isCameraAccessible = false;
-      console.error('Elemento de vídeo não encontrado');
-      return;
-    }
+  private checkCameraAvailability(): Observable<boolean> {
+    return from(
+      navigator.mediaDevices.enumerateDevices().then(devices => {
+        const videoInputDevices = devices.filter(device => device.kind === 'videoinput');
+        return videoInputDevices.length > 0;
+      })
+    );
+  }
 
+  initializeQuagga(): void {
     Quagga.init({
       inputStream: {
         name: 'Live',

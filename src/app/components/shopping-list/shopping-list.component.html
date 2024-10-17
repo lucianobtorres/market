@@ -1,0 +1,26 @@
+<div class="shopping-list">
+    <div class="list-header">
+        <h2>Minha Lista de Compras</h2>
+        <button (click)="addItem()">Adicionar</button>
+    </div>
+
+    <mat-list>
+        <mat-list-item *ngFor="let item of items; index as indice" (click)="editItem(item, indice)">
+            <h4 matLine>{{ item.nome }}</h4>
+            <p matLine>
+                {{ item.quantidade }} {{ item.unidade }} - R$ {{ item.preco }}
+            </p>
+            <div class="item-actions">
+                <button class="mark-btn" (click)="toggleItemCompletion(item.id)">
+                    {{ item.completed ? '✓' : '○' }}
+                </button>
+                <button class="remove-btn" (click)="removeItem(item.id)">×</button>
+            </div>
+        </mat-list-item>
+    </mat-list>
+
+    <!-- Exibição do valor total das compras -->
+    <div class="total-value" *ngIf="totalValue > 0">
+        <span>Total: R$ {{ totalValue.toFixed(2) }}</span>
+    </div>
+</div>

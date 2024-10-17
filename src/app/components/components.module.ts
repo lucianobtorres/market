@@ -20,6 +20,8 @@ import { ConvertWithFunctionPipe } from '../pipes/convert-with-function.pipe';
 import { ConfiguracaoItemComponent } from '../pages/configuracao/configuracao-item/configuracao-item.component';
 import { ConfiguracaoComponent } from '../pages/configuracao/configuracao.component';
 import { BarcodeScannerComponent } from './barcode-scanner/barcode-scanner.component';
+import { ShoppingListComponent } from './shopping-list/shopping-list.component';
+import { ShoppingListEditComponent } from './shopping-list-edit/shopping-list-edit.component';
 
 export const components = [
   HomeComponent,
@@ -33,7 +35,9 @@ export const components = [
   ConvertWithFunctionPipe,
   ConfiguracaoComponent,
   ConfiguracaoItemComponent,
-  BarcodeScannerComponent
+  BarcodeScannerComponent,
+  ShoppingListComponent,
+  ShoppingListEditComponent
 ]
 
 @NgModule({
