@@ -35,6 +35,7 @@ export class ShoppingListComponent {
       completed: false,
     };
     this.items.push(newItem);
+    this.editItem(newItem, this.items.indexOf(newItem));
   }
 
   removeItem(id: number) {

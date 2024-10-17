@@ -32,11 +32,11 @@ export class ShoppingListEditComponent {
     private bottomSheetRef: MatBottomSheetRef<ShoppingListEditComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: { item: ShoppingItem, itemsList: ShoppingItem[], currentIndex: number }
   ) {
-    this.item = data.item;
+    this.item = { ...data.item };
     this.itemsList = data.itemsList;
     this.currentIndex = data.currentIndex;
 
-    this.setValues(this.item);
+    this.setValues({ ...this.item });
   }
 
   private setValues(data: ShoppingItem) {
@@ -61,7 +61,7 @@ export class ShoppingListEditComponent {
         notas: this.editForm.value.anotacao ?? undefined,
       };
 
-      this.itemsList[this.currentIndex] = { ...updatedItem };
+      this.itemsList[this.currentIndex] = {...updatedItem};
     }
   }
 
@@ -84,8 +84,8 @@ export class ShoppingListEditComponent {
     this.saveCurrentItem();
     if (this.hasPreviousItem()) {
       this.currentIndex--;
-      this.item = this.itemsList[this.currentIndex];
-      this.setValues(this.item);
+      this.item = { ...this.itemsList[this.currentIndex] };
+      this.setValues({ ...this.item });
     }
   }
 
@@ -94,8 +94,8 @@ export class ShoppingListEditComponent {
     this.saveCurrentItem();
     if (this.hasNextItem()) {
       this.currentIndex++;
-      this.item = this.itemsList[this.currentIndex];
-      this.setValues(this.item);
+      this.item = { ...this.itemsList[this.currentIndex] };
+      this.setValues({ ...this.item });
     }
   }
 
