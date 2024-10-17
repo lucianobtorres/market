@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { ProductService } from 'src/app/services/product.service';
 
 // @ts-ignore
 import Quagga from 'quagga';
@@ -8,20 +9,28 @@ import Quagga from 'quagga';
   templateUrl: './barcode-scanner.component.html',
   styleUrls: ['./barcode-scanner.component.scss']
 })
-export class BarcodeScannerComponent implements OnInit {
+export class BarcodeScannerComponent implements OnInit, OnDestroy {
+  // Referências aos elementos do DOM
+  @ViewChild('interactive') targetElement!: HTMLElement;
+
+  isCameraAccessible = true;
+  productName: string | null = null;
+  productImageSrc: string | null = null;
+  barcode: string = "";
+
+  constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
     this.initializeQuagga();
   }
 
   ngOnDestroy(): void {
-    Quagga.stop();
+    if (this.isCameraAccessible) Quagga.stop();
   }
 
   initializeQuagga(): void {
-    const targetElement = document.querySelector('#interactive') as HTMLElement;
-
-    if (!targetElement) {
+    if (!this.targetElement) {
+      this.isCameraAccessible = false;
       console.error('Elemento de vídeo não encontrado');
       return;
     }
@@ -30,7 +39,7 @@ export class BarcodeScannerComponent implements OnInit {
       inputStream: {
         name: 'Live',
         type: 'LiveStream',
-        target: targetElement,
+        target: this.targetElement,
         constraints: {
           width: 640,
           height: 480,
@@ -42,104 +51,44 @@ export class BarcodeScannerComponent implements OnInit {
       }
     }, (err: unknown) => {
       if (err) {
+        this.isCameraAccessible = false;
         console.error('Erro ao inicializar Quagga:', err);
-        const barcodeResultElement = document.getElementById('barcode-result');
-        if (barcodeResultElement) {
-          barcodeResultElement.innerText = 'Erro ao inicializar a câmera.';
-        }
+        this.barcode = 'Erro ao inicializar a câmera. Por favor, insira o código manualmente.';
         return;
       }
 
       Quagga.start();
-
-      // Estiliza o vídeo gerado pelo Quagga
-      const videoElement = document.querySelector('#interactive video') as HTMLVideoElement;
-      if (videoElement) {
-        videoElement.style.position = 'absolute';
-        videoElement.style.top = '50%';
-        videoElement.style.left = '50%';
-        videoElement.style.width = 'auto';
-        videoElement.style.height = '100%';
-        videoElement.style.transform = 'translate(-50%, -50%)';
-      }
     });
 
-    // Quando o código de barras for detectado
-    Quagga.onDetected(this.onBarcodeDetected.bind(this));
+    Quagga.onDetected((result: { codeResult: { code: string } }) => {
+      const barcode = result.codeResult.code;
+      this.processBarcode(barcode);
+    });
   }
 
-  async onBarcodeDetected(result: { codeResult: { code: string } }): Promise<void> {
-    const barcode = result.codeResult.code;
-    const barcodeResultElement = document.getElementById('barcode-result');
-    const productImage = document.getElementById('product-image') as HTMLImageElement;
-    const productInfo = document.getElementById('product-info');
+  onBarcodeInput(event: EventTarget | null | string | undefined): void {
+    const barcodeTxt = event instanceof EventTarget ? (event as HTMLInputElement).value : event;
+    this.processBarcode(`${barcodeTxt}`);
+  }
 
-    if (barcodeResultElement) {
-      barcodeResultElement.innerText = `Cód. Barras: ${barcode}`;
-    }
+  private processBarcode(barcode: string): void {
+    this.barcode = barcode;
 
-    const openFoodData = await this.fetchOpenFoodData(barcode);
-    if (openFoodData && productInfo && productImage) {
-      const productName = openFoodData.product_name || 'Nome não encontrado';
-      const productImageSrc = openFoodData.image_url || '';
-
-      productInfo.innerText = `Produto: ${productName}`;
-      productImage.src = productImageSrc;
-      productImage.style.display = productImageSrc ? 'block' : 'none';
-    } else {
-      const digitEyesData = await this.fetchDigitEyesData(barcode);
-      if (digitEyesData && productInfo && productImage) {
-        const productName = digitEyesData.title || 'Nome não encontrado';
-        const productImageSrc = digitEyesData.image || '';
-
-        productInfo.innerText = `Produto: ${productName}`;
-        productImage.src = productImageSrc;
-        productImage.style.display = productImageSrc ? 'block' : 'none';
+    this.productService.fetchOpenFoodData(this.barcode).subscribe(openFoodData => {
+      if (openFoodData) {
+        this.productName = openFoodData.product_name || 'Nome não encontrado';
+        this.productImageSrc = openFoodData.image_url || null;
       } else {
-        if (productInfo) {
-          productInfo.innerText = 'Produto não encontrado.';
-        }
-        if (productImage) {
-          productImage.style.display = 'none';
-        }
+        this.productService.fetchDigitEyesData(this.barcode).subscribe(digitEyesData => {
+          if (digitEyesData) {
+            this.productName = digitEyesData.title || 'Nome não encontrado';
+            this.productImageSrc = digitEyesData.image || null;
+          } else {
+            this.productName = 'Produto não encontrado';
+            this.productImageSrc = null;
+          }
+        });
       }
-    }
-  }
-
-  async fetchOpenFoodData(barcode: string): Promise<any> {
-    const url = `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`;
-    const response = await fetch(url);
-    const data = await response.json();
-
-    if (data.status === 1) {
-      return data.product;
-    } else {
-      return null;
-    }
-  }
-
-  async fetchDigitEyesData(barcode: string): Promise<{ title: string, description: string, image: string } | null> {
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-    const url = `${proxyUrl}https://www.digit-eyes.com/upcCode/${barcode}.html?l=pt`;
-
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP Error: ${response.status}`);
-      }
-
-      const html = await response.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-
-      const title = doc.querySelector('h5')?.innerText || 'Título não encontrado';
-      const description = doc.querySelector('h2')?.innerText || 'Descrição não encontrada';
-      const image = doc.querySelector('img')?.src || '';
-
-      return { title, description, image };
-    } catch (error) {
-      console.error('Erro ao buscar no Digit-Eyes:', error);
-      return null;
-    }
+    });
   }
 }

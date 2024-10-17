@@ -1,9 +1,16 @@
 <div id="camera-container">
-    <div id="barcode-result">Code: </div>
-    <div id="camera-wrapper">
-        <div id="interactive" class="viewport"></div>
+    <h2>Leitor de Códigos de Barras</h2>
+    <div id="barcode-result">Code: {{ barcode }}</div>
+    <div id="camera-wrapper" *ngIf="isCameraAccessible">
+        <div id="interactive" #interactive class="viewport"></div>
         <div id="scan-line"></div>
     </div>
+    <!-- Campo de entrada para o código de barras, exibido apenas se a câmera não estiver acessível -->
+    <div *ngIf="!isCameraAccessible">
+        <input type="text" placeholder="Digite o código de barras" (keyup.enter)="onBarcodeInput($event.target)"
+            #barcodeInput />
+        <button (click)="onBarcodeInput(barcodeInput?.value)">Buscar</button>
+    </div>
 </div>
-<div id="product-info"></div>
-<img id="product-image" alt="Imagem do Produto" style="display:none;">
+<div id="product-info">{{ productName }}</div>
+<img id="product-image" alt="Imagem do Produto" *ngIf="productImageSrc" [src]="productImageSrc">
