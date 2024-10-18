@@ -8,7 +8,7 @@
     <form [formGroup]="editForm" class="simple-edit">
         <mat-form-field>
             <mat-label>Nome do Item</mat-label>
-            <input matInput [formControl]="editForm.controls.nome" placeholder="Ex: Leite">
+            <input matInput [formControl]="editForm.controls.nome" placeholder="Ex: Leite" autofocus #campoNome>
         </mat-form-field>
 
         <mat-form-field>

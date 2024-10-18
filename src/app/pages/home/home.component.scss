@@ -9,10 +9,10 @@ mat-card {
 }
 
 mat-card-content {
+  height: inherit;
   gap: 32px;
   display: flex;
   flex-direction: column;
-
   box-sizing: border-box;
   overflow: hidden;
 }

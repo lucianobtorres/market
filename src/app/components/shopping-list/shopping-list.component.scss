@@ -1,6 +1,7 @@
 :host {
   padding: 8px;
-  overflow: hidden; /* Retirar o scroll do host */
+  overflow: hidden;
+  /* Retirar o scroll do host */
   height: 100%;
 }
 
@@ -17,13 +18,16 @@ mat-list-item#itens {
 }
 
 .shopping-list {
-  padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   max-width: 600px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: inherit;
+}
+
+.list-container {
+  overflow: auto;
 }
 
 .list-header {
@@ -60,14 +64,16 @@ mat-list-item {
 mat-list-item::after {
   content: "";
   position: absolute;
-  left: 16px; /* Ajusta onde a borda começa */
-  right: 16px; /* Ajusta onde a borda termina */
+  left: 16px;
+  /* Ajusta onde a borda começa */
+  right: 16px;
+  /* Ajusta onde a borda termina */
   bottom: 0;
   height: 1px;
   background-color: #e0e0e0;
 }
 
-mat-list-item > span {
+mat-list-item>span {
   width: 100%;
 }
 
@@ -76,10 +82,48 @@ app-shopping-item {
   flex: 1;
 }
 
+.floating-btn {
+  position: fixed;
+  bottom: 8vh;
+  right: 8vw;
+  z-index: 100;
+  background-color: #00b894;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.floating-btn:hover {
+  background-color: #019875;
+}
+
+@media (max-width: 600px) {
+  .floating-btn {
+    bottom: 5vh;
+    right: 8vw;
+  }
+}
+
+@media (min-width: 1200px) {
+  .floating-btn {
+    right: 36vw;
+  }
+}
+
 .total-value {
-  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
   text-align: right;
   font-size: 1.2rem;
   font-weight: 600;
   color: #333;
+  align-items: baseline;
+
+  mat-divider {
+    width: 1px;
+    height: 16px;
+  }
 }

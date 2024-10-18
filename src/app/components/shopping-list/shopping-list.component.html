@@ -1,31 +1,30 @@
 <div class="shopping-list">
     <div class="list-header">
         <h2>Minha Lista de Compras</h2>
-        <button (click)="addItem()">Adicionar</button>
+
+        <div class="total-value" *ngIf="totalValue > 0">
+            <small>subtotal: R$ {{ subtotalValue.toFixed(2) }}</small>
+            <mat-divider [vertical]="true"></mat-divider>
+            <span>Total: R$ {{ totalValue.toFixed(2) }}</span>
+        </div>
+
     </div>
 
     <div class="list-container">
         <mat-list class="list-wait">
-            <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice" (click)="editItem(item, indice)">
-                <app-shopping-item
-                    [item]="item"
-                    (removeItem)="removeItem(item.id)"
-                ></app-shopping-item>
+            <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice"
+                (click)="editItem(item, itemListWait, indice)">
+                <app-shopping-item [item]="item"></app-shopping-item>
             </mat-list-item>
         </mat-list>
 
         <mat-list class="list-done">
-            <mat-list-item id="itens" *ngFor="let item of itemListDone; index as indice" (click)="editItem(item, indice)">
-                <app-shopping-item
-                    [item]="item"
-                    (removeItem)="removeItem(item.id)"
-                ></app-shopping-item>
+            <mat-list-item id="itens" *ngFor="let item of itemListDone; index as indice"
+                (click)="editItem(item, itemListDone, indice)">
+                <app-shopping-item [item]="item"></app-shopping-item>
             </mat-list-item>
         </mat-list>
     </div>
 
-    <!-- Exibição do valor total das compras -->
-    <div class="total-value" *ngIf="totalValue > 0">
-        <span>Total: R$ {{ totalValue.toFixed(2) }}</span>
-    </div>
+    <button mat-button class="floating-btn" (click)="addItem()"> + Adicionar</button>
 </div>

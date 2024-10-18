@@ -1,9 +1,10 @@
-import { Component, Inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { ItemUnit } from 'src/app/models/shopping-item';
 import { ShoppingItem } from 'src/app/models/interfaces';
+import { ShoppingItemService } from 'src/app/services/shopping-item.service';
 
 
 export interface FormEdicaoShopping {
@@ -19,11 +20,12 @@ export interface FormEdicaoShopping {
   templateUrl: './shopping-list-edit.component.html',
   styleUrls: ['./shopping-list-edit.component.scss']
 })
-export class ShoppingListEditComponent {
+export class ShoppingListEditComponent implements AfterViewInit {
   editForm!: FormGroup<FormEdicaoShopping>;
   expanded = false;
   units = Object.values(ItemUnit);
 
+  @ViewChild("campoNome") campoNome!: ElementRef;
   public get item(): ShoppingItem {
     return this.itemsList[this.currentIndex];
   }
@@ -40,12 +42,17 @@ export class ShoppingListEditComponent {
   }
 
   constructor(
-    private fb: FormBuilder,
-    private bottomSheetRef: MatBottomSheetRef<ShoppingListEditComponent>,
+    private readonly fb: FormBuilder,
+    private readonly dbService: ShoppingItemService,
+    private readonly bottomSheetRef: MatBottomSheetRef<ShoppingListEditComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: { itemsList: ShoppingItem[], currentIndex: number }
   ) {
     this.itemsList = data.itemsList;
     this.currentIndex = data.currentIndex;
+  }
+  ngAfterViewInit(): void {
+    const inputElement = this.campoNome.nativeElement;
+    inputElement.select();
   }
 
   private setValues() {
@@ -71,11 +78,11 @@ export class ShoppingListEditComponent {
         notas: this.editForm.value.anotacao ?? undefined,
       };
 
+      this.dbService.update(this.item.id!, updatedItem, 'atualizado..');
       this.itemsList[this.currentIndex] = updatedItem;
     }
   }
 
-  // Alterna para o estado expandido
   toggleExpand() {
     this.expanded = !this.expanded;
   }
@@ -88,7 +95,6 @@ export class ShoppingListEditComponent {
     this.bottomSheetRef.dismiss();
   }
 
-  // Navegar para o item anterior
   goToPreviousItem() {
     this.saveCurrentItem();
     if (this.hasPreviousItem()) {
@@ -96,7 +102,6 @@ export class ShoppingListEditComponent {
     }
   }
 
-  // Navegar para o próximo item
   goToNextItem() {
     this.saveCurrentItem();
     if (this.hasNextItem()) {
@@ -104,12 +109,10 @@ export class ShoppingListEditComponent {
     }
   }
 
-  // Verifica se há item anterior
   hasPreviousItem() {
     return this.currentIndex > 0;
   }
 
-  // Verifica se há próximo item
   hasNextItem() {
     return this.currentIndex < this.itemsList.length - 1;
   }

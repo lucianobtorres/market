@@ -1,7 +1,7 @@
 import { ItemUnit } from "./shopping-item";
 
 export interface ShoppingItem {
-  id: number;
+  id?: number;
   nome: string;
   notas?: string;
   quantidade?: number;
