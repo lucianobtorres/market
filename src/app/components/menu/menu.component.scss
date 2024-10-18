@@ -1,5 +1,13 @@
 @use "theme-variables" as *;
 
+:host{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
 .container-button {
   display: flex;
   justify-content: space-between;
@@ -9,7 +17,6 @@
 
 footer {
   margin-top: auto;
-  position: fixed;
   bottom: 0px;
   overflow: hidden;
   width: 100%;

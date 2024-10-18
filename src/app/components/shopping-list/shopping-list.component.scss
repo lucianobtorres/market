@@ -1,110 +1,85 @@
+:host {
+  padding: 8px;
+  overflow: hidden; /* Retirar o scroll do host */
+  height: 100%;
+}
+
+mat-list-item#itens:last-child::after {
+  border-bottom: none;
+  content: none;
+}
+
+mat-list-item#itens,
+mat-list-item#itens {
+  min-height: auto;
+  align-items: flex-start;
+  height: auto;
+}
+
 .shopping-list {
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   max-width: 600px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 
-  .list-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
 
-    h2 {
-      font-size: 1.8rem;
-      color: #333;
-    }
+mat-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-    button {
-      padding: 8px 16px;
-      font-size: 1rem;
-      background-color: #00b894;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+.list-wait {
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  margin-bottom: 16px;
+}
 
-      &:hover {
-        background-color: #019875;
-      }
-    }
-  }
+.list-done {
+  filter: opacity(50%);
+}
 
-  ul {
-    list-style: none;
-    padding: 0;
+mat-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
 
-    li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid #e0e0e0;
 
-      .item-info {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+mat-list-item::after {
+  content: "";
+  position: absolute;
+  left: 16px; /* Ajusta onde a borda começa */
+  right: 16px; /* Ajusta onde a borda termina */
+  bottom: 0;
+  height: 1px;
+  background-color: #e0e0e0;
+}
 
-        .item-name {
-          font-size: 1.2rem;
-          color: #333;
-          font-weight: 600;
-        }
+mat-list-item > span {
+  width: 100%;
+}
 
-        .item-quantity-unit {
-          font-size: 0.9rem;
-          color: #666;
-          margin-top: 4px;
-        }
+app-shopping-item {
+  display: flex;
+  flex: 1;
+}
 
-        .item-price {
-          font-size: 0.9rem;
-          color: #666;
-          margin-top: 4px;
-        }
-      }
-
-      .item-actions {
-        display: flex;
-        align-items: center;
-
-        .mark-btn {
-          background: none;
-          border: none;
-          font-size: 1.5rem;
-          color: #00b894;
-          cursor: pointer;
-          margin-right: 10px;
-          transition: color 0.3s ease;
-
-          &:hover {
-            color: #019875;
-          }
-        }
-
-        .remove-btn {
-          background: none;
-          border: none;
-          font-size: 1.5rem;
-          color: #e74c3c;
-          cursor: pointer;
-          transition: color 0.3s ease;
-
-          &:hover {
-            color: #c0392b;
-          }
-        }
-      }
-    }
-  }
-
-  .total-value {
-    margin-top: 20px;
-    text-align: right;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #333;
-  }
+.total-value {
+  margin-top: 20px;
+  text-align: right;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
 }

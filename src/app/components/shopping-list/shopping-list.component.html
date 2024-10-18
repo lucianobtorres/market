@@ -4,20 +4,25 @@
         <button (click)="addItem()">Adicionar</button>
     </div>
 
-    <mat-list>
-        <mat-list-item *ngFor="let item of items; index as indice" (click)="editItem(item, indice)">
-            <h4 matLine>{{ item.nome }}</h4>
-            <p matLine>
-                {{ item.quantidade }} {{ item.unidade }} - R$ {{ item.preco }}
-            </p>
-            <div class="item-actions">
-                <button class="mark-btn" (click)="toggleItemCompletion(item.id)">
-                    {{ item.completed ? '✓' : '○' }}
-                </button>
-                <button class="remove-btn" (click)="removeItem(item.id)">×</button>
-            </div>
-        </mat-list-item>
-    </mat-list>
+    <div class="list-container">
+        <mat-list class="list-wait">
+            <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice" (click)="editItem(item, indice)">
+                <app-shopping-item
+                    [item]="item"
+                    (removeItem)="removeItem(item.id)"
+                ></app-shopping-item>
+            </mat-list-item>
+        </mat-list>
+
+        <mat-list class="list-done">
+            <mat-list-item id="itens" *ngFor="let item of itemListDone; index as indice" (click)="editItem(item, indice)">
+                <app-shopping-item
+                    [item]="item"
+                    (removeItem)="removeItem(item.id)"
+                ></app-shopping-item>
+            </mat-list-item>
+        </mat-list>
+    </div>
 
     <!-- Exibição do valor total das compras -->
     <div class="total-value" *ngIf="totalValue > 0">

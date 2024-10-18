@@ -2,16 +2,14 @@ import { IDictionary } from '../utils/idictionary';
 import { ModelDB } from '././model-db';
 
 import { migrateToVersion1 } from './migrations/001_initial_schema';
-import { migrateToVersion2 } from './migrations/002_update_meioMovimentacao';
 
-export const CURRENT_DATABASE_VERSION = 2;
+export const CURRENT_DATABASE_VERSION = 1;
 const VERSION_DB = 'db_version';
 
 type functionMigrate = (db: ModelDB) => Promise<void>;
 
 export const migrations: IDictionary<functionMigrate> = {
   1: migrateToVersion1,
-  2: migrateToVersion2
 };
 
 export abstract class Migrations {
@@ -47,48 +45,3 @@ export abstract class Migrations {
     return version < CURRENT_DATABASE_VERSION;
   }
 }
-
-/*/
-
-export abstract class Migrations_DB {
-  public static async createMigrations(db: ModelDB): Promise<void> {
-    if (await Migrations_DB.needsMigration(db)) {
-      console.log('Realizando migrações pendentes...');
-
-      await db.transaction('rw', db.tables, async () => {
-        const currentVersion = await Migrations_DB.getDatabaseVersion(db) ?? 1;
-
-        for (let version: number = currentVersion + 1; version <= CURRENT_DATABASE_VERSION; version++) {
-          if (migrations[version]) {
-            await migrations[version](db);
-          }
-        }
-
-        Migrations_DB.setDatabaseVersion(db, CURRENT_DATABASE_VERSION);
-      });
-      console.log('Migrações concluídas.');
-    }
-  }
-
-  private static async getDatabaseVersion(db: ModelDB): Promise<number | undefined> {
-    const currentVersion = (await db.versionDB.get(1));
-    console.log(currentVersion)
-    if (!currentVersion) {
-      await db.versionDB.add({ version: 1 });
-      return 1;
-    }
-
-    return currentVersion?.version;
-  }
-
-  private static async setDatabaseVersion(db: ModelDB, version: number): Promise<void> {
-    await db.versionDB.update(1, { version });
-  }
-
-  public static async needsMigration(db: ModelDB): Promise<boolean> {
-    const currentVersion = await Migrations_DB.getDatabaseVersion(db) ?? 1;
-    return currentVersion < CURRENT_DATABASE_VERSION;
-  }
-}
-
-/**/

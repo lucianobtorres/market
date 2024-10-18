@@ -1,0 +1,39 @@
+:host {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  width: 100%;
+}
+
+.item-actions {
+  display: flex;
+  align-items: center;
+
+  .mark-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #00b894;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #019875;
+    }
+  }
+
+  .remove-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #e74c3c;
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #c0392b;
+    }
+  }
+}

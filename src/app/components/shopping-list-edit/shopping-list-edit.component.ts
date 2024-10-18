@@ -2,7 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { ItemUnit, ShoppingItem } from 'src/app/models/shopping-item';
+import { ItemUnit } from 'src/app/models/shopping-item';
+import { ShoppingItem } from 'src/app/models/interfaces';
 
 
 export interface FormEdicaoShopping {
@@ -23,23 +24,32 @@ export class ShoppingListEditComponent {
   expanded = false;
   units = Object.values(ItemUnit);
 
-  item: ShoppingItem;
-  itemsList: ShoppingItem[] = [];  // Lista de itens para navegação
-  currentIndex = 0;
+  public get item(): ShoppingItem {
+    return this.itemsList[this.currentIndex];
+  }
+
+  itemsList: ShoppingItem[] = [];
+  private _currentIndex = 0;
+  public get currentIndex() {
+    return this._currentIndex;
+  }
+
+  public set currentIndex(value) {
+    this._currentIndex = value;
+    this.setValues();
+  }
 
   constructor(
     private fb: FormBuilder,
     private bottomSheetRef: MatBottomSheetRef<ShoppingListEditComponent>,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: { item: ShoppingItem, itemsList: ShoppingItem[], currentIndex: number }
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: { itemsList: ShoppingItem[], currentIndex: number }
   ) {
-    this.item = { ...data.item };
     this.itemsList = data.itemsList;
     this.currentIndex = data.currentIndex;
-
-    this.setValues({ ...this.item });
   }
 
-  private setValues(data: ShoppingItem) {
+  private setValues() {
+    const data: ShoppingItem = this.item;
     this.editForm = this.fb.group({
       nome: this.fb.nonNullable.control(data.nome, Validators.required),
       quantidade: this.fb.nonNullable.control(data.quantidade || 1, [Validators.required, Validators.min(1)]),
@@ -61,7 +71,7 @@ export class ShoppingListEditComponent {
         notas: this.editForm.value.anotacao ?? undefined,
       };
 
-      this.itemsList[this.currentIndex] = {...updatedItem};
+      this.itemsList[this.currentIndex] = updatedItem;
     }
   }
 
@@ -72,7 +82,6 @@ export class ShoppingListEditComponent {
 
   save(): void {
     this.saveCurrentItem();
-    this.bottomSheetRef.dismiss();
   }
 
   close(): void {
@@ -84,8 +93,6 @@ export class ShoppingListEditComponent {
     this.saveCurrentItem();
     if (this.hasPreviousItem()) {
       this.currentIndex--;
-      this.item = { ...this.itemsList[this.currentIndex] };
-      this.setValues({ ...this.item });
     }
   }
 
@@ -94,8 +101,6 @@ export class ShoppingListEditComponent {
     this.saveCurrentItem();
     if (this.hasNextItem()) {
       this.currentIndex++;
-      this.item = { ...this.itemsList[this.currentIndex] };
-      this.setValues({ ...this.item });
     }
   }
 

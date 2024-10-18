@@ -1,5 +1,5 @@
 import Dexie, { Table } from 'dexie';
-import { GrupoContas, PlanoContas, MeioMovimentacao, Lancamento } from '../models/interfaces';
+import { GrupoContas, PlanoContas, MeioMovimentacao, Lancamento, ShoppingItem } from '../models/interfaces';
 import { CURRENT_DATABASE_VERSION, Migrations } from './migrations';
 
 export interface IHistoricoCompras {
@@ -14,6 +14,7 @@ export class ModelDB extends Dexie {
   planoContas!: Table<PlanoContas, number>;
   meioMovimentacao!: Table<MeioMovimentacao, number>;
   lancamentos!: Table<Lancamento, number>;
+  shoppingItems!: Table<ShoppingItem, number>;
 
   //versionDB!: Table<VersionDB, number>;
   //historicoCompras!: Table<IHistoricoCompras, number>;
@@ -30,9 +31,9 @@ export class ModelDB extends Dexie {
 
       //versions: '++id, version',
       //historicoCompras: '++id, compra, produto, data',
+      shoppingItems: '++id, nome, notas, quantidade, unidade, preco, completed',
     });
 
-    //Migrations_DB.createMigrations(this);
     Migrations.createMigrations(this);
   }
 }

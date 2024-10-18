@@ -1,3 +1,14 @@
+import { ItemUnit } from "./shopping-item";
+
+export interface ShoppingItem {
+  id: number;
+  nome: string;
+  notas?: string;
+  quantidade?: number;
+  unidade?: ItemUnit;
+  preco?: number;
+  completed: boolean;
+}
 
 export interface GrupoContas {
   id?: number;

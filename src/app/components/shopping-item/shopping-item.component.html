@@ -1,0 +1,10 @@
+<h4 matLine>{{ item.nome }}</h4>
+<p matLine>
+    {{ item.quantidade }} {{ item.unidade }} - R$ {{ item.preco }}
+</p>
+<div class="item-actions">
+    <button class="mark-btn" (click)="toggleItemCompletion($event)">
+        {{ item.completed ? '✓' : '○' }}
+    </button>
+    <button class="remove-btn" (click)="removeItem.emit(item.id)">×</button>
+</div>

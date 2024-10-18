@@ -5,7 +5,7 @@
     <h3>Edit Item</h3>
 
     <!-- Edição Simples -->
-    <form [formGroup]="editForm" (ngSubmit)="save()" class="simple-edit">
+    <form [formGroup]="editForm" class="simple-edit">
         <mat-form-field>
             <mat-label>Nome do Item</mat-label>
             <input matInput [formControl]="editForm.controls.nome" placeholder="Ex: Leite">
@@ -49,7 +49,7 @@
         </ng-container>
 
         <div class="actions">
-            <button mat-raised-button color="primary" type="submit">Finalizar</button>
+            <button mat-raised-button color="primary" (click)="saveCurrentItem(); close()">Finalizar</button>
             <button mat-button (click)="close()">Fechar</button>
         </div>
     </form>

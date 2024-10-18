@@ -1,3 +1,4 @@
+import { ItemUnit } from "src/app/models/shopping-item";
 import { ModelDB } from "../model-db";
 
 export async function migrateToVersion1(db: ModelDB) {
@@ -15,6 +16,20 @@ export async function migrateToVersion1(db: ModelDB) {
     ], { allKeys: true });
 
     let ids: number = 1;
+
+    await db.shoppingItems.bulkAdd([
+      { id: 1, nome: 'Maçã', quantidade: 1, unidade: ItemUnit.KG, completed: false },
+      { id: 2, nome: 'Leite', quantidade: 2, unidade: ItemUnit.L, completed: false },
+      { id: 3, nome: 'Arroz', quantidade: 1, unidade: ItemUnit.KG, completed: false },
+      { id: 4, nome: 'Feijão', quantidade: 2, unidade: ItemUnit.KG, completed: false },
+      { id: 5, nome: 'Sabonete', quantidade: 5, unidade: ItemUnit.UN, completed: false },
+      { id: 6, nome: 'Detergente', quantidade: 1, unidade: ItemUnit.L, completed: false },
+      { id: 7, nome: 'Papel Higiênico', quantidade: 12, unidade: ItemUnit.UN, completed: false },
+      { id: 8, nome: 'Macarrão', quantidade: 3, unidade: ItemUnit.UN, completed: false },
+      { id: 9, nome: 'Óleo de Soja', quantidade: 1, unidade: ItemUnit.L, completed: false },
+      { id: 10, nome: 'Frango', quantidade: 1.5, unidade: ItemUnit.KG, completed: false }
+
+    ], { allKeys: true });
 
     await db.planoContas.bulkAdd([
       { grupoContasId: ids, title: 'Salário  / Adiantamento /  Autônomo' },

@@ -22,6 +22,7 @@ import { ConfiguracaoComponent } from '../pages/configuracao/configuracao.compon
 import { BarcodeScannerComponent } from './barcode-scanner/barcode-scanner.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingListEditComponent } from './shopping-list-edit/shopping-list-edit.component';
+import { ShoppingItemComponent } from './shopping-item/shopping-item.component';
 
 export const components = [
   HomeComponent,
@@ -37,7 +38,8 @@ export const components = [
   ConfiguracaoItemComponent,
   BarcodeScannerComponent,
   ShoppingListComponent,
-  ShoppingListEditComponent
+  ShoppingListEditComponent,
+  ShoppingItemComponent
 ]
 
 @NgModule({

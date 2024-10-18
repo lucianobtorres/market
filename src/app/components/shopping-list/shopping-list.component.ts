@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ShoppingListEditComponent } from '../shopping-list-edit/shopping-list-edit.component';
-import { ItemUnit, ShoppingItem } from 'src/app/models/shopping-item';
+import { ShoppingItem } from 'src/app/models/interfaces';
+
+import { db } from 'src/app/db/model-db';
+import { liveQuery } from 'dexie';
 
 @Component({
   selector: 'app-shopping-list',
@@ -9,12 +12,17 @@ import { ItemUnit, ShoppingItem } from 'src/app/models/shopping-item';
   styleUrls: ['./shopping-list.component.scss']
 })
 
-export class ShoppingListComponent {
-  items: ShoppingItem[] = [
-    { id: 1, nome: 'Bananas', quantidade: 5, unidade: ItemUnit.UN, preco: 1.50, completed: false },
-    { id: 2, nome: 'Milk', quantidade: 2, unidade: ItemUnit.L, preco: 4.00, completed: false },
-    { id: 3, nome: 'Bread', completed: false },
-  ];
+export class ShoppingListComponent implements OnInit {
+  public itemsShopping$ = liveQuery(() => db.shoppingItems.toArray());
+  private items: ShoppingItem[] = [];
+
+  public get itemListWait(): ShoppingItem[] {
+    return this.items.filter(x => !x.completed);
+  }
+
+  public get itemListDone(): ShoppingItem[] {
+    return this.items.filter(x => x.completed);
+  }
 
   get totalValue(): number {
     return this.items.reduce((total, item) => {
@@ -26,6 +34,12 @@ export class ShoppingListComponent {
   }
 
   constructor(private bottomSheet: MatBottomSheet) { }
+
+  ngOnInit(): void {
+    this.itemsShopping$.subscribe((itens) => {
+      this.items = itens;
+    });
+  }
 
   addItem() {
     const newItem: ShoppingItem = {
@@ -42,15 +56,10 @@ export class ShoppingListComponent {
     this.items = this.items.filter(item => item.id !== id);
   }
 
-  toggleItemCompletion(id: number) {
-    const item = this.items.find(item => item.id === id);
-    if (item) {
-      item.completed = !item.completed;
-    }
-  }
   editItem(item: ShoppingItem, index: number): void {
     const bottomSheetRef = this.bottomSheet.open(ShoppingListEditComponent, {
-      data: { item: item, itemsList: this.items, currentIndex: index }
+      data: { itemsList: this.items, currentIndex: index },
+      disableClose: true
     });
 
     bottomSheetRef.afterDismissed().subscribe(result => {

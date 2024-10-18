@@ -1,12 +1,19 @@
 @use "theme-variables" as *;
 
+:host {
+  height: 100%;
+}
+mat-card {
+  height: inherit;
+  overflow: auto;
+}
+
 mat-card-content {
   gap: 32px;
   display: flex;
   flex-direction: column;
 
   box-sizing: border-box;
-  height: calc(100% - 214px);
   overflow: hidden;
 }
 
