@@ -1,5 +1,5 @@
 <div class="search-header">
-    <button mat-icon-button (click)="closeSearch()">
+    <button mat-icon-button (click)="closeEmit.emit()">
         <mat-icon>arrow_back</mat-icon>
     </button>
     <mat-form-field class="search-field">
@@ -8,7 +8,6 @@
     </mat-form-field>
 </div>
 
-<!-- Aqui vai o campo de busca e a lista de resultados -->
 <div class="search-content">
     <mat-list>
         <mat-list-item *ngFor="let item of filteredItems" (click)="toggleItem(item)">
@@ -20,5 +19,4 @@
             </div>
         </mat-list-item>
     </mat-list>
-
 </div>

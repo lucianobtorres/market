@@ -8,6 +8,7 @@ import { db } from 'src/app/db/model-db';
 import { liveQuery } from 'dexie';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchItemsComponent } from '../search-items/search-items.component';
+import { SearchDialogComponent } from '../search-dialog/search-dialog.component';
 
 @Component({
   selector: 'app-shopping-list',
@@ -58,28 +59,34 @@ export class ShoppingListComponent implements OnInit {
   }
 
   openSearch(): void {
-    const dialogRef = this.dialog.open(SearchItemsComponent, {
-      width: '100vw',
-      height: '100vh',
-      maxWidth: '100vw',
-      panelClass: 'full-screen-dialog',
-    });
+    if (this.isMobile()) {
+      const dialogRef = this.dialog.open(SearchDialogComponent, {
+        width: '100vw',
+        height: '100vh',
+        maxWidth: '100vw',
+        panelClass: 'full-screen-dialog',
+      });
 
-    dialogRef.afterClosed().subscribe((result: unknown) => {
-      console.log(result, 'Search dialog closed');
-      // const newItem: ShoppingItem = {
-      //   nome: 'New Item',
-      //   quantidade: 1,
-      //   completed: false,
-      // };
-      // this.dbService.add(newItem);
-      // this.items.push(newItem);
-      // this.editItem(newItem, this.itemListWait, this.itemListWait.indexOf(newItem));
-    });
+      dialogRef.afterClosed().subscribe((result: unknown) => {
+        this.closeSearch();
+      });
+    } else {
+      // Abre o painel lateral em telas grandes
+      this.isSearchOpen = true;
+    }
   }
 
   addItem() {
     this.openSearch();
+  }
+  isSearchOpen = false; // Controle para saber se o painel de busca está aberto
+
+  closeSearch() {
+    this.isSearchOpen = false;
+  }
+
+  isMobile(): boolean {
+    return window.innerWidth < 768;
   }
 
   editItem(item: ShoppingItem, items: ShoppingItem[], index: number): void {

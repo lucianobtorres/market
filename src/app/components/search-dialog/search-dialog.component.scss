@@ -1,7 +1,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
 }
 
 .search-header {
@@ -17,14 +17,8 @@
 }
 
 .search-content {
-  display: flex;
-  overflow: auto;
-}
-
-mat-list {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
 }
 
 mat-list-item {
@@ -44,8 +38,7 @@ mat-list-item {
 }
 
 .icon-status {
-  transition: transform 0.4s ease, color 0.4s ease;
-  /* Animação suave */
+  transition: transform 0.4s ease, color 0.4s ease; /* Animação suave */
   margin-right: 10px;
 }
 
@@ -60,21 +53,17 @@ mat-list-item:hover {
 }
 
 .icon-add {
-  color: #00b894;
-  /* Verde para adicionar */
+  color: #00b894; /* Verde para adicionar */
 }
 
 .icon-remove {
-  color: #e74c3c;
-  /* Vermelho para remover */
+  color: #e74c3c; /* Vermelho para remover */
 }
 
 .icon-status.icon-add {
-  transform: rotate(0deg);
-  /* Ícone de adicionar na posição normal */
+  transform: rotate(0deg); /* Ícone de adicionar na posição normal */
 }
 
 .icon-status.icon-remove {
-  transform: rotate(90deg);
-  /* Rotaciona para o X */
+  transform: rotate(90deg); /* Rotaciona para o X */
 }

@@ -1,30 +1,36 @@
-<div class="shopping-list">
-    <div class="list-header">
-        <h2>Minha Lista de Compras</h2>
+<div class="dialog-content">
+    <div class="shopping-list">
+        <div class="list-header">
+            <h2>Minha Lista de Compras</h2>
 
-        <div class="total-value" *ngIf="totalValue > 0">
-            <small>subtotal: R$ {{ subtotalValue.toFixed(2) }}</small>
-            <mat-divider [vertical]="true"></mat-divider>
-            <span>Total: R$ {{ totalValue.toFixed(2) }}</span>
+            <div class="total-value" *ngIf="totalValue > 0">
+                <small>subtotal: R$ {{ subtotalValue.toFixed(2) }}</small>
+                <mat-divider [vertical]="true"></mat-divider>
+                <span>Total: R$ {{ totalValue.toFixed(2) }}</span>
+            </div>
+
         </div>
 
+        <div class="list-container">
+            <mat-list class="list-wait">
+                <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice"
+                    (click)="editItem(item, itemListWait, indice)">
+                    <app-shopping-item [item]="item"></app-shopping-item>
+                </mat-list-item>
+            </mat-list>
+
+            <mat-list class="list-done">
+                <mat-list-item id="itens" *ngFor="let item of itemListDone; index as indice"
+                    (click)="editItem(item, itemListDone, indice)">
+                    <app-shopping-item [item]="item"></app-shopping-item>
+                </mat-list-item>
+            </mat-list>
+        </div>
+
+        <button mat-button class="floating-btn" (click)="addItem()" *ngIf="!isSearchOpen"> + Adicionar</button>
     </div>
 
-    <div class="list-container">
-        <mat-list class="list-wait">
-            <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice"
-                (click)="editItem(item, itemListWait, indice)">
-                <app-shopping-item [item]="item"></app-shopping-item>
-            </mat-list-item>
-        </mat-list>
-
-        <mat-list class="list-done">
-            <mat-list-item id="itens" *ngFor="let item of itemListDone; index as indice"
-                (click)="editItem(item, itemListDone, indice)">
-                <app-shopping-item [item]="item"></app-shopping-item>
-            </mat-list-item>
-        </mat-list>
+    <div *ngIf="isSearchOpen" class="search-panel" [ngClass]="{'open': isSearchOpen}">
+        <app-search-items  (closeEmit)="closeSearch()"></app-search-items>
     </div>
-
-    <button mat-button class="floating-btn" (click)="addItem()"> + Adicionar</button>
 </div>

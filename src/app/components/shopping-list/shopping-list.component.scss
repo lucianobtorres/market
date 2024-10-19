@@ -1,8 +1,9 @@
 :host {
   padding: 8px;
   overflow: hidden;
-  /* Retirar o scroll do host */
   height: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 mat-list-item#itens:last-child::after {
@@ -126,4 +127,31 @@ app-shopping-item {
     width: 1px;
     height: 16px;
   }
+}
+
+.search-panel {
+  display: flex;
+  width: 300px;
+  border-left: 1px solid #ccc;
+  background-color: #f9f9f9;
+  overflow: hidden;
+}
+
+.open-search {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+@media (min-width: 768px) {
+  .search-panel {
+    display: block;
+  }
+}
+
+.dialog-content {
+  display: flex;
+  overflow: hidden;
+  height: 100%;
+  gap: 64px;
 }

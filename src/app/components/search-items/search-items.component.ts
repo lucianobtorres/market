@@ -1,6 +1,5 @@
-import { OnInit, Component } from '@angular/core';
+import { OnInit, Component, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
 import { liveQuery } from 'dexie';
 import { debounceTime } from 'rxjs';
 import { db } from 'src/app/db/model-db';
@@ -15,6 +14,8 @@ import { ShoppingItemService } from 'src/app/services/shopping-item.service';
 })
 export class SearchItemsComponent implements OnInit {
 
+  @Output() closeEmit = new EventEmitter<void>();
+
   searchControl = new FormControl();
   items: ConfigItems[] = []; // Itens que serão mostrados conforme a busca
   filteredItems: BoughtItems[] = []; // Itens que serão mostrados conforme a busca
@@ -25,7 +26,6 @@ export class SearchItemsComponent implements OnInit {
 
   constructor(
     private readonly dbService: ShoppingItemService,
-    private readonly dialogRef: MatDialogRef<SearchItemsComponent>,
   ) { }
 
   ngOnInit() {
@@ -69,10 +69,6 @@ export class SearchItemsComponent implements OnInit {
     this.sortFilter();
   }
 
-  closeSearch(): void {
-    this.dialogRef.close(); // Fechar a busca
-  }
-
   sortFilter() {
     this.filteredItems.sort((a, b) => a.nome.localeCompare(b.nome));
   }
@@ -101,12 +97,12 @@ export class SearchItemsComponent implements OnInit {
       await this.dbService.delete(isInList.id);
     } else {
 
-      const itemFound  = this.items.find(x => x.nome === item.nome);
+      const itemFound = this.items.find(x => x.nome === item.nome);
       if (!itemFound) {
 
       }
 
-      const itemAdd: ShoppingItem = !itemFound ?{
+      const itemAdd: ShoppingItem = !itemFound ? {
         nome: item.nome,
         quantidade: 1,
         completed: false,

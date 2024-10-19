@@ -24,6 +24,7 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingListEditComponent } from './shopping-list-edit/shopping-list-edit.component';
 import { ShoppingItemComponent } from './shopping-item/shopping-item.component';
 import { SearchItemsComponent } from './search-items/search-items.component';
+import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 
 export const components = [
   HomeComponent,
@@ -41,7 +42,8 @@ export const components = [
   ShoppingListComponent,
   ShoppingListEditComponent,
   ShoppingItemComponent,
-  SearchItemsComponent
+  SearchItemsComponent,
+  SearchDialogComponent
 ]
 
 @NgModule({
