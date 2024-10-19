@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 
 // @ts-ignore
@@ -13,6 +13,7 @@ import { from, Observable } from 'rxjs';
 export class BarcodeScannerComponent implements OnInit, OnDestroy {
   // Referências aos elementos do DOM
   @ViewChild('interactive') targetElement!: HTMLElement;
+  @Output() produtoEncontrado = new EventEmitter<string>();
 
   isCameraAccessible = true;
   productName: string | null = null;
@@ -88,11 +89,13 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
       if (openFoodData) {
         this.productName = openFoodData.product_name || 'Nome não encontrado';
         this.productImageSrc = openFoodData.image_url || null;
+        this.emitNome();
       } else {
         this.productService.fetchDigitEyesData(this.barcode).subscribe(digitEyesData => {
           if (digitEyesData) {
             this.productName = digitEyesData.title || 'Nome não encontrado';
             this.productImageSrc = digitEyesData.image || null;
+            this.emitNome();
           } else {
             this.productName = 'Produto não encontrado';
             this.productImageSrc = null;
@@ -100,5 +103,13 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  private emitNome() {
+    if (this.productName &&
+      this.productName != 'Nome não encontrado' &&
+      this.productName != 'Produto não encontrado') {
+      this.produtoEncontrado.emit(`${this.productName}`);
+    }
   }
 }

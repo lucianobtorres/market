@@ -5,8 +5,13 @@
     <mat-form-field class="search-field">
         <mat-label>Pesquisar</mat-label>
         <input matInput [formControl]="searchControl" placeholder="pesquisar" #campoSearch />
+        <button mat-icon-button matSuffix (click)="openBarCode()">
+            <mat-icon>bar_chart</mat-icon>
+        </button>
     </mat-form-field>
 </div>
+
+<app-barcode-scanner *ngIf="showBarCode" (produtoEncontrado)="onProdutoEncontrado($event)"></app-barcode-scanner>
 
 <div class="search-content">
     <mat-list>

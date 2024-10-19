@@ -1,6 +1,5 @@
 <div id="camera-container">
-    <h2>Leitor de Códigos de Barras</h2>
-    <div id="barcode-result">Code: {{ barcode }}</div>
+    <small id="barcode-result">Código de Barras: {{ barcode }}</small>
     <div id="camera-wrapper" *ngIf="isCameraAccessible">
         <div id="interactive" #interactive class="viewport"></div>
         <div id="scan-line"></div>
@@ -12,5 +11,5 @@
         <button (click)="onBarcodeInput(barcodeInput?.value)">Buscar</button>
     </div>
 </div>
-<div id="product-info">{{ productName }}</div>
+<!-- <div id="product-info">{{ productName }}</div> -->
 <img id="product-image" alt="Imagem do Produto" *ngIf="productImageSrc" [src]="productImageSrc">

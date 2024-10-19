@@ -13,7 +13,6 @@ import { ShoppingItemService } from 'src/app/services/shopping-item.service';
   styleUrls: ['./search-items.component.scss']
 })
 export class SearchItemsComponent implements OnInit {
-
   @Output() closeEmit = new EventEmitter<void>();
 
   searchControl = new FormControl();
@@ -112,5 +111,14 @@ export class SearchItemsComponent implements OnInit {
       await this.dbService.add(itemAdd);
       this.updateAddingStatus([itemAdd])
     }
+  }
+
+  showBarCode = false;
+  openBarCode() {
+    this.showBarCode = !this.showBarCode;
+  }
+
+  onProdutoEncontrado(code: string) {
+    this.searchControl.setValue(code);
   }
 }

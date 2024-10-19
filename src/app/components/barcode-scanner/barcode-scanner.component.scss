@@ -1,3 +1,8 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
 /* Container principal */
 #camera-container {
   display: flex;
@@ -9,15 +14,8 @@
 
 /* Exibição do código de barras */
 #barcode-result {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: #eee;
-  border: 1px solid #000;
-  border-radius: 5px;
   width: 100%;
   text-align: center;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Câmera e linha guia */
@@ -54,4 +52,15 @@
   background-color: rgba(255, 0, 0, 0.8);
   box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.5);
   transform: translateY(-50%);
+}
+
+#product-image {
+  align-self: center;
+  width: 184px;
+  height: 184px;
+  object-fit: scale-down;
+  padding: 8px;
+  margin: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
