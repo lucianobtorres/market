@@ -62,19 +62,19 @@ export class ShoppingListComponent implements OnInit {
       width: '100vw',
       height: '100vh',
       maxWidth: '100vw',
-      panelClass: 'full-screen-dialog'
+      panelClass: 'full-screen-dialog',
     });
 
     dialogRef.afterClosed().subscribe((result: unknown) => {
       console.log(result, 'Search dialog closed');
-      const newItem: ShoppingItem = {
-        nome: 'New Item',
-        quantidade: 1,
-        completed: false,
-      };
-      this.dbService.add(newItem);
-      this.items.push(newItem);
-      this.editItem(newItem, this.itemListWait, this.itemListWait.indexOf(newItem));
+      // const newItem: ShoppingItem = {
+      //   nome: 'New Item',
+      //   quantidade: 1,
+      //   completed: false,
+      // };
+      // this.dbService.add(newItem);
+      // this.items.push(newItem);
+      // this.editItem(newItem, this.itemListWait, this.itemListWait.indexOf(newItem));
     });
   }
 

@@ -1,9 +1,12 @@
 import { OnInit, Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { liveQuery } from 'dexie';
 import { debounceTime } from 'rxjs';
 import { db } from 'src/app/db/model-db';
-import { BoughtItems } from 'src/app/models/interfaces';
+import { BoughtItems, ConfigItems, ShoppingItem } from 'src/app/models/interfaces';
+import { ItemUnit } from 'src/app/models/shopping-item';
+import { ShoppingItemService } from 'src/app/services/shopping-item.service';
 
 @Component({
   selector: 'app-search-items',
@@ -11,40 +14,107 @@ import { BoughtItems } from 'src/app/models/interfaces';
   styleUrls: ['./search-items.component.scss']
 })
 export class SearchItemsComponent implements OnInit {
-  constructor(public dialogRef: MatDialogRef<SearchItemsComponent>) { }
-  searchControl = new FormControl();
-  filteredItems: BoughtItems[] = []; // Itens que serão mostrados conforme a busca
 
-  async ngOnInit() {
-    // Monitorar mudanças na busca
+  searchControl = new FormControl();
+  items: ConfigItems[] = []; // Itens que serão mostrados conforme a busca
+  filteredItems: BoughtItems[] = []; // Itens que serão mostrados conforme a busca
+  shoppingList: ShoppingItem[] = [];
+
+  public itemsSearch$ = liveQuery(() => db.boughtItems.toArray());
+  public itemsShopping$ = liveQuery(() => db.shoppingItems.toArray());
+
+  constructor(
+    private readonly dbService: ShoppingItemService,
+    private readonly dialogRef: MatDialogRef<SearchItemsComponent>,
+  ) { }
+
+  ngOnInit() {
     this.searchControl.valueChanges
       .pipe(debounceTime(300))
-      .subscribe(async value => {
-        this.filteredItems = await getFilteredItems(value);
+      .subscribe(value => {
+        this.getFilteredItems(value);
       });
+
+    this.itemsSearch$.subscribe((itens) => {
+      this.updateAddingStatus(itens);
+    });
+
+    this.itemsShopping$.subscribe((itens) => {
+      this.shoppingList = itens;
+      this.updateAddingStatus(this.shoppingList);
+    });
+  }
+
+  ngAfterViewInit() {
+    this.sortFilter();
+  }
+
+  updateAddingStatus(itemsList: ConfigItems[]) {
+    if (!this.shoppingList || !this.filteredItems) return;
+
+    const itemsToAdd = itemsList.filter(item =>
+      !this.items.some(x => x.nome === item.nome)
+    );
+
+    itemsToAdd.forEach(item => this.items.push(item));
+
+    if (this.searchControl.pristine) {
+      this.filteredItems = this.items as [];
+    }
+
+    this.filteredItems.forEach(item => {
+      item.adding = !(this.shoppingList.some(shoppingItem => shoppingItem.nome === item.nome));
+    });
+
+    this.sortFilter();
   }
 
   closeSearch(): void {
     this.dialogRef.close(); // Fechar a busca
   }
 
-  // Método para adicionar item à lista de compras
-  addItemToShoppingList(item: any) {
-    console.log('Adicionar item:', item);
-    // Aqui você deve implementar a lógica para adicionar o item à lista de compras
+  sortFilter() {
+    this.filteredItems.sort((a, b) => a.nome.localeCompare(b.nome));
   }
 
-  // Método opcional para remover item (se necessário)
-  removeItem(id: number) {
-    // Implemente a lógica para remover o item aqui, se necessário
+  async getFilteredItems(searchTerm: string) {
+    if (!searchTerm) {
+      this.filteredItems = this.items as BoughtItems[];
+      return;
+    }
+
+    const filtro = this.items.filter(x => x.nome.toLowerCase().includes(searchTerm.toLowerCase()));
+    this.filteredItems = filtro.length
+      ? filtro as BoughtItems[]
+      : [{
+        nome: searchTerm,
+        adding: true,
+        dataCompra: new Date(),
+      }]
   }
-}
 
-async function getFilteredItems(searchTerm: string) {
-  const items = await db.boughtItems
-    .where("nome")
-    .startsWithIgnoreCase(searchTerm)
-    .toArray();
+  async toggleItem(item: BoughtItems) {
+    const isInList = this.shoppingList.find(shoppingItem => shoppingItem.nome === item.nome);
 
-  return items;
+    if (isInList && isInList.id) {
+      console.log('enco')
+      await this.dbService.delete(isInList.id);
+    } else {
+
+      const itemFound  = this.items.find(x => x.nome === item.nome);
+      if (!itemFound) {
+
+      }
+
+      const itemAdd: ShoppingItem = !itemFound ?{
+        nome: item.nome,
+        quantidade: 1,
+        completed: false,
+        unidade: item.unidade ?? ItemUnit.UN
+      } : itemFound as ShoppingItem
+
+      await this.dbService.add(itemAdd);
+      this.updateAddingStatus([itemAdd])
+    }
+  }
 }

@@ -1,17 +1,23 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
 .search-header {
   display: flex;
   align-items: center;
   padding: 16px;
+  gap: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .search-field {
   width: 100%;
-  margin-bottom: 20px;
 }
 
 .search-content {
-  max-height: 400px;
+  height: 100%;
   overflow-y: auto;
 }
 
@@ -19,4 +25,45 @@ mat-list-item {
   cursor: pointer;
   display: flex;
   justify-content: space-between;
+}
+
+::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+
+.list-item-content {
+  display: flex;
+  align-items: center;
+}
+
+.icon-status {
+  transition: transform 0.4s ease, color 0.4s ease; /* Animação suave */
+  margin-right: 10px;
+}
+
+.item-name {
+  font-size: 1rem;
+  color: #333;
+  flex-grow: 1;
+}
+
+mat-list-item:hover {
+  background-color: #f0f0f0;
+}
+
+.icon-add {
+  color: #00b894; /* Verde para adicionar */
+}
+
+.icon-remove {
+  color: #e74c3c; /* Vermelho para remover */
+}
+
+.icon-status.icon-add {
+  transform: rotate(0deg); /* Ícone de adicionar na posição normal */
+}
+
+.icon-status.icon-remove {
+  transform: rotate(90deg); /* Rotaciona para o X */
 }

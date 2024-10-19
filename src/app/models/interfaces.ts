@@ -1,17 +1,21 @@
 import { ItemUnit } from "./shopping-item";
 
-export interface BoughtItems extends ShoppingItem{
+export interface BoughtItems extends ConfigItems {
+  adding: boolean,
   dataCompra: Date,
 }
 
-export interface ShoppingItem {
+export interface ShoppingItem extends ConfigItems {
+  quantidade?: number;
+  preco?: number;
+  completed: boolean;
+}
+
+export interface ConfigItems {
   id?: number;
   nome: string;
   notas?: string;
-  quantidade?: number;
   unidade?: ItemUnit;
-  preco?: number;
-  completed: boolean;
 }
 
 export interface GrupoContas {
