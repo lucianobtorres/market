@@ -1,6 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IconsRegisterService } from './services/icons-register.service';
+import { ROTAS } from './app-routing.module';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ export class AppComponent implements AfterViewInit {
   public iconeLogo = IconsRegisterService.LOGO;
   title = 'Market';
 
-  constructor(router: Router) {
+  constructor(private router: Router) {
     router.canceledNavigationResolution = 'computed';
 
     history.pushState(null, '', location.href);
@@ -24,6 +25,10 @@ export class AppComponent implements AfterViewInit {
     //this.startup();
   }
 
+  goHome() {
+    // this.router.navigate(["/home"])
+    this.router.navigate([ROTAS.extrato])
+  }
 
   startup() {
     // screen.orientation.lock("portrait")

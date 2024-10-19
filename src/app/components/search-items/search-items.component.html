@@ -1,0 +1,20 @@
+<!-- search.component.html -->
+<div class="search-header">
+    <button mat-icon-button (click)="closeSearch()">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+    <mat-form-field class="search-field">
+        <mat-label>Pesquisar</mat-label>
+        <input matInput [formControl]="searchControl" placeholder="pesquisar" />
+    </mat-form-field>
+</div>
+
+<!-- Aqui vai o campo de busca e a lista de resultados -->
+<div class="search-content">
+    <mat-list>
+        <mat-list-item *ngFor="let item of filteredItems" (click)="addItemToShoppingList(item)">
+            <app-shopping-item [item]="item" (removeItem)="removeItem(item?.id ?? 0)"></app-shopping-item>
+        </mat-list-item>
+    </mat-list>
+
+</div>

@@ -3,7 +3,7 @@
     {{ item.quantidade }} {{ item.unidade }} - R$ {{ item.preco }}
 </p>
 <div class="item-actions">
-    <button class="mark-btn" (click)="toggleItemCompletion($event)">
+    <button class="mark-btn" (click)="toggleItemComprado($event)">
         {{ item.completed ? '✓' : '○' }}
     </button>
     <button class="remove-btn" (click)="removeItem($event)">×</button>

@@ -1,5 +1,9 @@
 import { ItemUnit } from "./shopping-item";
 
+export interface BoughtItems extends ShoppingItem{
+  dataCompra: Date,
+}
+
 export interface ShoppingItem {
   id?: number;
   nome: string;

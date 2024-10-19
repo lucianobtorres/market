@@ -6,6 +6,8 @@ import { ShoppingItemService } from 'src/app/services/shopping-item.service';
 
 import { db } from 'src/app/db/model-db';
 import { liveQuery } from 'dexie';
+import { MatDialog } from '@angular/material/dialog';
+import { SearchItemsComponent } from '../search-items/search-items.component';
 
 @Component({
   selector: 'app-shopping-list',
@@ -45,6 +47,7 @@ export class ShoppingListComponent implements OnInit {
 
   constructor(
     private readonly dbService: ShoppingItemService,
+    private readonly dialog: MatDialog,
     private readonly bottomSheet: MatBottomSheet,
   ) { }
 
@@ -54,15 +57,29 @@ export class ShoppingListComponent implements OnInit {
     });
   }
 
+  openSearch(): void {
+    const dialogRef = this.dialog.open(SearchItemsComponent, {
+      width: '100vw',
+      height: '100vh',
+      maxWidth: '100vw',
+      panelClass: 'full-screen-dialog'
+    });
+
+    dialogRef.afterClosed().subscribe((result: unknown) => {
+      console.log(result, 'Search dialog closed');
+      const newItem: ShoppingItem = {
+        nome: 'New Item',
+        quantidade: 1,
+        completed: false,
+      };
+      this.dbService.add(newItem);
+      this.items.push(newItem);
+      this.editItem(newItem, this.itemListWait, this.itemListWait.indexOf(newItem));
+    });
+  }
+
   addItem() {
-    const newItem: ShoppingItem = {
-      nome: 'New Item',
-      quantidade: 1,
-      completed: false,
-    };
-    this.dbService.add(newItem);
-    this.items.push(newItem);
-    this.editItem(newItem, this.itemListWait, this.itemListWait.indexOf(newItem));
+    this.openSearch();
   }
 
   editItem(item: ShoppingItem, items: ShoppingItem[], index: number): void {

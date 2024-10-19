@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ShoppingItem } from 'src/app/models/interfaces';
 import { ShoppingItemService } from 'src/app/services/shopping-item.service';
 
@@ -14,7 +14,7 @@ export class ShoppingItemComponent {
     private readonly dbService: ShoppingItemService,
   ) { }
 
-  toggleItemCompletion(event: Event) {
+  toggleItemComprado(event: Event) {
     event.stopPropagation();
     this.item.completed = !this.item.completed;
     this.dbService.update(

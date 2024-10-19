@@ -1,5 +1,5 @@
 import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
-import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
+import { BrowserModule, HammerModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -28,6 +28,7 @@ registerLocaleData(localePt);
     ComponentsModule,
     MaterialModule,
     BrowserModule,
+    HammerModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
