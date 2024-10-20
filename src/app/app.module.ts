@@ -28,7 +28,6 @@ registerLocaleData(localePt);
     ComponentsModule,
     MaterialModule,
     BrowserModule,
-    HammerModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,

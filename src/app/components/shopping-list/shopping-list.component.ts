@@ -92,7 +92,7 @@ export class ShoppingListComponent implements OnInit {
   editItem(item: ShoppingItem, items: ShoppingItem[], index: number): void {
     const bottomSheetRef = this.bottomSheet.open(ShoppingListEditComponent, {
       data: { itemsList: items, currentIndex: index },
-      disableClose: true
+      // disableClose: true
     });
 
     bottomSheetRef.afterDismissed().subscribe(result => {
