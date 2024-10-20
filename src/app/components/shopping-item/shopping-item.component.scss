@@ -6,6 +6,26 @@
   width: 100%;
 }
 
+.h3 {
+  margin: 0;
+}
+
+.descricao {
+  width: 100%;
+  margin-inline: 8px;
+  align-items: center;
+  display: flex;
+}
+
+.item-container {
+  width: 100%;
+  display: grid;
+  align-items: center;
+  padding-inline: 8px;
+  grid-template-columns: 1fr repeat(2, max-content);
+  gap: 16px;
+}
+
 .item-actions {
   display: flex;
   align-items: center;

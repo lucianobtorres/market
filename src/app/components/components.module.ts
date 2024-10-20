@@ -26,6 +26,7 @@ import { ShoppingItemComponent } from './shopping-item/shopping-item.component';
 import { SearchListComponent } from './search-list/search-list.component';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { SearchListItemComponent } from './search-list-item/search-list-item.component';
+import { TextEllipsisDirective } from '../directives/text-ellipsis.directive';
 
 export const components = [
   HomeComponent,
@@ -48,9 +49,13 @@ export const components = [
   SearchListItemComponent
 ]
 
+const directives = [
+  TextEllipsisDirective,
+];
+
 @NgModule({
-  declarations: components,
-  exports: components,
+  declarations: [components, directives],
+  exports: [components, directives],
   imports: [
     CommonModule,
     CurrencyMaskModule,

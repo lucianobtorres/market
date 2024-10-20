@@ -30,6 +30,13 @@ body {
   color: $primary-color;
 }
 
+.texto-ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: auto;
+  cursor: default;
+}
 
 snack-bar-container.app-toast-container {
   position: absolute;

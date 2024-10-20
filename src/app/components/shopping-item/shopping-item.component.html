@@ -1,7 +1,14 @@
-<h4 matLine>{{ item.nome }}</h4>
-<p matLine>
-    {{ item.quantidade | number:'1.2-2'}} {{ item.unidade }} - R$ {{ item.preco }}
-</p>
+<div style="width: 100%;"><div class="descricao">
+    <div class="item-container">
+        <h3 appTextEllipsis matTooltip>{{ item.nome }}</h3>
+        <small>
+            {{ item.quantidade | number:'1.1-2'}} {{ item.unidade }}
+        </small>
+        <small *ngIf="item.preco">{{ item.preco | currency}}
+        </small>
+    </div>
+</div>
+<small *ngIf="item.notas" style="margin-inline: 16px;"> {{item.notas}} </small></div>
 <div class="item-actions">
     <button class="mark-btn" (click)="toggleItemComprado($event)">
         {{ item.completed ? '✓' : '○' }}
