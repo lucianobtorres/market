@@ -74,7 +74,7 @@ export class ShoppingListEditComponent implements AfterViewInit {
         nome: this.editForm.value.nome ?? '',
         quantidade: this.editForm.value.quantidade ?? 1,
         preco: this.editForm.value.preco ?? undefined,
-        unidade: this.editForm.value.unidade ?? undefined,
+        unidade: this.editForm.value.unidade ?? ItemUnit.UN,
         notas: this.editForm.value.anotacao ?? undefined,
       };
 

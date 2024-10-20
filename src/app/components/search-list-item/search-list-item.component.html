@@ -1,0 +1,26 @@
+<div class="list-item-content" [attr.completed]="item.completed" >
+    <div class="item-container">
+        <mat-icon class="icon-status" [ngClass]="{
+            'icon-add': item.adding,
+            'icon-remove': !item.adding,
+            'icon-done': item.completed
+            }">
+            <ng-container *ngIf="item.completed; else notCompleted">
+                check_circle
+            </ng-container>
+            <ng-template #notCompleted>
+                {{ item.adding ? 'add' : 'close' }}
+            </ng-template>
+        </mat-icon>
+        <span class="item-name">{{item.nome}}</span>
+    </div>
+    <div class="counter-container" *ngIf="!item.adding">
+        <small> {{item.quantidade | number:'1.2-2'}} </small>
+        <button class="counter-button" (click)="increase($event)">
+            <mat-icon>add</mat-icon>
+        </button>
+        <button class="counter-button" (click)="decrease($event)">
+            <mat-icon>remove</mat-icon>
+        </button>
+    </div>
+</div>

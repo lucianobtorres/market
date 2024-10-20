@@ -78,8 +78,16 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
   }
 
   onBarcodeInput(event: EventTarget | null | string | undefined): void {
+    this.productImageSrc = "";
     const barcodeTxt = event instanceof EventTarget ? (event as HTMLInputElement).value : event;
     this.processBarcode(`${barcodeTxt}`);
+  }
+
+  blur(event: string) {
+    if (!event) {
+      this.productImageSrc = "";
+      this.produtoEncontrado.emit("");
+    }
   }
 
   private processBarcode(barcode: string): void {

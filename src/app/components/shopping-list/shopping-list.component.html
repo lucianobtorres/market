@@ -31,6 +31,6 @@
     </div>
 
     <div *ngIf="isSearchOpen" class="search-panel" [ngClass]="{'open': isSearchOpen}">
-        <app-search-items  (closeEmit)="closeSearch()"></app-search-items>
+        <app-search-list  (closeEmit)="closeSearch()"></app-search-list>
     </div>
 </div>

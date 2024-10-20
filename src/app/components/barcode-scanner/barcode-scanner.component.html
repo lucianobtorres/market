@@ -1,15 +1,17 @@
 <div id="camera-container">
-    <small id="barcode-result">Código de Barras: {{ barcode }}</small>
+    <small id="barcode-result" *ngIf="isCameraAccessible">Código de Barras: {{ barcode }}</small>
     <div id="camera-wrapper" *ngIf="isCameraAccessible">
         <div id="interactive" #interactive class="viewport"></div>
         <div id="scan-line"></div>
     </div>
-    <!-- Campo de entrada para o código de barras, exibido apenas se a câmera não estiver acessível -->
-    <div *ngIf="!isCameraAccessible">
-        <input type="text" placeholder="Digite o código de barras" (keyup.enter)="onBarcodeInput($event.target)"
-            #barcodeInput />
-        <button (click)="onBarcodeInput(barcodeInput?.value)">Buscar</button>
-    </div>
 </div>
+
+<mat-form-field *ngIf="!isCameraAccessible">
+    <input matInput placeholder="Digite o código de barras" (keyup.enter)="onBarcodeInput($event.target)" (blur)="blur(barcodeInput.value)" #barcodeInput />
+    <button mat-icon-button matSuffix (click)="onBarcodeInput(barcodeInput?.value)">
+        <mat-icon>search</mat-icon>
+    </button>
+</mat-form-field>
+
 <!-- <div id="product-info">{{ productName }}</div> -->
 <img id="product-image" alt="Imagem do Produto" *ngIf="productImageSrc" [src]="productImageSrc">

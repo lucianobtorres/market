@@ -23,8 +23,9 @@ import { BarcodeScannerComponent } from './barcode-scanner/barcode-scanner.compo
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingListEditComponent } from './shopping-list-edit/shopping-list-edit.component';
 import { ShoppingItemComponent } from './shopping-item/shopping-item.component';
-import { SearchItemsComponent } from './search-items/search-items.component';
+import { SearchListComponent } from './search-list/search-list.component';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
+import { SearchListItemComponent } from './search-list-item/search-list-item.component';
 
 export const components = [
   HomeComponent,
@@ -42,8 +43,9 @@ export const components = [
   ShoppingListComponent,
   ShoppingListEditComponent,
   ShoppingItemComponent,
-  SearchItemsComponent,
-  SearchDialogComponent
+  SearchListComponent,
+  SearchDialogComponent,
+  SearchListItemComponent
 ]
 
 @NgModule({

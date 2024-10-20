@@ -37,44 +37,12 @@ mat-list-item {
   padding-bottom: 0;
 }
 
-
-.list-item-content {
-  display: flex;
-  align-items: center;
-}
-
-.icon-status {
-  transition: transform 0.4s ease, color 0.4s ease;
-  /* Animação suave */
-  margin-right: 10px;
-}
-
-.item-name {
-  font-size: 1rem;
-  color: #333;
-  flex-grow: 1;
-}
-
 mat-list-item:hover {
   background-color: #f0f0f0;
 }
 
-.icon-add {
-  color: #00b894;
-  /* Verde para adicionar */
-}
-
-.icon-remove {
-  color: #e74c3c;
-  /* Vermelho para remover */
-}
-
-.icon-status.icon-add {
-  transform: rotate(0deg);
-  /* Ícone de adicionar na posição normal */
-}
-
-.icon-status.icon-remove {
-  transform: rotate(90deg);
-  /* Rotaciona para o X */
+.show-barcode {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
 }

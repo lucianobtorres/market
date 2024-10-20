@@ -7,7 +7,7 @@ import { ShoppingItemService } from 'src/app/services/shopping-item.service';
 import { db } from 'src/app/db/model-db';
 import { liveQuery } from 'dexie';
 import { MatDialog } from '@angular/material/dialog';
-import { SearchItemsComponent } from '../search-items/search-items.component';
+import { SearchListComponent } from '../search-list/search-list.component';
 import { SearchDialogComponent } from '../search-dialog/search-dialog.component';
 
 @Component({

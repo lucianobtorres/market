@@ -1,6 +1,6 @@
 <h4 matLine>{{ item.nome }}</h4>
 <p matLine>
-    {{ item.quantidade }} {{ item.unidade }} - R$ {{ item.preco }}
+    {{ item.quantidade | number:'1.2-2'}} {{ item.unidade }} - R$ {{ item.preco }}
 </p>
 <div class="item-actions">
     <button class="mark-btn" (click)="toggleItemComprado($event)">

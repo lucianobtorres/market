@@ -5,8 +5,10 @@
     <mat-form-field class="search-field">
         <mat-label>Pesquisar</mat-label>
         <input matInput [formControl]="searchControl" placeholder="pesquisar" #campoSearch />
-        <button mat-icon-button matSuffix (click)="openBarCode()">
-            <mat-icon>bar_chart</mat-icon>
+        <button mat-icon-button matSuffix (click)="toggleBarCode()">
+            <mat-icon [ngClass]="{'show-barcode': showBarCode}"
+
+            >bar_chart</mat-icon>
         </button>
     </mat-form-field>
 </div>
@@ -16,12 +18,7 @@
 <div class="search-content">
     <mat-list>
         <mat-list-item *ngFor="let item of filteredItems" (click)="toggleItem(item)">
-            <div class="list-item-content">
-                <mat-icon class="icon-status" [ngClass]="{ 'icon-add': item.adding, 'icon-remove': !item.adding }">
-                    {{ item.adding ? 'add' : 'close'}}
-                </mat-icon>
-                <span class="item-name">{{item.nome}}</span>
-            </div>
+            <app-search-list-item [item]="item" (qtdChange)="qtdChange($event, item)"></app-search-list-item>
         </mat-list-item>
     </mat-list>
 </div>

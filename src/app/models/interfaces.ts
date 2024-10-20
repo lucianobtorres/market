@@ -15,7 +15,7 @@ export interface ConfigItems {
   id?: number;
   nome: string;
   notas?: string;
-  unidade?: ItemUnit;
+  unidade: ItemUnit;
 }
 
 export interface GrupoContas {
