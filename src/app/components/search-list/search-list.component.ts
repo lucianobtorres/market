@@ -89,12 +89,30 @@ export class SearchListComponent implements OnInit {
   }
 
   private sortFilter() {
-    this.filteredItems.sort((a, b) => a.nome.localeCompare(b.nome));
+    this.filteredItems.sort((a, b) => {
+      // Definindo a prioridade para os estados dos itens
+      const getStatusPriority = (item: CombinedItem) => {
+        if (item.completed) return 3; // Itens completados no final
+        if (!item.adding) return 2;   // Itens já adicionados ficam no meio
+        return 1;                     // Itens que ainda serão adicionados no topo
+      };
+
+      const statusComparison = getStatusPriority(a) - getStatusPriority(b);
+
+      // Se os itens tiverem a mesma prioridade de status, ordene por nome
+      if (statusComparison === 0) {
+        return a.nome.localeCompare(b.nome);
+      }
+
+      return statusComparison;
+    });
   }
+
 
   private getFilteredItems(searchTerm: string) {
     if (!searchTerm) {
       this.filteredItems = this.items.value;
+      this.sortFilter();
       return;
     }
 
@@ -108,6 +126,8 @@ export class SearchListComponent implements OnInit {
         quantidade: 1,
         unidade: ItemUnit.UN
       }];
+
+      this.sortFilter();
   }
 
   async toggleItem(item: CombinedItem) {
