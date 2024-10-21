@@ -3,13 +3,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-search-dialog',
-  templateUrl: './search-dialog.component.html',
-  styleUrls: ['./search-dialog.component.scss']
+  template: '<app-search-list (closeEmit)="close()"></app-search-list>'
 })
 export class SearchDialogComponent {
-  constructor(
-    private readonly dialogRef: MatDialogRef<SearchDialogComponent>,
-  ) { }
+  constructor(private readonly dialogRef: MatDialogRef<SearchDialogComponent>) { }
 
   close() {
     this.dialogRef.close();

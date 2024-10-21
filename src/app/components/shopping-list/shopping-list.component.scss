@@ -1,5 +1,4 @@
 :host {
-  padding: 8px;
   overflow: hidden;
   height: 100%;
   display: flex;
@@ -29,13 +28,23 @@ mat-list-item#itens {
 
 .list-container {
   overflow: auto;
+  margin-top: 16px;
+}
+
+.title {
+  margin: auto;
+}
+
+h3 {
+  margin: 0;
 }
 
 .list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 mat-list {

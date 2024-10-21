@@ -27,6 +27,9 @@ import { SearchListComponent } from './search-list/search-list.component';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { SearchListItemComponent } from './search-list-item/search-list-item.component';
 import { TextEllipsisDirective } from '../directives/text-ellipsis.directive';
+import { ShoppingDialogComponent } from './shopping-dialog/shopping-dialog.component';
+import { ListItemComponent } from './list-item/list-item.component';
+import { ListaDetalhadaComponent } from '../pages/lista-detalhada/lista-detalhada.component';
 
 export const components = [
   HomeComponent,
@@ -46,7 +49,10 @@ export const components = [
   ShoppingItemComponent,
   SearchListComponent,
   SearchDialogComponent,
-  SearchListItemComponent
+  SearchListItemComponent,
+  ShoppingDialogComponent,
+  ListItemComponent,
+  ListaDetalhadaComponent
 ]
 
 const directives = [

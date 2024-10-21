@@ -1,13 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ShoppingListEditComponent } from '../shopping-list-edit/shopping-list-edit.component';
 import { ShoppingItem } from 'src/app/models/interfaces';
-import { ShoppingItemService } from 'src/app/services/shopping-item.service';
 
 import { db } from 'src/app/db/model-db';
 import { liveQuery } from 'dexie';
 import { MatDialog } from '@angular/material/dialog';
-import { SearchListComponent } from '../search-list/search-list.component';
 import { SearchDialogComponent } from '../search-dialog/search-dialog.component';
 
 @Component({
@@ -17,6 +15,7 @@ import { SearchDialogComponent } from '../search-dialog/search-dialog.component'
 })
 
 export class ShoppingListComponent implements OnInit {
+  @Output() closeEmit = new EventEmitter<void>();
   public itemsShopping$ = liveQuery(() => db.shoppingItems.toArray());
   private items: ShoppingItem[] = [];
 
@@ -47,7 +46,6 @@ export class ShoppingListComponent implements OnInit {
   }
 
   constructor(
-    private readonly dbService: ShoppingItemService,
     private readonly dialog: MatDialog,
     private readonly bottomSheet: MatBottomSheet,
   ) { }
