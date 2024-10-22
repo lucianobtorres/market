@@ -1,14 +1,17 @@
 <div class="bottom-sheet">
-    <!-- Alça para arrastar -->
     <div class="drag-handle" (click)="toggleExpand()"></div>
+    <!-- Alça para arrastar -->
 
-    <h3>Edit Item</h3>
+    <div class="actions">
+        <button mat-raised-button class="floating-primary-btn" color="primary" (click)="saveCurrentItem(); close()">Finalizar</button>
+        <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+    </div>
 
     <!-- Edição Simples -->
     <form [formGroup]="editForm" class="simple-edit">
         <mat-form-field>
             <mat-label>Nome do Item</mat-label>
-            <input matInput [formControl]="editForm.controls.nome" placeholder="Ex: Leite" autofocus #campoNome>
+            <input matInput [formControl]="editForm.controls.nome" placeholder="Ex: Leite" autofocus #campoFoco>
         </mat-form-field>
 
         <mat-form-field>
@@ -47,10 +50,5 @@
                 </div>
             </div>
         </ng-container>
-
-        <div class="actions">
-            <button mat-raised-button color="primary" (click)="saveCurrentItem(); close()">Finalizar</button>
-            <button mat-button (click)="close()">Fechar</button>
-        </div>
     </form>
 </div>

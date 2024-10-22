@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ShoppingItem } from 'src/app/models/interfaces';
 import { ShoppingItemService } from 'src/app/services/shopping-item.service';
+import { ValorEditComponent } from '../valor-edit/valor-edit.component';
 
 @Component({
   selector: 'app-shopping-item',
@@ -12,6 +14,7 @@ export class ShoppingItemComponent {
 
   constructor(
     private readonly dbService: ShoppingItemService,
+    private readonly bottomSheet: MatBottomSheet,
   ) { }
 
   toggleItemComprado(event: Event) {
@@ -28,5 +31,19 @@ export class ShoppingItemComponent {
   removeItem(event: Event) {
     event.stopPropagation();
     this.dbService.delete(this.item.id!);
+  }
+
+  editItem(event: Event): void {
+    event.stopPropagation();
+    const bottomSheetRef = this.bottomSheet.open(ValorEditComponent, {
+      data: { item: this.item },
+      // disableClose: true
+    });
+
+    bottomSheetRef.afterDismissed().subscribe(result => {
+      if (result) {
+        Object.assign(this.item, result);
+      }
+    });
   }
 }

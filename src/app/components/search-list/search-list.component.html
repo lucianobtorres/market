@@ -18,7 +18,7 @@
 <div class="search-content">
     <mat-list>
         <mat-list-item *ngFor="let item of filteredItems" (click)="toggleItem(item)">
-            <app-search-list-item [item]="item" (qtdChange)="qtdChange($event, item)"></app-search-list-item>
+            <app-search-list-item [item]="item" (qtdChanged)="qtdChanged($event, item)" (itemChanged)="itemChanged($event)"></app-search-list-item>
         </mat-list-item>
     </mat-list>
 </div>

@@ -15,7 +15,7 @@
         <span class="item-name">{{item.nome}}</span>
     </div>
     <div class="counter-container" *ngIf="!item.adding">
-        <small> {{item.quantidade | number:'1.2-2'}} </small>
+        <small (click)="editItem($event)"> {{item.quantidade | number:'1.2-2'}} </small>
         <button class="counter-button" (click)="increase($event)">
             <mat-icon>add</mat-icon>
         </button>

@@ -7,22 +7,19 @@ import { ShoppingItem } from 'src/app/models/interfaces';
 import { ShoppingItemService } from 'src/app/services/shopping-item.service';
 
 
-export interface FormEdicaoShopping {
-  nome: FormControl<string>;
+export interface FormEdicaoValor {
   quantidade: FormControl<number>;
   unidade: FormControl<ItemUnit | null>;
   preco: FormControl<number | null>;
-  anotacao: FormControl<string | null>;
 }
 
 @Component({
-  selector: 'app-shopping-list-edit',
-  templateUrl: './shopping-list-edit.component.html',
-  styleUrls: ['./shopping-list-edit.component.scss']
+  selector: 'app-valor-edit',
+  templateUrl: './valor-edit.component.html',
+  styleUrls: ['./valor-edit.component.scss']
 })
-export class ShoppingListEditComponent implements AfterViewInit {
-  editForm!: FormGroup<FormEdicaoShopping>;
-  expanded = false;
+export class ValorEditComponent implements AfterViewInit {
+  editForm!: FormGroup<FormEdicaoValor>;
   units = Object.values(ItemUnit);
 
   @ViewChild("campoFoco") campoFoco!: ElementRef;
@@ -32,6 +29,10 @@ export class ShoppingListEditComponent implements AfterViewInit {
 
   itemsList: ShoppingItem[] = [];
   private _currentIndex = 0;
+  public get valorCalculado() {
+    return (this.editForm.controls.preco?.value ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
+  }
+
   public get currentIndex() {
     return this._currentIndex;
   }
@@ -44,11 +45,11 @@ export class ShoppingListEditComponent implements AfterViewInit {
   constructor(
     private readonly fb: FormBuilder,
     private readonly dbService: ShoppingItemService,
-    private readonly bottomSheetRef: MatBottomSheetRef<ShoppingListEditComponent>,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: { itemsList: ShoppingItem[], currentIndex: number }
+    private readonly bottomSheetRef: MatBottomSheetRef<ValorEditComponent>,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: { item: ShoppingItem }
   ) {
-    this.itemsList = data.itemsList;
-    this.currentIndex = data.currentIndex;
+    this.itemsList = [data.item];
+    this.currentIndex = 0;
   }
 
   ngAfterViewInit(): void {
@@ -59,11 +60,9 @@ export class ShoppingListEditComponent implements AfterViewInit {
   private setValues() {
     const data: ShoppingItem = this.item;
     this.editForm = this.fb.group({
-      nome: this.fb.nonNullable.control(data.nome, Validators.required),
       quantidade: this.fb.nonNullable.control(data.quantidade || 1, [Validators.required, Validators.min(1)]),
       unidade: [data.unidade || 'un' as ItemUnit, Validators.required],
       preco: [data.preco || 0, [Validators.min(0)]],
-      anotacao: [data.notas || '']
     });
   }
 
@@ -72,20 +71,16 @@ export class ShoppingListEditComponent implements AfterViewInit {
       const updatedItem: ShoppingItem = {
         id: this.item.id,
         completed: this.item.completed,
-        nome: this.editForm.value.nome ?? '',
+        nome: this.item.nome ?? '',
         quantidade: this.editForm.value.quantidade ?? 1,
         preco: this.editForm.value.preco ?? undefined,
         unidade: this.editForm.value.unidade ?? ItemUnit.UN,
-        notas: this.editForm.value.anotacao ?? undefined,
+        notas: this.item.notas,
       };
 
       this.dbService.update(this.item.id!, updatedItem, 'atualizado..');
       this.itemsList[this.currentIndex] = updatedItem;
     }
-  }
-
-  toggleExpand() {
-    this.expanded = !this.expanded;
   }
 
   save(): void {
@@ -94,27 +89,5 @@ export class ShoppingListEditComponent implements AfterViewInit {
 
   close(): void {
     this.bottomSheetRef.dismiss();
-  }
-
-  goToPreviousItem() {
-    this.saveCurrentItem();
-    if (this.hasPreviousItem()) {
-      this.currentIndex--;
-    }
-  }
-
-  goToNextItem() {
-    this.saveCurrentItem();
-    if (this.hasNextItem()) {
-      this.currentIndex++;
-    }
-  }
-
-  hasPreviousItem() {
-    return this.currentIndex > 0;
-  }
-
-  hasNextItem() {
-    return this.currentIndex < this.itemsList.length - 1;
   }
 }

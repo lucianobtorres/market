@@ -158,7 +158,7 @@ export class SearchListComponent implements OnInit {
     }
   }
 
-  async qtdChange(somar: boolean, item: CombinedItem) {
+  async qtdChanged(somar: boolean, item: CombinedItem) {
     const itemToUpdate = item.id ? item : this.items.value.find(x => x.nome === item.nome);
 
     if (itemToUpdate?.id) {
@@ -178,6 +178,19 @@ export class SearchListComponent implements OnInit {
               }
             }
           }
+        });
+    }
+  }
+
+  async itemChanged(itemToUpdate: CombinedItem) {
+    if (itemToUpdate?.id) {
+      await db.shoppingItems
+        .where("id")
+        .equals(itemToUpdate.id)
+        .modify(item => {
+          item.quantidade = itemToUpdate.quantidade;
+          item.preco = itemToUpdate.preco;
+          item.unidade = itemToUpdate.unidade;
         });
     }
   }
