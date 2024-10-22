@@ -17,11 +17,16 @@
     <div class="edicao-container">
     <div class="list-container">
         <mat-list class="list-wait">
+            <!-- <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice" #itemswipe
+                (click)="editItem(item, itemListWait, indice)" class="swipeable-item"
+                (touchstart)="onTouchStart($event, item)"
+                (touchmove)="onTouchMove($event, item)"
+                (touchend)="onTouchEnd(item)"
+                [ngStyle]="{'transform': 'translateX(' + item.translateX + 'px)'}"
+            ><app-shopping-item [item]="item"></app-shopping-item> -->
             <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice" #itemswipe
                 (click)="editItem(item, itemListWait, indice)" class="swipeable-item"
-                (touchstart)="onTouchStart($event, item)" (touchmove)="onTouchMove($event, item)"
-                (touchend)="onTouchEnd(item)" [ngStyle]="{'transform': 'translateX(' + item.translateX + 'px)'}">
-                <app-shopping-item [item]="item"></app-shopping-item>
+            ><app-shopping-item [item]="item"></app-shopping-item>
             </mat-list-item>
         </mat-list>
 
