@@ -1,9 +1,37 @@
 :host {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  gap: 8px;
+  flex-direction: column;
   padding: 12px 0;
   width: 100%;
+}
+
+.flex-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  overflow: hidden;
+  gap: 8px;
+  align-items: center;
+}
+
+.produto {
+  display: flex;
+  align-items: center;
+}
+
+.preco {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.detalhe {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+  white-space: nowrap;
 }
 
 .h3 {

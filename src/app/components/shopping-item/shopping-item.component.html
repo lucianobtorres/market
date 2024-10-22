@@ -1,15 +1,23 @@
-<button class="item-actions mark-btn" (click)="toggleItemComprado($event)">
-    {{ item.completed ? '✓' : '○' }}
-</button>
-<div style="width: 100%;"><div class="descricao">
-    <div class="item-container">
-        <h3 appTextEllipsis matTooltip>{{ item.nome }}</h3>
-        <small>
-            {{ item.quantidade | number:'1.1-2'}} {{ item.unidade }}
-        </small>
-        <small *ngIf="item.preco">{{ item.preco | currency}}
-        </small>
+<div class="flex-row">
+
+    <div class="produto">
+        <button class="item-actions mark-btn" (click)="toggleItemComprado($event)">
+            {{ item.completed ? '✓' : '○' }}
+        </button>
+
+        <h3 style="margin: 0;">{{ item.nome }}</h3>
+
+
+    </div>
+    <div class="preco">
+
+        <div class="detalhe">
+
+            <small>{{ item.quantidade | number:'1.1-2'}} {{ item.unidade }}</small>
+            <small *ngIf="item.preco">{{ item.preco | currency}}</small>
+
+        </div>
+        <button class="item-actions remove-btn" (click)="removeItem($event)">×</button>
     </div>
 </div>
-<small *ngIf="item.notas" style="margin-inline: 16px;"> {{item.notas}} </small></div>
-<button class="item-actions remove-btn" (click)="removeItem($event)">×</button>
+<small *ngIf="item.notas" style="margin-left: 32px;"> {{item.notas}} </small>
