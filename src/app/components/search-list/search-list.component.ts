@@ -84,7 +84,9 @@ export class SearchListComponent implements OnInit {
       adding: !isInShoppingList, // Define 'adding' como verdadeiro se não estiver na lista
       quantidade: isInShoppingList ? isInShoppingList.quantidade : this.getIncrement(item.unidade),
       completed: isInShoppingList ? isInShoppingList.completed : false,
-      id: isInShoppingList ? isInShoppingList.id : undefined
+      id: isInShoppingList ? isInShoppingList.id : undefined,
+      preco: isInShoppingList ? isInShoppingList.preco: item.preco,
+      unidade: isInShoppingList ? isInShoppingList.unidade: item.unidade,
     };
   }
 
@@ -145,7 +147,9 @@ export class SearchListComponent implements OnInit {
       const itemAdd: ShoppingItem = itemFound ? {
         ...itemFound,
         quantidade: item.quantidade,
-        completed: item.completed ?? false
+        completed: item.completed ?? false,
+        preco: item.preco,
+        unidade: item.unidade
       } : {
         nome: item.nome,
         quantidade: item.quantidade || minValue,
