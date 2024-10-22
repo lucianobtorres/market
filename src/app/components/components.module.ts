@@ -31,6 +31,7 @@ import { ShoppingDialogComponent } from './shopping-dialog/shopping-dialog.compo
 import { ListItemComponent } from './list-item/list-item.component';
 import { ListaDetalhadaComponent } from '../pages/lista-detalhada/lista-detalhada.component';
 import { SwipeListItemComponent } from './swipe-list-item/swipe-list-item.component';
+import { CapitalizePipe } from '../pipes/capitalize.pipe';
 
 export const components = [
   HomeComponent,
@@ -62,7 +63,7 @@ const directives = [
 ];
 
 const pipes = [
-  ConvertWithFunctionPipe,
+  ConvertWithFunctionPipe, CapitalizePipe,
 ];
 
 @NgModule({

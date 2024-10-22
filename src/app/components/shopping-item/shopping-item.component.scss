@@ -63,7 +63,7 @@
     font-size: 1.5rem;
     color: #00b894;
     cursor: pointer;
-    margin-right: 8px;
+    margin-right: 4px;
     transition: color 0.3s ease;
 
     &:hover {
@@ -100,5 +100,5 @@
 }
 
 ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
-  padding: 0 8px;
+  padding: 0 4px;
 }
