@@ -18,7 +18,6 @@
 }
 
 .item-container {
-  width: 100%;
   display: grid;
   align-items: center;
   padding-inline: 8px;
@@ -30,7 +29,7 @@
   display: flex;
   align-items: center;
 
-  .mark-btn {
+  &.mark-btn {
     background: none;
     border: none;
     font-size: 1.5rem;
@@ -44,7 +43,7 @@
     }
   }
 
-  .remove-btn {
+  &.remove-btn {
     background: none;
     border: none;
     font-size: 1.5rem;
@@ -55,5 +54,19 @@
     &:hover {
       color: #c0392b;
     }
+  }
+}
+
+
+
+@media (min-width: 768px) {
+
+  /* Adapta para telas maiores que 768px (tamanho típico de tablets) */
+  .list-container {
+
+    width: 100%;
+    /* Permite que ela cresça conforme o conteúdo */
+    min-width: 450px;
+    /* Define a largura mínima no PC */
   }
 }

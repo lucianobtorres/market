@@ -1,3 +1,6 @@
+<button class="item-actions mark-btn" (click)="toggleItemComprado($event)">
+    {{ item.completed ? '✓' : '○' }}
+</button>
 <div style="width: 100%;"><div class="descricao">
     <div class="item-container">
         <h3 appTextEllipsis matTooltip>{{ item.nome }}</h3>
@@ -9,9 +12,4 @@
     </div>
 </div>
 <small *ngIf="item.notas" style="margin-inline: 16px;"> {{item.notas}} </small></div>
-<div class="item-actions">
-    <button class="mark-btn" (click)="toggleItemComprado($event)">
-        {{ item.completed ? '✓' : '○' }}
-    </button>
-    <button class="remove-btn" (click)="removeItem($event)">×</button>
-</div>
+<button class="item-actions remove-btn" (click)="removeItem($event)">×</button>

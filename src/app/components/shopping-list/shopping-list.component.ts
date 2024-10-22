@@ -99,4 +99,51 @@ export class ShoppingListComponent implements OnInit {
       }
     });
   }
+
+  private startX = 0;
+  private currentX = 0;
+  private isSwiping = false;
+  private threshold = 75; // Limite de deslocamento para ativar o comportamento de swipe
+
+  // Captura a posição inicial do toque
+  onTouchStart(event: TouchEvent, item: ShoppingItem): void {
+    this.startX = event.touches[0].clientX;
+    this.isSwiping = true;
+  }
+
+  // Captura o movimento durante o swipe e aplica o deslocamento visual
+  onTouchMove(event: TouchEvent, item: any): void {
+    if (!this.isSwiping) return;
+
+    this.currentX = event.touches[0].clientX;
+    const deltaX = this.currentX - this.startX;
+
+    // Aplica o deslocamento temporário ao item sendo swipado
+    if (deltaX > 0) { // Swipe para a direita
+      item.translateX = deltaX;
+
+      // Mostra o ícone de completado se o swipe ultrapassar o threshold
+      item.showCompleteIcon = deltaX > this.threshold;
+    }
+  }
+
+  // Finaliza o swipe e decide se o item deve ser marcado como completado
+  onTouchEnd(item: any): void {
+    const deltaX = this.currentX - this.startX;
+
+    // Se o swipe for maior que o threshold, marca o item como completado
+    if (deltaX > this.threshold) {
+      this.completeItem(item);
+    }
+
+    // Reseta o estado do swipe e a posição visual do item
+    item.translateX = 0;
+    item.showCompleteIcon = false; // Esconde o ícone após o swipe
+    this.isSwiping = false;
+  }
+
+  completeItem(item: ShoppingItem): void {
+    item.completed = !item.completed;
+    db.shoppingItems.update(item.id!, item);
+  }
 }

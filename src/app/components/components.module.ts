@@ -30,6 +30,7 @@ import { TextEllipsisDirective } from '../directives/text-ellipsis.directive';
 import { ShoppingDialogComponent } from './shopping-dialog/shopping-dialog.component';
 import { ListItemComponent } from './list-item/list-item.component';
 import { ListaDetalhadaComponent } from '../pages/lista-detalhada/lista-detalhada.component';
+import { SwipeListItemComponent } from './swipe-list-item/swipe-list-item.component';
 
 export const components = [
   HomeComponent,
@@ -52,16 +53,21 @@ export const components = [
   SearchListItemComponent,
   ShoppingDialogComponent,
   ListItemComponent,
-  ListaDetalhadaComponent
+  ListaDetalhadaComponent,
+  SwipeListItemComponent
 ]
 
 const directives = [
   TextEllipsisDirective,
 ];
 
+const pipes = [
+  ConvertWithFunctionPipe,
+];
+
 @NgModule({
-  declarations: [components, directives],
-  exports: [components, directives],
+  declarations: [components, directives, pipes],
+  exports: [components, directives, pipes],
   imports: [
     CommonModule,
     CurrencyMaskModule,

@@ -16,7 +16,12 @@ mat-list-item#itens {
   align-items: flex-start;
   height: auto;
 }
-
+.header {
+  width: 100%;
+  display: flex;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 .shopping-list {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   max-width: 600px;
@@ -25,11 +30,28 @@ mat-list-item#itens {
   flex-direction: column;
   height: inherit;
 }
+.edicao-container{
+  padding-top: 16px;
+  display: flex;
+  gap: 64px;
+  width: 100%;
+  justify-content: center;
+  height: 100%;
+}
 
 .list-container {
   overflow: auto;
   margin-top: 16px;
+  width: 100%;
 }
+
+
+
+@media (min-width: 768px) {
+  .list-container {
+    width: auto;
+    min-width: 50%;
+  }}
 
 .title {
   margin: auto;
@@ -41,10 +63,37 @@ h3 {
 
 .list-header {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.swipeable-container {
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.swipeable-item {
+  display: flex;
+  align-items: center;
+  width: 100%; /* Garante que ocupe todo o espaço */
+  background-color: white; /* Cor de fundo padrão */
+  transition: background-color 0.3s ease; /* Transição para a cor de fundo */
+}
+
+.swipeable-item2 {
+  display: flex;
+  align-items: center;
+  width: 100%; /* Garante que ocupe todo o espaço */
+}
+
+.completed-icon {
+  margin-left: auto;
+  color: #00b894; /* Cor para indicar completado */
 }
 
 mat-list {
@@ -54,9 +103,9 @@ mat-list {
 }
 
 .list-wait {
-  border-radius: 12px;
-  border: 1px solid #ccc;
+  background-color: #00b894;
   margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .list-done {

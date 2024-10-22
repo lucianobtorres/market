@@ -1,0 +1,19 @@
+<div class="swipe-container" appSwipe (swipeLeft)="onSwipeLeft()" (swipeRight)="onSwipeRight()"
+    [class.revealing-buttons]="showButtons">
+
+    <!-- Botões de Editar e Excluir -->
+    <div class="swipe-background swipe-left" *ngIf="showButtons">
+        <button class="edit-btn" (click)="onEdit($event)">Editar</button>
+        <button class="delete-btn" (click)="onDelete($event)">Excluir</button>
+    </div>
+
+    <!-- Swipe para a Direita - Completado -->
+    <div class="swipe-background swipe-right">
+        <mat-icon [ngStyle]="{'opacity': completeIconOpacity}">check_circle</mat-icon>
+    </div>
+
+    <!-- Conteúdo da lista -->
+    <div class="list-content" [ngClass]="{ 'swipe-completed': completed }">
+        <ng-content></ng-content>
+    </div>
+</div>

@@ -1,40 +1,41 @@
-<div class="dialog-content">
-    <div class="shopping-list">
-        <div class="list-header">
-            <button mat-icon-button (click)="closeEmit.emit()">
-                <mat-icon>arrow_back</mat-icon>
-            </button>
-            <div class="title">
-                <h3>Minha Lista de Compras</h3>
+<div class="list-header">
+    <div class="header">
+        <button mat-icon-button (click)="closeEmit.emit()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="title">
+            <h3>Minha Lista de Compras</h3>
 
-                <div class="total-value" *ngIf="totalValue > 0">
-                    <small>subtotal: R$ {{ subtotalValue.toFixed(2) }}</small>
-                    <mat-divider [vertical]="true"></mat-divider>
-                    <span>Total: R$ {{ totalValue.toFixed(2) }}</span>
-                </div>
+            <div class="total-value" *ngIf="totalValue > 0">
+                <small>subtotal: R$ {{ subtotalValue.toFixed(2) }}</small>
+                <mat-divider [vertical]="true"></mat-divider>
+                <span>Total: R$ {{ totalValue.toFixed(2) }}</span>
             </div>
         </div>
-
-        <div class="list-container">
-            <mat-list class="list-wait">
-                <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice"
-                    (click)="editItem(item, itemListWait, indice)">
-                    <app-shopping-item [item]="item"></app-shopping-item>
-                </mat-list-item>
-            </mat-list>
-
-            <mat-list class="list-done">
-                <mat-list-item id="itens" *ngFor="let item of itemListDone; index as indice"
-                    (click)="editItem(item, itemListDone, indice)">
-                    <app-shopping-item [item]="item"></app-shopping-item>
-                </mat-list-item>
-            </mat-list>
-        </div>
-
-        <button mat-button class="floating-btn" (click)="addItem()" *ngIf="!isSearchOpen"> + Adicionar</button>
     </div>
+
+    <div class="edicao-container">
+    <div class="list-container">
+        <mat-list class="list-wait">
+            <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice" #itemswipe
+                (click)="editItem(item, itemListWait, indice)" class="swipeable-item"
+                (touchstart)="onTouchStart($event, item)" (touchmove)="onTouchMove($event, item)"
+                (touchend)="onTouchEnd(item)" [ngStyle]="{'transform': 'translateX(' + item.translateX + 'px)'}">
+                <app-shopping-item [item]="item"></app-shopping-item>
+            </mat-list-item>
+        </mat-list>
+
+        <mat-list class="list-done">
+            <mat-list-item id="itens" *ngFor="let item of itemListDone; index as indice"
+                (click)="editItem(item, itemListDone, indice)">
+                <app-shopping-item [item]="item"></app-shopping-item>
+            </mat-list-item>
+        </mat-list>
+    </div>
+
+    <button mat-button class="floating-btn" (click)="addItem()" *ngIf="!isSearchOpen"> + Adicionar</button>
 
     <div *ngIf="isSearchOpen" class="search-panel" [ngClass]="{'open': isSearchOpen}">
         <app-search-list (closeEmit)="closeSearch()"></app-search-list>
-    </div>
+    </div></div>
 </div>

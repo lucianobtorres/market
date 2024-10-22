@@ -9,6 +9,7 @@ export interface ShoppingItem extends ConfigItems {
   quantidade?: number;
   preco?: number;
   completed: boolean;
+  translateX?: number;
 }
 
 export interface ConfigItems {
