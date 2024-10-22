@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1729490198652,
+  "timestamp": 1729565557834,
   "index": "Market/index.html",
   "assetGroups": [
     {
@@ -11,14 +11,14 @@
         "ignoreVary": true
       },
       "urls": [
-        "Market/672.258a78abd98ab840.js",
-        "Market/784.9f81ca23f7cb69a6.js",
+        "Market/672.163e4c4a726eb80a.js",
+        "Market/784.9b06a602c61e256e.js",
         "Market/favicon.ico",
         "Market/index.html",
-        "Market/main.94e997e0da3e9c08.js",
+        "Market/main.94730e36f1b890cc.js",
         "Market/manifest.webmanifest",
         "Market/polyfills.5842fed68fd9c9c8.js",
-        "Market/runtime.a24d79ea9494214a.js"
+        "Market/runtime.d0222289ff3fce2c.js"
       ],
       "patterns": []
     },
@@ -82,8 +82,8 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "Market/672.258a78abd98ab840.js": "bb4ed77d1b876e7f66a16f9fd92cfe1481607413",
-    "Market/784.9f81ca23f7cb69a6.js": "74a685973fad797c500ddc0e7a37a5198f5ab8b3",
+    "Market/672.163e4c4a726eb80a.js": "aa3336055ae115d1a0eba7bbf60bb3bf7acbf78b",
+    "Market/784.9b06a602c61e256e.js": "f4fe940f121327ffbc9804721266c420487fd307",
     "Market/Roboto-Light.3d1bbede3dff569a.woff": "42eb5fdef68306d937a8fba20dd8da1b0de2bafa",
     "Market/Roboto-Light.86fc2559ff73eac5.woff2": "8237523ff588300ff5d2da67a20bce60701a14b8",
     "Market/Roboto-Medium.4fa4b1c02a877115.woff": "3e38dce596d2b9ab706d7371a28613d618b32220",
@@ -131,11 +131,11 @@
     "Market/favicon.ico": "4c9b988c7cc9017dc463089f350fdddfeb3284b1",
     "Market/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.3a4cb006b229e5d7.woff2": "a80466bc637c657f0dc739e0924b025034a92ea9",
     "Market/gok-H7zzDkdnRel8-DQ6KAXJ69wP1tGnf4ZGhUce.8fdb895cfe88be90.woff2": "b83aec9cceb453c24574d43f1ef4fde2a40eea65",
-    "Market/index.html": "a1004505c22fcf3f4b05b46c8ba93360e44d914f",
-    "Market/main.94e997e0da3e9c08.js": "cc2bad64d8a60503a733079121e07ac362b3c26d",
+    "Market/index.html": "61f307cf5772eb394eb4d010d23f9dcc99d970a2",
+    "Market/main.94730e36f1b890cc.js": "e2c829babe6133b2488b044e4f527eae21cc374a",
     "Market/manifest.webmanifest": "999cc0e4bdb259c84b93fd2eb86f14d988a430fc",
     "Market/polyfills.5842fed68fd9c9c8.js": "da785fc66aafa79749437577573ab53c3f55f9e9",
-    "Market/runtime.a24d79ea9494214a.js": "f3070e6245bd2cc7a0e6fd448da6b1bc17c84312"
+    "Market/runtime.d0222289ff3fce2c.js": "2dea903919ff651c56099d7eb8a2334031e77fa9"
   },
   "navigationUrls": [
     {
