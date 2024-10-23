@@ -32,3 +32,16 @@ mat-list-item {
 ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
   padding: 0 !important;
 }
+
+.floating-btn {
+  position: fixed;
+  bottom: 8vh;
+  right: 8vw;
+  z-index: 100;
+  background-color: #00b894;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

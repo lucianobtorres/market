@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ShoppingDialogComponent } from 'src/app/components/shopping-dialog/shopping-dialog.component';
+import { Utils } from 'src/app/utils/util';
 
 @Component({
   selector: 'app-lista-detalhada',
@@ -10,28 +11,34 @@ import { ShoppingDialogComponent } from 'src/app/components/shopping-dialog/shop
 })
 export class ListaDetalhadaComponent implements OnInit {
   isMobile: boolean = true;
+  id: number = 0;
 
-  constructor(private dialog: MatDialog, private route: Router) { }
+  constructor(private dialog: MatDialog, private router: Router,
+    private readonly route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.isMobile = window.innerWidth <= 768; // Determina se é mobile ou PC
+    this.isMobile = Utils.isMobile();
 
-    if (this.isMobile) {
-      const dialogRef = this.dialog.open(ShoppingDialogComponent, {
-        data: { /* dados da lista */ },
-        width: '100vw',
-        height: '100vh',
-        maxWidth: '100vw',
-        panelClass: 'full-screen-dialog',
-      });
+    this.route.paramMap.subscribe(params => {
+      this.id = Number(params.get('id') ?? 0 + 0);
 
+      if (this.isMobile) {
+        const dialogRef = this.dialog.open(ShoppingDialogComponent, {
+          data: { idLista: this.id},
+          width: '100vw',
+          height: '100vh',
+          maxWidth: '100vw',
+          panelClass: 'full-screen-dialog',
+        });
 
-      dialogRef.afterClosed().subscribe((_: unknown) => {
-        this.Close();
-      });
-    }
+        dialogRef.afterClosed().subscribe((_: unknown) => {
+          this.Close();
+        });
+      }
+    });
   }
+
   Close() {
-    this.route.navigate(['/']);
+    this.router.navigate(['/']);
   }
 }

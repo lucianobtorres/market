@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { db } from 'src/app/db/model-db';
 import { ItemShoppingList } from 'src/app/models/interfaces';
 import { ItemShoppingListService } from 'src/app/services/item-shopping-list.service';
 
@@ -16,5 +17,9 @@ export class ListsShoppingComponent {
     this.itemShoppingListService.listas$.subscribe((listas) => {
       this.itensList = listas;
     });
+  }
+
+  novaLista() {
+    db.shoppingLists.add({ nome: "Nova Lista" })
   }
 }

@@ -1,10 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Optional, Output } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ShoppingListEditComponent } from '../shopping-list-edit/shopping-list-edit.component';
 import { ShoppingItem, ShoppingList } from 'src/app/models/interfaces';
 
 import { db } from 'src/app/db/model-db';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { SearchDialogComponent } from '../search-dialog/search-dialog.component';
 import { Utils } from 'src/app/utils/util';
 import { ItemShoppingListService } from 'src/app/services/item-shopping-list.service';
@@ -16,6 +16,7 @@ import { ItemShoppingListService } from 'src/app/services/item-shopping-list.ser
 })
 
 export class ShoppingListComponent implements OnInit {
+  @Input() idLista: number = 0;
   @Output() closeEmit = new EventEmitter<void>();
   private list: ShoppingList = {} as ShoppingList;
   private items: ShoppingItem[] = [];
@@ -51,16 +52,25 @@ export class ShoppingListComponent implements OnInit {
   }
 
   constructor(
-    private readonly dialog: MatDialog,
+    @Optional() private readonly dialog: MatDialog,
     private readonly bottomSheet: MatBottomSheet,
     private readonly itemShoppingListService: ItemShoppingListService,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any // Aqui você recebe os dados
+
   ) { }
 
   ngOnInit(): void {
+    if (this.data) {
+      this.idLista = this.data.idLista;
+    }
     this.itemShoppingListService.listas$.subscribe((listas) => {
-      if (listas.length){
-        this.list = listas[0].shopping;
-        this.items = listas[0].itens;
+      if (listas.length) {
+        const selectedList = listas.find(x => x.shopping.id === this.idLista);
+
+        if (selectedList) {
+          this.list = selectedList.shopping;
+          this.items = selectedList.itens;
+        }
       }
     });
   }
