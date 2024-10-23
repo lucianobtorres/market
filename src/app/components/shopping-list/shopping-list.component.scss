@@ -61,6 +61,12 @@ mat-list-item#itens {
   flex-direction: column;
 }
 
+.title-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .total-value {
   display: flex;
   justify-content: flex-end;

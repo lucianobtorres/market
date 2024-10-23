@@ -1,7 +1,4 @@
 :host {
-  box-sizing: border-box;
-  border: 1px solid #d6d6d6;
-  border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
 }
@@ -20,7 +17,16 @@
 }
 
 mat-list {
+  display: flex;
   padding: 0;
+  gap: 16px;
+  flex-direction: column;
+}
+
+mat-list-item {
+  box-sizing: border-box;
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
 }
 
 ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {

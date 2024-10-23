@@ -9,9 +9,9 @@ import { CurrencyMaskModule } from "ng2-currency-mask";
 import { MaterialModule } from '../module/material.module';
 import { HomeComponent } from '../pages/home/home.component';
 
-import { HeaderComponent } from './header/header.component';
-import { MenuComponent } from './menu/menu.component';
-import { ToastComponent } from './toast/toast.component';
+import { HeaderComponent } from './shared/header/header.component';
+import { MenuComponent } from './shared/menu/menu.component';
+import { ToastComponent } from './shared/toast/toast.component';
 import { ConvertWithFunctionPipe } from '../pipes/convert-with-function.pipe';
 import { BarcodeScannerComponent } from './barcode-scanner/barcode-scanner.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';

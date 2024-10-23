@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material/snack-bar';
-import { ToastComponent } from '../components/toast/toast.component';
+import { ToastComponent } from '../components/shared/toast/toast.component';
 import { MessageData, TypeToast } from '../models/message-data';
 
-export const TOAST_DURATION = 5000;
+export const TOAST_DURATION = 3000;
 
 @Injectable({
   providedIn: 'root'

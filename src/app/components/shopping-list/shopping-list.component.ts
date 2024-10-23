@@ -1,13 +1,13 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ShoppingListEditComponent } from '../shopping-list-edit/shopping-list-edit.component';
-import { ShoppingItem } from 'src/app/models/interfaces';
+import { ShoppingItem, ShoppingList } from 'src/app/models/interfaces';
 
 import { db } from 'src/app/db/model-db';
-import { liveQuery } from 'dexie';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchDialogComponent } from '../search-dialog/search-dialog.component';
 import { Utils } from 'src/app/utils/util';
+import { ItemShoppingListService } from 'src/app/services/item-shopping-list.service';
 
 @Component({
   selector: 'app-shopping-list',
@@ -17,8 +17,12 @@ import { Utils } from 'src/app/utils/util';
 
 export class ShoppingListComponent implements OnInit {
   @Output() closeEmit = new EventEmitter<void>();
-  public itemsShopping$ = liveQuery(() => db.shoppingItems.toArray());
+  private list: ShoppingList = {} as ShoppingList;
   private items: ShoppingItem[] = [];
+
+  get listNome(): string {
+    return this.list.nome;
+  }
 
   get itemListWait(): ShoppingItem[] {
     return this.items.filter(x => !x.completed);
@@ -49,11 +53,15 @@ export class ShoppingListComponent implements OnInit {
   constructor(
     private readonly dialog: MatDialog,
     private readonly bottomSheet: MatBottomSheet,
+    private readonly itemShoppingListService: ItemShoppingListService,
   ) { }
 
   ngOnInit(): void {
-    this.itemsShopping$.subscribe((itens) => {
-      this.items = itens;
+    this.itemShoppingListService.listas$.subscribe((listas) => {
+      if (listas.length){
+        this.list = listas[0].shopping;
+        this.items = listas[0].itens;
+      }
     });
   }
 
@@ -146,5 +154,22 @@ export class ShoppingListComponent implements OnInit {
   completeItem(item: ShoppingItem): void {
     item.completed = !item.completed;
     db.shoppingItems.update(item.id!, item);
+  }
+
+  isEditing = false;
+  editingName: string = '';
+
+  enableEditing() {
+    this.isEditing = true;
+    this.editingName = this.list.nome;
+  }
+
+  updateName() {
+    if (this.editingName.trim() !== '') {
+      this.list.nome = this.editingName;
+      db.shoppingLists.update(this.list.id!, this.list);
+    }
+
+    this.isEditing = false;
   }
 }
