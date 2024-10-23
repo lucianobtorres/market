@@ -3,10 +3,9 @@ import { FormControl } from '@angular/forms';
 import { liveQuery } from 'dexie';
 import { BehaviorSubject, debounceTime } from 'rxjs';
 import { db } from 'src/app/db/model-db';
-import { ShoppingItem } from 'src/app/models/interfaces';
-import { ItemUnit } from 'src/app/models/shopping-item';
+import { CombinedItem, ShoppingItem } from 'src/app/models/interfaces';
+import { ItemUnit } from 'src/app/models/item-unit';
 import { ShoppingItemService } from 'src/app/services/shopping-item.service';
-import { CombinedItem } from '../search-list-item/search-list-item.component';
 
 @Component({
   selector: 'app-search-list',
@@ -126,7 +125,8 @@ export class SearchListComponent implements OnInit {
         adding: true,
         dataCompra: new Date(),
         quantidade: 1,
-        unidade: ItemUnit.UN
+        unidade: ItemUnit.UN,
+        shoppingListId: 1
       }];
 
       this.sortFilter();
@@ -149,12 +149,14 @@ export class SearchListComponent implements OnInit {
         quantidade: item.quantidade,
         completed: item.completed ?? false,
         preco: item.preco,
-        unidade: item.unidade
+        unidade: item.unidade,
+        shoppingListId: item.shoppingListId
       } : {
         nome: item.nome,
         quantidade: item.quantidade || minValue,
         completed: false,
-        unidade: item.unidade ?? ItemUnit.UN
+        unidade: item.unidade ?? ItemUnit.UN,
+        shoppingListId: 1
       };
 
       await this.dbService.add(itemAdd);

@@ -1,9 +1,7 @@
-<div class="list-container" (click)="abrirLista()">
-    <h3 appTextEllipsis matTooltip>Lista</h3>
-    <div class="opcoes">
-        <small>20 itens</small>
-        <button mat-icon-button (click)="$event.stopPropagation()">
-            <mat-icon>more_vert</mat-icon>
-        </button>
-    </div>
+<h3 appTextEllipsis matTooltip> {{ this.item.shopping.nome }} </h3>
+<div class="opcoes">
+    <small> {{ qtdItens }} </small>
+    <button mat-icon-button (click)="$event.stopPropagation()">
+        <mat-icon>more_vert</mat-icon>
+    </button>
 </div>

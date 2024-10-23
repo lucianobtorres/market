@@ -3,6 +3,7 @@ import { take } from 'rxjs';
 import { db } from '../db/model-db';
 import { ToastService } from '../services/toast.service';
 
+
 export abstract class DBRepository<T> {
   table!: Table<T, number>;
 

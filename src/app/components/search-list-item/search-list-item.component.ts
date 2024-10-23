@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { BoughtItems, ShoppingItem } from 'src/app/models/interfaces';
+import { CombinedItem } from 'src/app/models/interfaces';
 import { ValorEditComponent } from '../valor-edit/valor-edit.component';
-
-export type CombinedItem = (BoughtItems & Partial<ShoppingItem>) | (ShoppingItem & Partial<BoughtItems>);
 
 
 @Component({
@@ -14,13 +12,11 @@ export type CombinedItem = (BoughtItems & Partial<ShoppingItem>) | (ShoppingItem
 export class SearchListItemComponent {
   @Output() qtdChanged = new EventEmitter<boolean>();
   @Output() itemChanged = new EventEmitter<CombinedItem>();
-
   @Input() item!: CombinedItem;
 
   constructor(
-    private readonly bottomSheet: MatBottomSheet,) {
-
-  }
+    private readonly bottomSheet: MatBottomSheet
+  ) { }
 
   increase(event: Event) {
     event.stopPropagation();

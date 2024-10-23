@@ -17,7 +17,6 @@
 
 footer {
   margin-top: auto;
-  bottom: 0px;
   overflow: hidden;
   width: 100%;
 }
@@ -47,6 +46,7 @@ button:not(.active-menu-item) {
 
 :host mat-toolbar {
   background-color: slategray;
+  height: 80px;
 }
 
 button {

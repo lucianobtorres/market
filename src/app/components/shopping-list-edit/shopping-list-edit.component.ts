@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, Inject, ViewChild } from '@angula
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { ItemUnit } from 'src/app/models/shopping-item';
+import { ItemUnit } from 'src/app/models/item-unit';
 import { ShoppingItem } from 'src/app/models/interfaces';
 import { ShoppingItemService } from 'src/app/services/shopping-item.service';
 
@@ -77,6 +77,7 @@ export class ShoppingListEditComponent implements AfterViewInit {
         preco: this.editForm.value.preco ?? undefined,
         unidade: this.editForm.value.unidade ?? ItemUnit.UN,
         notas: this.editForm.value.anotacao ?? undefined,
+        shoppingListId: this.item.shoppingListId
       };
 
       this.dbService.update(this.item.id!, updatedItem, 'atualizado..');

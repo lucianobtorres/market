@@ -1,24 +1,13 @@
 :host {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-inline: auto;
-  width: 100%;
-}
-
-:host, h3, .list-container, .opcoes {
-  cursor: pointer;
-}
-
-.list-container {
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid #d6d6d6;
-  border-radius: 8px;
-  padding: 8px 32px;
-  display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  gap: 8px;
+}
+
+:host, h3, .opcoes {
+  cursor: pointer;
 }
 
 .opcoes {
@@ -27,9 +16,3 @@
   gap: 8px;
 }
 
-@media (min-width: 768px) { /* Adapta para telas maiores que 768px (tamanho típico de tablets) */
-  .list-container {
-    width: auto; /* Permite que ela cresça conforme o conteúdo */
-    min-width: 450px; /* Define a largura mínima no PC */
-  }
-}

@@ -9,13 +9,13 @@ export class MenuComponent {
   public navLinks = [
     {
       location: 'home',
-      label: 'Lancamentos',
-      icon: 'currency_exchange'
+      label: 'Listas',
+      icon: 'receipt_long'
     },
     {
-      location: 'extrato',
-      label: 'Extrato',
-      icon: 'receipt_long'
+      location: 'perfil',
+      label: 'Perfil',
+      icon: 'people'
     },
     {
       location: 'configuracoes',

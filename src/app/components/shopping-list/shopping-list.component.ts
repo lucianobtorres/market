@@ -7,6 +7,7 @@ import { db } from 'src/app/db/model-db';
 import { liveQuery } from 'dexie';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchDialogComponent } from '../search-dialog/search-dialog.component';
+import { Utils } from 'src/app/utils/util';
 
 @Component({
   selector: 'app-shopping-list',
@@ -84,7 +85,7 @@ export class ShoppingListComponent implements OnInit {
   }
 
   isMobile(): boolean {
-    return window.innerWidth < 768;
+    return Utils.isMobile();
   }
 
   editItem(item: ShoppingItem, items: ShoppingItem[], index: number): void {

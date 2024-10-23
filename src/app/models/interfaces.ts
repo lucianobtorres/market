@@ -1,4 +1,16 @@
-import { ItemUnit } from "./shopping-item";
+import { ItemUnit } from "./item-unit";
+
+export type CombinedItem = (BoughtItems & Partial<ShoppingItem>) | (ShoppingItem & Partial<BoughtItems>);
+
+export interface ItemShoppingList {
+  shopping: ShoppingList,
+  itens: ShoppingItem[]
+}
+
+export interface ShoppingList {
+  id?: number,
+  nome: string,
+}
 
 export interface BoughtItems extends ConfigItems {
   adding: boolean,
@@ -9,7 +21,6 @@ export interface ShoppingItem extends ConfigItems {
   quantidade?: number;
   preco?: number;
   completed: boolean;
-  translateX?: number;
 }
 
 export interface ConfigItems {
@@ -17,68 +28,12 @@ export interface ConfigItems {
   nome: string;
   notas?: string;
   unidade: ItemUnit;
+  shoppingListId: number | undefined;
 }
 
-export interface GrupoContas {
+export interface IHistoricoCompras {
   id?: number;
-  icone: string;
-  title: string;
-}
-
-export interface PlanoContas {
-  id?: number;
-  grupoContasId: number | undefined;
-  title: string;
-}
-
-export interface MeioMovimentacao {
-  id?: number;
-  sigla: string;
-  title: string;
-  entrada: boolean;
-  parcelavel: boolean;
-}
-
-export interface LancamentoToService {
-  id?: number;
-  planoContasId: number | undefined;
-  meioMovimentacaoId: number | undefined;
-  data: Date;
-  desc: string;
-  valor: number;
-  vezes: number;
-  naoRealizado?: boolean;
-}
-
-export interface Lancamento {
-  id?: number;
-  planoContasId: number | undefined;
-  meioMovimentacaoId: number | undefined;
-  data: Date;
-  desc: string;
-  valor: number;
-  naoRealizado?: boolean;
-}
-
-export interface ItemLancamento {
-  grupoConta: GrupoContas,
-  planoConta: PlanoContas,
-  lancamento: Lancamento,
-  meioMovimentacao: MeioMovimentacao
-}
-
-export interface PlanoContasLancamento {
-  planoConta: PlanoContas,
-  lancamento: Lancamento,
-  meioMovimentacao: MeioMovimentacao,
-}
-
-export interface ILancamentoAgrupado {
-  grupoConta: GrupoContas,
-  planosContas: PlanoContasLancamento[]
-}
-
-export interface VersionDB {
-  id?: number;
-  version: number | undefined;
+  comprado: boolean;
+  item: string;
+  data: string;
 }

@@ -27,7 +27,7 @@ export class AppComponent implements AfterViewInit {
 
   goHome() {
     // this.router.navigate(["/home"])
-    this.router.navigate([ROTAS.extrato])
+    this.router.navigate([ROTAS.home])
   }
 
   startup() {
