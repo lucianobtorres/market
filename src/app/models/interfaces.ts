@@ -21,6 +21,7 @@ export interface ShoppingItem extends ConfigItems {
   quantidade?: number;
   preco?: number;
   completed: boolean;
+  shoppingListId: number;
 }
 
 export interface ConfigItems {
@@ -28,7 +29,6 @@ export interface ConfigItems {
   nome: string;
   notas?: string;
   unidade: ItemUnit;
-  shoppingListId: number | undefined;
 }
 
 export interface IHistoricoCompras {
@@ -36,4 +36,9 @@ export interface IHistoricoCompras {
   comprado: boolean;
   item: string;
   data: string;
+}
+
+export interface VersionDB {
+  id?: number;
+  version: number | undefined;
 }

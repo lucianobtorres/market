@@ -11,16 +11,16 @@ export async function migrateToVersion1(db: ModelDB) {
     ]);
 
     await db.boughtItems.bulkAdd([
-      { shoppingListId: 1, id: 1, nome: 'Maçã', unidade: ItemUnit.KG, adding: false, dataCompra: new Date(), },
-      { shoppingListId: 1, id: 2, nome: 'Leite', unidade: ItemUnit.L, adding: false, dataCompra: new Date() },
-      { shoppingListId: 1, id: 3, nome: 'Arroz', unidade: ItemUnit.KG, adding: false, dataCompra: new Date() },
-      { shoppingListId: 1, id: 4, nome: 'Feijão', unidade: ItemUnit.KG, adding: false, dataCompra: new Date() },
-      { shoppingListId: 1, id: 5, nome: 'Sabonete', unidade: ItemUnit.UN, adding: false, dataCompra: new Date() },
-      { shoppingListId: 1, id: 6, nome: 'Detergente', unidade: ItemUnit.L, adding: false, dataCompra: new Date() },
-      { shoppingListId: 1, id: 7, nome: 'Papel Higiênico', unidade: ItemUnit.UN, adding: false, dataCompra: new Date() },
-      { shoppingListId: 1, id: 8, nome: 'Macarrão', unidade: ItemUnit.UN, adding: false, dataCompra: new Date() },
-      { shoppingListId: 1, id: 9, nome: 'Óleo de Soja', unidade: ItemUnit.L, adding: false, dataCompra: new Date() },
-      { shoppingListId: 1, id: 10, nome: 'Frango', unidade: ItemUnit.KG, adding: false, dataCompra: new Date() }
+      { id: 1, nome: 'Maçã', unidade: ItemUnit.KG, adding: false, dataCompra: new Date(), },
+      { id: 2, nome: 'Leite', unidade: ItemUnit.L, adding: false, dataCompra: new Date() },
+      { id: 3, nome: 'Arroz', unidade: ItemUnit.KG, adding: false, dataCompra: new Date() },
+      { id: 4, nome: 'Feijão', unidade: ItemUnit.KG, adding: false, dataCompra: new Date() },
+      { id: 5, nome: 'Sabonete', unidade: ItemUnit.UN, adding: false, dataCompra: new Date() },
+      { id: 6, nome: 'Detergente', unidade: ItemUnit.L, adding: false, dataCompra: new Date() },
+      { id: 7, nome: 'Papel Higiênico', unidade: ItemUnit.UN, adding: false, dataCompra: new Date() },
+      { id: 8, nome: 'Macarrão', unidade: ItemUnit.UN, adding: false, dataCompra: new Date() },
+      { id: 9, nome: 'Óleo de Soja', unidade: ItemUnit.L, adding: false, dataCompra: new Date() },
+      { id: 10, nome: 'Frango', unidade: ItemUnit.KG, adding: false, dataCompra: new Date() }
 
     ], { allKeys: true });
 

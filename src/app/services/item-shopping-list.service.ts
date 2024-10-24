@@ -34,15 +34,19 @@ export class ItemShoppingListService {
   }
 
   private combineData() {
-    // If both lists and items are available, combine them
-    if (this.currentLists.length && this.currentItems.length) {
+    if (!this.currentLists.length) {
+      this.listasSubject$.next([]);
+      return;
+    }
+
+    if (this.currentLists.length || this.currentItems.length) {
       const combinedLists = this.currentLists.map(list => ({
         shopping: list,
         itens: this.currentItems.filter(item => item.shoppingListId === list.id)
       }));
 
-      // Emit the combined data to the BehaviorSubject
       this.listasSubject$.next(combinedLists);
     }
+
   }
 }

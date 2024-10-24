@@ -28,6 +28,7 @@ import { SwipeListItemComponent } from './swipe-list-item/swipe-list-item.compon
 import { CapitalizePipe } from '../pipes/capitalize.pipe';
 import { ValorEditComponent } from './shared/valor-edit/valor-edit.component';
 import { ListasComponent } from './listas/listas.component';
+import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 
 export const components = [
   HomeComponent,
@@ -46,7 +47,8 @@ export const components = [
   ListaCorrenteDetalhadaComponent,
   SwipeListItemComponent,
   ValorEditComponent,
-  ListasComponent
+  ListasComponent,
+  ConfirmDialogComponent
 ]
 
 const directives = [

@@ -22,9 +22,9 @@ export class ModelDB extends Dexie {
     this.version(CURRENT_DATABASE_VERSION).stores({
       //versions: '++id, version',
       //historicoCompras: '++id, compra, produto, data',
-      shoppingItems: '++id, nome, notas, quantidade, unidade, preco, completed',
+      shoppingItems: '++id, nome, notas, quantidade, unidade, preco, completed, shoppingListId',
       boughtItems: '++id, nome, notas, quantidade, unidade, preco, completed, dataCompra',
-      shoppingLists: '++id, nome, shoppingItemId',
+      shoppingLists: '++id, nome',
     });
 
     Migrations.createMigrations(this);

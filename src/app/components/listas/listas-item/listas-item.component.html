@@ -1,7 +1,25 @@
 <h3 appTextEllipsis matTooltip> {{ this.item.shopping.nome }} </h3>
 <div class="opcoes">
     <small> {{ qtdItens }} </small>
-    <button mat-icon-button (click)="$event.stopPropagation()">
+    <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
     </button>
 </div>
+
+<mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="onShareList()" disabled>
+        <mat-icon>share</mat-icon>
+        <span>Compartilhar Lista</span>
+    </button>
+
+    <button mat-menu-item (click)="abrirLista()">
+        <mat-icon>edit</mat-icon>
+        <span>Editar Lista</span>
+    </button>
+
+    <!-- Item de remover com cor vermelha -->
+    <button mat-menu-item (click)="confirmRemove($event)" class="red-option">
+        <mat-icon>delete</mat-icon>
+        <span>Remover Lista</span>
+    </button>
+</mat-menu>
