@@ -7,15 +7,16 @@
             <div class="title-header">
 
                 <mat-form-field *ngIf="isEditing">
-                    <input [(ngModel)]="editingName" (blur)="updateName()" (keydown.enter)="updateName()" autofocus />
-                    <button mat-icon-button matSuffix (click)="updateName()">
-                        <mat-icon>ok</mat-icon>
+                    <input matInput [(ngModel)]="editingName" (blur)="updateName()" (keydown.enter)="updateName()" autofocus />
+                    <button matSuffix mat-icon-button (click)="updateName()">
+                        <mat-icon matTooltip="Atualizar..">done</mat-icon>
                     </button>
                 </mat-form-field>
 
-                <h3 *ngIf="!isEditing" (click)="enableEditing()"> {{ listNome }} </h3>
-                <small *ngIf="!isEditing">({{ itemListDone.length }}
-                    de {{ itemListDone.length + itemListWait.length }})</small>
+                <ng-container *ngIf="!isEditing">
+                    <h3 (click)="enableEditing()"> {{ listNome }} </h3>
+                    <small>({{ itemListDone.length }} de {{ itemListDone.length + itemListWait.length }})</small>
+                </ng-container>
 
             </div>
 
@@ -51,10 +52,10 @@
             </mat-list>
         </div>
 
-        <button mat-button class="floating-btn" (click)="addItem()" *ngIf="!isSearchOpen"> + Adicionar</button>
+        <button mat-button class="floating-btn" (click)="addItem()" *ngIf="!isSearchOpen"> + Adicionar itens</button>
 
         <div *ngIf="isSearchOpen" class="search-panel" [ngClass]="{'open': isSearchOpen}">
-            <app-search-list (closeEmit)="closeSearch()"></app-search-list>
+            <app-search-list [idLista]="idLista" (closeEmit)="closeSearch()"></app-search-list>
         </div>
     </div>
 </div>

@@ -62,6 +62,7 @@ export class ListaCorrenteComponent implements OnInit {
     if (this.data) {
       this.idLista = this.data.idLista;
     }
+
     this.itemShoppingListService.listas$.subscribe((listas) => {
       if (listas.length) {
         const selectedList = listas.find(x => x.shopping.id === this.idLista);
@@ -77,7 +78,7 @@ export class ListaCorrenteComponent implements OnInit {
   openSearch(): void {
     if (this.isMobile()) {
       const dialogRef = this.dialog.open(SearchDialogComponent, {
-        // data: { idLista: this.idLista },
+        data: { idLista: this.idLista },
         width: '100vw',
         height: '100vh',
         maxWidth: '100vw',

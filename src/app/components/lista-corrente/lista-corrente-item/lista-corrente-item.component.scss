@@ -1,3 +1,5 @@
+@use "theme-variables" as theme;
+
 :host {
   gap: 8px;
   flex-direction: column;
@@ -17,6 +19,7 @@
 .produto {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .preco {
@@ -32,6 +35,11 @@
   gap: 8px;
   align-items: flex-end;
   white-space: nowrap;
+  cursor: pointer;
+}
+
+.detalhe:hover {
+  color: theme.$primary-color;
 }
 
 .h3 {

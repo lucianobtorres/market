@@ -1,5 +1,6 @@
-import { OnInit, Component, Output, EventEmitter } from '@angular/core';
+import { OnInit, Component, Output, EventEmitter, Input, Optional, Inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { liveQuery } from 'dexie';
 import { BehaviorSubject, debounceTime } from 'rxjs';
 import { db } from 'src/app/db/model-db';
@@ -13,6 +14,7 @@ import { ShoppingItemService } from 'src/app/services/shopping-item.service';
   styleUrls: ['./search-list.component.scss']
 })
 export class SearchListComponent implements OnInit {
+  @Input() idLista: number = 0;
   @Output() closeEmit = new EventEmitter<void>();
   private items = new BehaviorSubject<CombinedItem[]>([]);
   private shoppingList: ShoppingItem[] = [];
@@ -25,9 +27,14 @@ export class SearchListComponent implements OnInit {
 
   constructor(
     private readonly dbService: ShoppingItemService,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: { idLista: number }
   ) { }
 
   ngOnInit() {
+    if (this.data) {
+      this.idLista = this.data.idLista;
+    }
+
     this.searchControl.valueChanges
       .pipe(debounceTime(300))
       .subscribe(value => {
@@ -39,7 +46,7 @@ export class SearchListComponent implements OnInit {
     });
 
     this.itemsShopping$.subscribe((itens) => {
-      this.shoppingList = itens;
+      this.shoppingList = itens.filter(x => x.shoppingListId === this.idLista);
       this.updateAddingStatus(this.shoppingList);
     });
   }
@@ -86,6 +93,7 @@ export class SearchListComponent implements OnInit {
       id: isInShoppingList ? isInShoppingList.id : undefined,
       preco: isInShoppingList ? isInShoppingList.preco: item.preco,
       unidade: isInShoppingList ? isInShoppingList.unidade: item.unidade,
+      shoppingListId: this.idLista
     };
   }
 
@@ -126,7 +134,7 @@ export class SearchListComponent implements OnInit {
         dataCompra: new Date(),
         quantidade: 1,
         unidade: ItemUnit.UN,
-        shoppingListId: 1
+        shoppingListId: this.idLista
       }];
 
       this.sortFilter();
@@ -150,13 +158,13 @@ export class SearchListComponent implements OnInit {
         completed: item.completed ?? false,
         preco: item.preco,
         unidade: item.unidade,
-        shoppingListId: item.shoppingListId
+        shoppingListId: this.idLista
       } : {
         nome: item.nome,
         quantidade: item.quantidade || minValue,
         completed: false,
         unidade: item.unidade ?? ItemUnit.UN,
-        shoppingListId: 1
+        shoppingListId: this.idLista
       };
 
       await this.dbService.add(itemAdd);
