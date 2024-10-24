@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { CombinedItem } from 'src/app/models/interfaces';
-import { ValorEditComponent } from '../valor-edit/valor-edit.component';
+import { ValorEditComponent } from '../../shared/valor-edit/valor-edit.component';
 
 
 @Component({

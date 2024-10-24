@@ -13,21 +13,21 @@ import { HeaderComponent } from './shared/header/header.component';
 import { MenuComponent } from './shared/menu/menu.component';
 import { ToastComponent } from './shared/toast/toast.component';
 import { ConvertWithFunctionPipe } from '../pipes/convert-with-function.pipe';
-import { BarcodeScannerComponent } from './barcode-scanner/barcode-scanner.component';
-import { ShoppingListComponent } from './shopping-list/shopping-list.component';
-import { ShoppingListEditComponent } from './shopping-list-edit/shopping-list-edit.component';
-import { ShoppingItemComponent } from './shopping-item/shopping-item.component';
+import { BarcodeScannerComponent } from './search-list/barcode-scanner/barcode-scanner.component';
+import { ListaCorrenteComponent } from './lista-corrente/lista-corrente.component';
+import { FormListaCorrenteItemComponent } from './lista-corrente/form-lista-corrente-item/form-lista-corrente-item.component';
+import { ListaCorrenteItemComponent } from './lista-corrente/lista-corrente-item/lista-corrente-item.component';
 import { SearchListComponent } from './search-list/search-list.component';
-import { SearchDialogComponent } from './search-dialog/search-dialog.component';
-import { SearchListItemComponent } from './search-list-item/search-list-item.component';
+import { SearchDialogComponent } from './search-list/search-dialog/search-dialog.component';
+import { SearchListItemComponent } from './search-list/search-list-item/search-list-item.component';
 import { TextEllipsisDirective } from '../directives/text-ellipsis.directive';
-import { ShoppingDialogComponent } from './shopping-dialog/shopping-dialog.component';
-import { ListItemComponent } from './list-item/list-item.component';
-import { ListaDetalhadaComponent } from '../pages/lista-detalhada/lista-detalhada.component';
+import { ListaCorrenteDialogComponent } from './lista-corrente/lista-corrente-dialog/lista-corrente-dialog.component';
+import { ListItemComponent } from './listas/listas-item/listas-item.component';
+import { ListaCorrenteDetalhadaComponent } from './lista-corrente/lista-corrente-detalhada/lista-corrente-detalhada.component';
 import { SwipeListItemComponent } from './swipe-list-item/swipe-list-item.component';
 import { CapitalizePipe } from '../pipes/capitalize.pipe';
-import { ValorEditComponent } from './valor-edit/valor-edit.component';
-import { ListsShoppingComponent } from './lists-shopping/lists-shopping.component';
+import { ValorEditComponent } from './shared/valor-edit/valor-edit.component';
+import { ListasComponent } from './listas/listas.component';
 
 export const components = [
   HomeComponent,
@@ -35,18 +35,18 @@ export const components = [
   MenuComponent,
   ToastComponent,
   BarcodeScannerComponent,
-  ShoppingListComponent,
-  ShoppingListEditComponent,
-  ShoppingItemComponent,
+  ListaCorrenteComponent,
+  FormListaCorrenteItemComponent,
+  ListaCorrenteItemComponent,
   SearchListComponent,
   SearchDialogComponent,
   SearchListItemComponent,
-  ShoppingDialogComponent,
+  ListaCorrenteDialogComponent,
   ListItemComponent,
-  ListaDetalhadaComponent,
+  ListaCorrenteDetalhadaComponent,
   SwipeListItemComponent,
   ValorEditComponent,
-  ListsShoppingComponent
+  ListasComponent
 ]
 
 const directives = [

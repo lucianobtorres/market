@@ -2,14 +2,14 @@ import { Component, Input } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ShoppingItem } from 'src/app/models/interfaces';
 import { ShoppingItemService } from 'src/app/services/shopping-item.service';
-import { ValorEditComponent } from '../valor-edit/valor-edit.component';
+import { ValorEditComponent } from '../../shared/valor-edit/valor-edit.component';
 
 @Component({
-  selector: 'app-shopping-item',
-  templateUrl: './shopping-item.component.html',
-  styleUrls: ['./shopping-item.component.scss'],
+  selector: 'app-lista-corrente-item',
+  templateUrl: './lista-corrente-item.component.html',
+  styleUrls: ['./lista-corrente-item.component.scss'],
 })
-export class ShoppingItemComponent {
+export class ListaCorrenteItemComponent {
   @Input() item!: ShoppingItem;
 
   constructor(

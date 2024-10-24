@@ -1,21 +1,21 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Optional, Output } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { ShoppingListEditComponent } from '../shopping-list-edit/shopping-list-edit.component';
+import { FormListaCorrenteItemComponent } from './form-lista-corrente-item/form-lista-corrente-item.component';
 import { ShoppingItem, ShoppingList } from 'src/app/models/interfaces';
 
 import { db } from 'src/app/db/model-db';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { SearchDialogComponent } from '../search-dialog/search-dialog.component';
+import { SearchDialogComponent } from '../search-list/search-dialog/search-dialog.component';
 import { Utils } from 'src/app/utils/util';
 import { ItemShoppingListService } from 'src/app/services/item-shopping-list.service';
 
 @Component({
-  selector: 'app-shopping-list',
-  templateUrl: './shopping-list.component.html',
-  styleUrls: ['./shopping-list.component.scss']
+  selector: 'app-lista-corrente',
+  templateUrl: './lista-corrente.component.html',
+  styleUrls: ['./lista-corrente.component.scss']
 })
 
-export class ShoppingListComponent implements OnInit {
+export class ListaCorrenteComponent implements OnInit {
   @Input() idLista: number = 0;
   @Output() closeEmit = new EventEmitter<void>();
   private list: ShoppingList = {} as ShoppingList;
@@ -55,8 +55,7 @@ export class ShoppingListComponent implements OnInit {
     @Optional() private readonly dialog: MatDialog,
     private readonly bottomSheet: MatBottomSheet,
     private readonly itemShoppingListService: ItemShoppingListService,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any // Aqui você recebe os dados
-
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: { idLista: number }
   ) { }
 
   ngOnInit(): void {
@@ -78,13 +77,14 @@ export class ShoppingListComponent implements OnInit {
   openSearch(): void {
     if (this.isMobile()) {
       const dialogRef = this.dialog.open(SearchDialogComponent, {
+        // data: { idLista: this.idLista },
         width: '100vw',
         height: '100vh',
         maxWidth: '100vw',
         panelClass: 'full-screen-dialog',
       });
 
-      dialogRef.afterClosed().subscribe((result: unknown) => {
+      dialogRef.afterClosed().subscribe((_: unknown) => {
         this.closeSearch();
       });
     } else {
@@ -107,7 +107,7 @@ export class ShoppingListComponent implements OnInit {
   }
 
   editItem(item: ShoppingItem, items: ShoppingItem[], index: number): void {
-    const bottomSheetRef = this.bottomSheet.open(ShoppingListEditComponent, {
+    const bottomSheetRef = this.bottomSheet.open(FormListaCorrenteItemComponent, {
       data: { itemsList: items, currentIndex: index },
       // disableClose: true
     });

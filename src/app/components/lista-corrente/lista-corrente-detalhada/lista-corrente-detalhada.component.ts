@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ShoppingDialogComponent } from 'src/app/components/shopping-dialog/shopping-dialog.component';
-import { Utils } from 'src/app/utils/util';
+import { Component, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { Router, ActivatedRoute } from "@angular/router";
+import { Utils } from "src/app/utils/util";
+import { ListaCorrenteDialogComponent } from "../lista-corrente-dialog/lista-corrente-dialog.component";
+
 
 @Component({
-  selector: 'app-lista-detalhada',
-  templateUrl: './lista-detalhada.component.html',
-  styleUrls: ['./lista-detalhada.component.scss']
+  selector: 'app-lista-corrente-detalhada',
+  templateUrl: './lista-corrente-detalhada.component.html',
+  styleUrls: ['./lista-corrente-detalhada.component.scss']
 })
-export class ListaDetalhadaComponent implements OnInit {
+export class ListaCorrenteDetalhadaComponent implements OnInit {
   isMobile: boolean = true;
   id: number = 0;
 
@@ -23,7 +24,7 @@ export class ListaDetalhadaComponent implements OnInit {
       this.id = Number(params.get('id') ?? 0 + 0);
 
       if (this.isMobile) {
-        const dialogRef = this.dialog.open(ShoppingDialogComponent, {
+        const dialogRef = this.dialog.open(ListaCorrenteDialogComponent, {
           data: { idLista: this.id},
           width: '100vw',
           height: '100vh',

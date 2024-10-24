@@ -16,11 +16,11 @@ export interface FormEdicaoShopping {
 }
 
 @Component({
-  selector: 'app-shopping-list-edit',
-  templateUrl: './shopping-list-edit.component.html',
-  styleUrls: ['./shopping-list-edit.component.scss']
+  selector: 'app-form-lista-corrente-item',
+  templateUrl: './form-lista-corrente-item.component.html',
+  styleUrls: ['./form-lista-corrente-item.component.scss']
 })
-export class ShoppingListEditComponent implements AfterViewInit {
+export class FormListaCorrenteItemComponent implements AfterViewInit {
   editForm!: FormGroup<FormEdicaoShopping>;
   expanded = false;
   units = Object.values(ItemUnit);
@@ -44,7 +44,7 @@ export class ShoppingListEditComponent implements AfterViewInit {
   constructor(
     private readonly fb: FormBuilder,
     private readonly dbService: ShoppingItemService,
-    private readonly bottomSheetRef: MatBottomSheetRef<ShoppingListEditComponent>,
+    private readonly bottomSheetRef: MatBottomSheetRef<FormListaCorrenteItemComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: { itemsList: ShoppingItem[], currentIndex: number }
   ) {
     this.itemsList = data.itemsList;

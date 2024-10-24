@@ -4,9 +4,9 @@ import { ItemShoppingList } from 'src/app/models/interfaces';
 import { Utils } from 'src/app/utils/util';
 
 @Component({
-  selector: 'app-list-item',
-  templateUrl: './list-item.component.html',
-  styleUrls: ['./list-item.component.scss'],
+  selector: 'app-listas-item',
+  templateUrl: './listas-item.component.html',
+  styleUrls: ['./listas-item.component.scss'],
 })
 export class ListItemComponent {
   @Input() item!: ItemShoppingList;

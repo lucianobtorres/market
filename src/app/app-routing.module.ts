@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { ListaDetalhadaComponent } from './pages/lista-detalhada/lista-detalhada.component';
+import { ListaCorrenteDetalhadaComponent } from './components/lista-corrente/lista-corrente-detalhada/lista-corrente-detalhada.component';
 
 export const ROTAS = {
   root: '/',
@@ -12,7 +12,7 @@ export const ROTAS = {
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: ROTAS.home, component: HomeComponent },
-  { path: `${ROTAS.lista}/:id`, component: ListaDetalhadaComponent },
+  { path: `${ROTAS.lista}/:id`, component: ListaCorrenteDetalhadaComponent },
   {
     path: '**',
     loadChildren: () =>
