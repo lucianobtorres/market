@@ -1,10 +1,7 @@
 @use "theme-variables" as theme;
 
 :host {
-  gap: 8px;
-  flex-direction: column;
   padding: 12px 0;
-  width: 100%;
 }
 
 .flex-row {

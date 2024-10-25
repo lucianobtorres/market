@@ -16,19 +16,24 @@ mat-list-item#itens {
   align-items: flex-start;
   height: auto;
 }
+
+.list-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
 .header {
   width: 100%;
   display: flex;
   padding: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.shopping-list {
-  max-width: 600px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  height: inherit;
-}
+
 .edicao-container{
   padding-top: 16px;
   display: flex;
@@ -44,8 +49,6 @@ mat-list-item#itens {
   margin-top: 16px;
   width: 100%;
 }
-
-
 
 @media (min-width: 768px) {
   .list-container {
@@ -84,39 +87,10 @@ h3 {
   margin: 0;
 }
 
-.list-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
-}
-
-.swipeable-container {
-  display: flex;
-  align-items: center;
-  transition: transform 0.3s ease;
-}
-
 .swipeable-item {
-  display: flex;
-  align-items: center;
   width: 100%; /* Garante que ocupe todo o espaço */
   background-color: white; /* Cor de fundo padrão */
   transition: background-color 0.3s ease; /* Transição para a cor de fundo */
-}
-
-.swipeable-item2 {
-  display: flex;
-  align-items: center;
-  width: 100%; /* Garante que ocupe todo o espaço */
-}
-
-.completed-icon {
-  margin-left: auto;
-  color: #00b894; /* Cor para indicar completado */
 }
 
 mat-list {
@@ -126,7 +100,7 @@ mat-list {
 }
 
 .list-wait {
-  background-color: #00b894;
+  background-color: #fff;
   margin-bottom: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -155,13 +129,10 @@ mat-list-item::after {
   background-color: #e0e0e0;
 }
 
-mat-list-item>span {
-  width: 100%;
-}
-
-app-shopping-item {
+app-lista-corrente-item {
   display: flex;
   flex: 1;
+  flex-direction: column;
 }
 
 .floating-btn {
@@ -200,21 +171,8 @@ app-shopping-item {
   border-radius: 16px;
 }
 
-.open-search {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-}
-
 @media (min-width: 768px) {
   .search-panel {
     display: block;
   }
-}
-
-.dialog-content {
-  display: flex;
-  overflow: hidden;
-  height: 100%;
-  gap: 64px;
 }

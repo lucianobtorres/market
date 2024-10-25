@@ -75,7 +75,7 @@ export class FormListaCorrenteItemComponent implements AfterViewInit {
         nome: this.editForm.value.nome ?? '',
         quantidade: this.editForm.value.quantidade ?? 1,
         preco: this.editForm.value.preco ?? undefined,
-        unidade: this.editForm.value.unidade ?? ItemUnit.UN,
+        unidade: this.editForm.value.unidade ?? ItemUnit.UNIDADE,
         notas: this.editForm.value.anotacao ?? undefined,
         shoppingListId: this.item.shoppingListId
       };

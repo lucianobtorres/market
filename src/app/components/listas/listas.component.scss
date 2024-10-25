@@ -29,7 +29,8 @@ mat-list-item {
   border-radius: 8px;
 }
 
-:host ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+:host ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content,
+.mat-list-base .mat-list-option .mat-list-item-content {
   padding: 0 !important;
 }
 
@@ -44,4 +45,10 @@ mat-list-item {
   border-radius: 50px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 1200px) {
+  .floating-btn {
+    right: 36vw;
+  }
 }

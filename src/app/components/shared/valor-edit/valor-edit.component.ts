@@ -74,7 +74,7 @@ export class ValorEditComponent implements AfterViewInit {
         nome: this.item.nome ?? '',
         quantidade: this.editForm.value.quantidade ?? 1,
         preco: this.editForm.value.preco ?? undefined,
-        unidade: this.editForm.value.unidade ?? ItemUnit.UN,
+        unidade: this.editForm.value.unidade ?? ItemUnit.UNIDADE,
         notas: this.item.notas,
         shoppingListId: this.item.shoppingListId
       };

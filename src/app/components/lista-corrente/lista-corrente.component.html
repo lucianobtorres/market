@@ -37,8 +37,8 @@
                 (touchmove)="onTouchMove($event, item)"
                 (touchend)="onTouchEnd(item)"
                 [ngStyle]="{'transform': 'translateX(' + item.translateX + 'px)'}"
-            ><app-shopping-item [item]="item"></app-shopping-item> -->
-                <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice" #itemswipe
+            ><app-lista-corrente-item [item]="item"></app-lista-corrente-item> -->
+                <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice"
                     (click)="editItem(item, itemListWait, indice)" class="swipeable-item"><app-lista-corrente-item
                         [item]="item"></app-lista-corrente-item>
                 </mat-list-item>

@@ -11,15 +11,15 @@ export const ROTAS = {
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: ROTAS.home, component: HomeComponent },
   { path: `${ROTAS.lista}/:id`, component: ListaCorrenteDetalhadaComponent },
+  { path: ROTAS.home, component: HomeComponent },
   {
     path: '**',
     loadChildren: () =>
       import('./pages/page-not-found/page-not-found.module')
         .then(m => m.PageNotFoundModule)
   },
-  { path: '**', redirectTo: '/home', pathMatch: 'full' },
+  // { path: '**', redirectTo: '/home', pathMatch: 'full' },
 ];
 
 @NgModule({

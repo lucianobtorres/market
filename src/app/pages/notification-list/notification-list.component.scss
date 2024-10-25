@@ -1,0 +1,32 @@
+@use "theme-variables" as theme;
+
+.notification-list {
+  max-width: 400px;
+  padding: 10px;
+  background-color: white;
+
+  .notification-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+
+    &.unread {
+      background-color: #f0f4f7;
+    }
+
+    .notification-content {
+      flex: 1;
+    }
+
+    .notification-time {
+      font-size: 0.75rem;
+      color: #888;
+    }
+
+    button {
+      color: theme.$primary-color;
+    }
+  }
+}
+

@@ -1,9 +1,10 @@
 
 export enum ItemUnit {
   KG = 'kg',
-  G = 'g',
-  L = 'l',
+  GRAMAS = 'gramas',
+  LITRO = 'litro',
   ML = 'ml',
-  UN = 'un'
+  UNIDADE = 'unidade',
+  PCT = 'pacote'
 }
 

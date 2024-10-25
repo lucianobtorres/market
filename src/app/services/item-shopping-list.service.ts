@@ -47,6 +47,5 @@ export class ItemShoppingListService {
 
       this.listasSubject$.next(combinedLists);
     }
-
   }
 }

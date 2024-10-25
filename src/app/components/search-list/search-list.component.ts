@@ -133,7 +133,7 @@ export class SearchListComponent implements OnInit {
         adding: true,
         dataCompra: new Date(),
         quantidade: 1,
-        unidade: ItemUnit.UN,
+        unidade: ItemUnit.UNIDADE,
         shoppingListId: this.idLista
       }];
 
@@ -163,7 +163,7 @@ export class SearchListComponent implements OnInit {
         nome: item.nome,
         quantidade: item.quantidade || minValue,
         completed: false,
-        unidade: item.unidade ?? ItemUnit.UN,
+        unidade: item.unidade ?? ItemUnit.UNIDADE,
         shoppingListId: this.idLista
       };
 
@@ -212,9 +212,9 @@ export class SearchListComponent implements OnInit {
   private getIncrement(unidade: ItemUnit): number {
     switch (unidade) {
       case ItemUnit.KG:
-      case ItemUnit.G:
+      case ItemUnit.GRAMAS:
         return 0.5;
-      case ItemUnit.L:
+      case ItemUnit.LITRO:
       case ItemUnit.ML:
         return 0.1
       default:

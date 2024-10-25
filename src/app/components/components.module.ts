@@ -29,6 +29,7 @@ import { CapitalizePipe } from '../pipes/capitalize.pipe';
 import { ValorEditComponent } from './shared/valor-edit/valor-edit.component';
 import { ListasComponent } from './listas/listas.component';
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
+import { NotificationListComponent } from '../pages/notification-list/notification-list.component';
 
 export const components = [
   HomeComponent,
@@ -48,7 +49,8 @@ export const components = [
   SwipeListItemComponent,
   ValorEditComponent,
   ListasComponent,
-  ConfirmDialogComponent
+  ConfirmDialogComponent,
+  NotificationListComponent
 ]
 
 const directives = [

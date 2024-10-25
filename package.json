@@ -1,11 +1,13 @@
 {
   "name": "pwa-market",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "npm run copy-version && npm run build-icons && ng build --watch --base-href ./ --configuration production",
     "watch": "ng build --watch --configuration development",
+    "copy-version": "node copy-version.js",
+    "build-icons": "node convert-svg-to-png.js",
     "test": "ng test"
   },
   "private": true,
@@ -30,6 +32,7 @@
     "ng2-currency-mask": "^13.0.3",
     "quagga": "^0.12.1",
     "rxjs": "~7.5.0",
+    "sharp": "^0.29.3",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
