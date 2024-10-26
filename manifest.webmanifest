@@ -3,9 +3,9 @@
   "short_name": "PWA-Market",
   "theme_color": "slategray",
   "background_color": "slategray",
-  "display": "standalone",
+  "display": "fullscreen",
   "scope": "./",
-  "start_url": "./Market",
+  "start_url": "./",
   "orientation":"portrait",
   "icons": [
     {
