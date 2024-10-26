@@ -1,5 +1,5 @@
 import Dexie, { Table } from 'dexie';
-import { ShoppingItem, BoughtItems, ShoppingList } from '../models/interfaces';
+import { ShoppingItem, BoughtItems, ShoppingList, NotificationModel } from '../models/interfaces';
 import { CURRENT_DATABASE_VERSION, Migrations } from './migrations';
 
 
@@ -9,6 +9,7 @@ export interface VersionDB {
 }
 
 export class ModelDB extends Dexie {
+  notifications!: Table<NotificationModel, number>;
   shoppingLists!: Table<ShoppingList, number>;
   shoppingItems!: Table<ShoppingItem, number>;
   boughtItems!: Table<BoughtItems, number>;
@@ -22,6 +23,7 @@ export class ModelDB extends Dexie {
     this.version(CURRENT_DATABASE_VERSION).stores({
       //versions: '++id, version',
       //historicoCompras: '++id, compra, produto, data',
+      notifications: '++id, title, message, read, timestamp',
       shoppingItems: '++id, nome, notas, quantidade, unidade, preco, completed, shoppingListId',
       boughtItems: '++id, nome, notas, quantidade, unidade, preco, completed, dataCompra',
       shoppingLists: '++id, nome',

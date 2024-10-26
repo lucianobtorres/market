@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
+import { NotificationModel } from '../models/interfaces';
 
 const pathIcon = 'assets/icons/icon-72x72.png';
-
-export interface NotificationModel {
-  title?: string;
-  message: string;
-  read: boolean;
-  timestamp: Date;
-}
 
 @Injectable({
   providedIn: 'root',

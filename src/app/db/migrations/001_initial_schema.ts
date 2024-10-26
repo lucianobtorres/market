@@ -6,6 +6,16 @@ export async function migrateToVersion1(db: ModelDB) {
 
   await db.transaction('rw', db.tables, async () => {
 
+    await db.notifications.bulkAdd([
+      {
+        id: 1,
+        title: 'Bem-vindo à sua lista de compras!',
+        message: 'Explore as funcionalidades da aplicação.',
+        read: false,
+        timestamp: new Date(2024, 9, 25)
+      },
+    ]);
+
     await db.shoppingLists.bulkAdd([
       { id: 1, nome: 'Lista exemplo' },
     ]);

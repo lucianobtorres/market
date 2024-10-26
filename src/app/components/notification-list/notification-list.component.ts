@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { addDays } from 'date-fns';
-import { NotificationModel } from 'src/app/services/notification.service';
+import { liveQuery } from 'dexie';
+import { db } from 'src/app/db/model-db';
+import { NotificationModel } from 'src/app/models/interfaces';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-notification-list',
@@ -10,88 +13,24 @@ import { NotificationModel } from 'src/app/services/notification.service';
 export class NotificationListComponent implements OnInit {
   notifications: NotificationModel[] = [];
 
-  constructor() { }
-  showNotifications = true;
+  constructor(private readonly dbService: NotificationService,) { }
+  showNotifications = false;
 
+  private itens$ = liveQuery(() => db.notifications.toArray());
   toggleNotifications() {
     this.showNotifications = !this.showNotifications;
   }
 
   ngOnInit(): void {
-    // Exemplo de inicialização, você pode substituir por dados reais.
-    this.notifications = [
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-      { message: 'Você tem uma nova mensagem', read: false, timestamp: new Date() },
-      { title: 'Feliz Aniversário 🎉',  message: 'Atualização disponível', read: true, timestamp: addDays(new Date(), -20) },
-    ];
-    this.notifications.sort((a,b) => a.timestamp.getTime() - b.timestamp.getTime())
+    this.itens$.subscribe((itens) => {
+      console.log(itens)
+      this.notifications = itens;
+      this.notifications.sort((a,b) => a.timestamp.getTime() - b.timestamp.getTime())
+    });
   }
 
   markAsRead(notification: NotificationModel) {
     notification.read = true;
-    // Aqui, você pode salvar o estado atualizado em um backend ou localmente
+    db.notifications.update(notification.id!, notification);
   }
 }

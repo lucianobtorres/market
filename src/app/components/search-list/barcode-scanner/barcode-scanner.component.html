@@ -1,6 +1,6 @@
 <div id="camera-container">
     <small id="barcode-result" *ngIf="!isCameraAccessible">Código de Barras: {{ barcode }}</small>
-    <div id="camera-wrapper" *ngIf="!isCameraAccessible">
+    <div id="camera-wrapper" *ngIf="isCameraAccessible">
         <div id="interactive" #interactive class="viewport"></div>
         <div id="scan-line"></div>
     </div>

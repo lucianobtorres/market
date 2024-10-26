@@ -2,6 +2,14 @@ import { ItemUnit } from "./item-unit";
 
 export type CombinedItem = (BoughtItems & Partial<ShoppingItem>) | (ShoppingItem & Partial<BoughtItems>);
 
+export interface NotificationModel {
+  id?: number;
+  title?: string;
+  message: string;
+  read: boolean;
+  timestamp: Date;
+}
+
 export interface ItemShoppingList {
   shopping: ShoppingList,
   itens: ShoppingItem[]
