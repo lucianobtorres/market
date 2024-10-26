@@ -5,6 +5,7 @@
         height: 100%;
         margin: 0px;
         overflow: hidden;
+        background-color: slategray;
     }
 
     .contentChart {
@@ -120,12 +121,27 @@
     <title>PWA-Market</title>
     <meta charset="utf-8">
     <base href="/">
+
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&amp;display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" />
+
+    <!-- Pequenos e médios dispositivos -->
+    <link rel="apple-touch-startup-image" href="assets/splash/logo-640x1136.png"
+        media="(max-device-width: 375px) and (-webkit-device-pixel-ratio: 2)">
+
+    <!-- Dispositivos médios a grandes -->
+    <link rel="apple-touch-startup-image" href="assets/splash/logo-1242x2208.png"
+        media="(max-device-width: 414px) and (-webkit-device-pixel-ratio: 3)">
+
+    <!-- Tablets e maiores resoluções -->
+    <link rel="apple-touch-startup-image" href="assets/splash/logo-1668x2388.png"
+        media="(min-device-width: 600px) and (-webkit-device-pixel-ratio: 2)">
 
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#fafafa">
