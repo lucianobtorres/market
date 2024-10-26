@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/services/notification.service';
+import { VersionService } from 'src/app/services/version.service';
 
 @Component({
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  templateUrl: './settings.component.html',
+  styleUrls: ['./settings.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class SettingsComponent implements OnInit {
   constructor(
+    private versionService: VersionService,
     private notificationService: NotificationService,
   ) { }
 

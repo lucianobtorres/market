@@ -107,3 +107,7 @@ $clip: polygon(50% 0%, 0% 100%, 100% 100%);
   max-height: 100vh;
   border-radius: 0; /* Remove bordas arredondadas */
 }
+
+h3, h4, .mat-card-heade.mat-card-title {
+  font-weight: 400;
+}

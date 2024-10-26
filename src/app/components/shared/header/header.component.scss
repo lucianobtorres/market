@@ -1,8 +1,9 @@
 @use "theme-variables" as *;
 
-mat-card-title {
+mat-card-title.mat-card-title {
   text-transform: capitalize;
   color: $primary-color;
+  font-weight: 400;
 }
 
 .menu-super {
