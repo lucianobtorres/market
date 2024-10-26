@@ -1,9 +1,9 @@
 {
   "name": "PWA-Market",
   "short_name": "PWA-Market",
-  "theme_color": "#fafafa",
-  "background_color": "#fafafa",
-  "display": "standalone",
+  "theme_color": "#00b894",
+  "background_color": "#00b894",
+  "display": "fullscreen",
   "scope": "./",
   "start_url": "./",
   "orientation":"portrait",
