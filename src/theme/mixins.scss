@@ -2,7 +2,7 @@
 
 @mixin toolbar-config {
   height: $toolbar-height;
-  background-color: inherit;
+  // background-color: inherit;
 }
 
 @mixin page-default {
@@ -23,7 +23,7 @@
 @mixin clickable-icon {
   cursor: pointer;
 
-  &:hover {
-    color: $accent-color-light;
-  }
+  // &:hover {
+  //   color: $accent-color-light;
+  // }
 }

@@ -1,51 +1,51 @@
 @use "theme-variables" as *;
 
-:host{
+:host {
   display: flex;
   flex-direction: column;
   position: relative;
   bottom: 0;
   width: 100%;
-}
 
-.container-button {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: inherit;
-}
-
-footer {
-  margin-top: auto;
-  overflow: hidden;
-  width: 100%;
-}
-
-button:not(.active-menu-item) {
-  color: $color-low-emphasis;
-}
-
-.menu-tabs {
-  min-height: 32px;
-  min-width: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  line-height: normal;
-
-  small {
-    font-size: 10px;
+  mat-toolbar {
+    background-color: slategray;
+    height: 80px;
   }
 }
 
+footer {
+  .container-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: inherit;
+  }
 
-:host mat-toolbar {
-  background-color: slategray;
-  height: 80px;
-}
+  margin-top: auto;
+  overflow: hidden;
+  width: 100%;
 
-button {
-  margin: auto;
-  padding: 0;
+  button:not(.active-menu-item) {
+    color: $color-low-emphasis;
+  }
+
+
+  .menu-tabs {
+    min-height: 32px;
+    min-width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: normal;
+
+    small {
+      font-size: 10px;
+    }
+  }
+
+  button {
+    margin: auto;
+    padding: 0;
+  }
 }

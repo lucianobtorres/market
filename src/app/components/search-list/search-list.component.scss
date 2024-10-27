@@ -10,34 +10,35 @@
   padding: 16px;
   gap: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
 
-.search-field {
-  width: 100%;
-}
 
-.search-content {
-  display: flex;
-  overflow: auto;
-}
+  .search-field {
+    width: 100%;
+  }
 
-mat-list {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-}
+  .search-content {
+    display: flex;
+    overflow: auto;
+  }
 
-mat-list-item {
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-}
+  mat-list {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
 
-:host ::ng-deep .mat-form-field-wrapper {
-  padding-bottom: 0;
-}
+  mat-list-item {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+  }
 
-.show-barcode {
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
+  :host ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+
+  .show-barcode {
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+  }
 }

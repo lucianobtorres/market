@@ -2,57 +2,65 @@
 
 :host {
   overflow: hidden;
-
-}.mat-icon {
-  transition: transform 0.3s ease; /* Suaviza a rotação */
 }
 
-.rotated {
-  transform: rotate(180deg); /* Rotaciona o ícone quando marcado */
-}
-.notification-header{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  border-radius: 4px;
-  padding-inline: 24px;
-  &:hover{
-    background: rgba(0, 0, 0, 0.04);
+.notification-container {
+  // .mat-icon {
+  //   transition: transform 0.3s ease;
+  //   /* Suaviza a rotação */
+  // }
+
+  .rotated {
+    transform: rotate(180deg);
+    /* Rotaciona o ícone quando marcado */
   }
-}
-.notification-list {
-  width: 100%;
-  max-width: 400px;
-  padding: 16px;
 
-  overflow: auto;
-
-  .notification-item {
+  .notification-header {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 4px;
+    padding-inline: 24px;
 
-    .notification-content {
-      flex: 1;
-    }
-
-    .notification-time {
-      font-size: 0.75rem;
-      color: $color-low-emphasis;
+    &:hover {
+      background: rgba(0, 0, 0, 0.04);
     }
   }
-}
 
-mat-card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
+  .notification-list {
+    width: 100%;
+    max-width: 400px;
+    padding: 16px;
 
-mat-card-content {
-  display: flex;
-  overflow: hidden;
-  height: 100%;
+    overflow: auto;
+
+    .notification-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+
+      .notification-content {
+        flex: 1;
+      }
+
+      .notification-time {
+        font-size: 0.75rem;
+        color: $color-low-emphasis;
+      }
+    }
+  }
+
+  mat-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  mat-card-content {
+    display: flex;
+    overflow: hidden;
+    height: 100%;
+  }
 }

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { addDays } from 'date-fns';
 import { liveQuery } from 'dexie';
-import { db } from 'src/app/db/model-db';
 import { NotificationModel } from 'src/app/models/interfaces';
 import { NotificationService } from 'src/app/services/notification.service';
+import { db } from 'src/app/db/model-db';
 
 @Component({
   selector: 'app-notification-list',

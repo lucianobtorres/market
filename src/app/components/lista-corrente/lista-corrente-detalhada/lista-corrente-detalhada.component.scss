@@ -19,18 +19,3 @@ mat-card-content {
   box-sizing: border-box;
   overflow: hidden;
 }
-
-.features {
-  mat-icon:not(.btn),
-  small {
-    color: $color-disabled;
-  }
-
-  display: flex;
-  gap: 16px;
-  align-items: center;
-
-  span {
-    font-weight: 500;
-  }
-}

@@ -3,95 +3,96 @@
   margin-inline: 8px;
 }
 
-.item-container {
-  display: inline-flex;
-  align-items: center;
-}
-
 .list-item-content {
   display: flex;
   align-items: center;
   width: 100%;
   justify-content: space-between;
-}
 
-.icon-status {
-  transition: transform 0.4s ease, color 0.4s ease;
-  /* Animação suave */
-  margin-right: 8px;
-}
 
-.item-name {
-  font-size: 1rem;
-  flex-grow: 1;
-}
+  .item-container {
+    display: inline-flex;
+    align-items: center;
+  }
 
-.list-item-content[completed="true"] {
-  filter: opacity(0.4);
-}
+  .icon-status {
+    transition: transform 0.4s ease, color 0.4s ease;
+    /* Animação suave */
+    margin-right: 8px;
+  }
 
-.icon-add {
-  color: #00b894;
-  /* Verde para adicionar */
-}
+  .item-name {
+    font-size: 1rem;
+    flex-grow: 1;
+  }
 
-.icon-remove {
-  color: #e74c3c;
-  /* Vermelho para remover */
-}
+  .list-item-content[completed="true"] {
+    filter: opacity(0.4);
+  }
 
-.icon-done {
-  color: #3498db;
-}
+  .icon-add {
+    color: #00b894;
+    /* Verde para adicionar */
+  }
 
-.icon-status.icon-add {
-  transform: rotate(0deg);
-  /* Ícone de adicionar na posição normal */
-}
+  .icon-remove {
+    color: #e74c3c;
+    /* Vermelho para remover */
+  }
 
-.icon-status.icon-remove {
-  transform: rotate(90deg);
-  /* Rotaciona para o X */
-}
+  .icon-done {
+    color: #3498db;
+  }
 
-.icon-status.icon-done {
-  transform: rotate(0deg);
-  filter: opacity(0.8);
-}
+  .icon-status.icon-add {
+    transform: rotate(0deg);
+    /* Ícone de adicionar na posição normal */
+  }
 
-.counter-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  /* Espaçamento entre os botões */
-}
+  .icon-status.icon-remove {
+    transform: rotate(90deg);
+    /* Rotaciona para o X */
+  }
 
-.counter-button {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 24px;
-  height: 24px;
-  border: none;
-  border-radius: 35%;
-  cursor: pointer;
-  transition: background-color 0.3s, box-shadow 0.2s, opacity 0.2s;
-  opacity: 0.8;
-  padding: 0;
-}
+  .icon-status.icon-done {
+    transform: rotate(0deg);
+    filter: opacity(0.8);
+  }
 
-.counter-button:hover {
-  filter: brightness(0.9);
-  opacity: 1;
-}
+  .counter-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    /* Espaçamento entre os botões */
+  }
 
-.counter-button:active {
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
-}
+  .counter-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 35%;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.2s, opacity 0.2s;
+    opacity: 0.8;
+    padding: 0;
+  }
 
-.counter-button mat-icon {
-  font-size: 16px;
-  height: 16px;
-  width: 16px;
+  .counter-button:hover {
+    filter: brightness(0.9);
+    opacity: 1;
+  }
+
+  .counter-button:active {
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+
+  .counter-button mat-icon {
+    font-size: 16px;
+    height: 16px;
+    width: 16px;
+  }
 }

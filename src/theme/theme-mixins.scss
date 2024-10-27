@@ -10,11 +10,11 @@
     background-color: $background-primary-light;
   }
 
-  .notification-item {
-    button {
-      color: $primary-color-light;
-    }
-  }
+  // .notification-item {
+  //   button {
+  //     color: $primary-color-light;
+  //   }
+  // }
 
   #scan-line {
     background-color: $primary-color-dark;
@@ -60,11 +60,11 @@
     background-color: $background-primary-dark;
   }
 
-  .notification-item {
-    button {
-      color: $primary-color-dark;
-    }
-  }
+  // .notification-item {
+  //   button {
+  //     color: $primary-color-dark;
+  //   }
+  // }
 
   #scan-line {
     background-color: $primary-color-dark;
@@ -98,4 +98,5 @@
   .component-container {
     background-color: $background-primary-dark;
   }
+
 }

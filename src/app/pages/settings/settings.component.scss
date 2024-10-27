@@ -3,55 +3,43 @@
 :host {
   height: 100%;
 }
-mat-card {
-  height: inherit;
-  overflow: auto;
-}
-
-mat-card-content {
-  height: inherit;
-  gap: 32px;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-.features {
-  mat-icon:not(.btn),
-  small {
-    color: $color-disabled;
-  }
-
-  display: flex;
-  gap: 16px;
-  align-items: center;
-
-  span {
-    font-weight: 500;
-  }
-}
 
 /* Define um contêiner geral com altura total do router-outlet */
 .content-container {
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden; /* Previne que o conteúdo ultrapasse o limite do router-outlet */
-}
+  overflow: hidden;
 
-/* Define o cabeçalho como fixo */
-.header-container {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: var(--background-color);
-  padding: 8px;
-}
+  /* Previne que o conteúdo ultrapasse o limite do router-outlet */
+  mat-card {
+    height: inherit;
+    overflow: auto;
+  }
 
-/* Define a área rolável para o conteúdo */
-.scrollable-content {
-  overflow-y: auto;
-  flex: 1;
-  padding: 16px;
+  mat-card-content {
+    height: inherit;
+    gap: 32px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+
+  /* Define o cabeçalho como fixo */
+  .header-container {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--background-color);
+    padding: 8px;
+  }
+
+  /* Define a área rolável para o conteúdo */
+  .scrollable-content {
+    overflow-y: auto;
+    flex: 1;
+    padding: 16px;
+  }
 }

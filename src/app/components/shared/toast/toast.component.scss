@@ -5,7 +5,6 @@
 }
 
 @mixin style-color-type-msg($selector, $cor) {
-
   :host app-toast,
   #{$selector},
   #{$selector} mat-icon:not(.icon-close) {
@@ -24,32 +23,33 @@
 .base {
   border-radius: 16px;
   overflow: hidden;
-}
 
-.toast-main {
-  display: flex;
-  gap: 16px;
-  padding-right: 16px;
-}
 
-.side-bar-color {
-  min-width: 6px;
-}
+  .toast-main {
+    display: flex;
+    gap: 16px;
+    padding-right: 16px;
+  }
 
-mat-icon,
-app-button-icon {
-  margin-block: auto;
-  min-width: 24px;
-}
+  .side-bar-color {
+    min-width: 6px;
+  }
 
-.message-box {
-  flex-grow: 1;
+  mat-icon,
+  app-button-icon {
+    margin-block: auto;
+    min-width: 24px;
+  }
 
-  display: flex;
-  flex-direction: column;
-  padding-block: 12px;
-}
+  .message-box {
+    flex-grow: 1;
 
-.icon-close {
-  margin: auto;
+    display: flex;
+    flex-direction: column;
+    padding-block: 12px;
+  }
+
+  .icon-close {
+    margin: auto;
+  }
 }

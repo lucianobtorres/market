@@ -4,9 +4,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
-  styles: [`mat-dialog-actions {
-    justify-content: flex-end;
-  }`]
+  styles: [`
+    mat-dialog-actions.confirm-action {
+      justify-content: flex-end;
+    }
+  `]
 })
 export class ConfirmDialogComponent {
 

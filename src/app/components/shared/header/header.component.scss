@@ -1,12 +1,6 @@
-@use "theme-variables" as *;
-
-mat-card-title.mat-card-title {
-  text-transform: capitalize;
-  font-weight: 400;
-}
-
-.menu-super {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.header-component {
+  mat-card-title.mat-card-title {
+    text-transform: capitalize;
+    font-weight: 400;
+  }
 }

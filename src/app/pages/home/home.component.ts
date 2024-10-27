@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { read } from 'fs';
-import { db } from 'src/app/db/model-db';
 import { NotificationService } from 'src/app/services/notification.service';
 import { VersionService } from 'src/app/services/version.service';
+import { db } from 'src/app/db/model-db';
 
 @Component({
   templateUrl: './home.component.html',

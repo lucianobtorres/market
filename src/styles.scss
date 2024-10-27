@@ -31,6 +31,10 @@ body.light-theme {
   }
 
   @include setlight();
+
+  // .mat-icon {
+  //   color: black; // ou use a cor primária
+  // }
 }
 
 body.dark-theme {
@@ -61,6 +65,10 @@ body.dark-theme {
   }
 
   @include setDark();
+
+  // .mat-icon {
+  //   color: white; // ou use a cor primária
+  // }
 }
 
 ::-webkit-scrollbar {
@@ -107,11 +115,11 @@ snack-bar-container.app-toast-container {
 mat-card {
   box-sizing: border-box;
   overflow: hidden;
-  background-color: inherit;
+  // background-color: inherit;
 }
 
 mat-card-content {
-  background-color: inherit;
+  // background-color: inherit;
 }
 
 div.mat-expansion-panel-body {

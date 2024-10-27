@@ -3,6 +3,11 @@
   cursor: pointer;
 }
 
+:host ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content,
+.mat-list-base .mat-list-option .mat-list-item-content {
+  padding: 0 !important;
+}
+
 @media (min-width: 768px) {
   :host {
     width: 450px;
@@ -10,28 +15,23 @@
   }
 }
 
-#itens {
-  height: auto;
-  padding-inline: 32px;
-  width: auto;
-}
-
-mat-list {
+.listas-container {
   display: flex;
   padding: 0;
   gap: 16px;
   flex-direction: column;
-}
 
-mat-list-item {
-  box-sizing: border-box;
-  border: 1px solid #d6d6d6;
-  border-radius: 8px;
-}
+  #itens {
+    height: auto;
+    padding-inline: 32px;
+    width: auto;
+  }
 
-:host ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content,
-.mat-list-base .mat-list-option .mat-list-item-content {
-  padding: 0 !important;
+  mat-list-item {
+    box-sizing: border-box;
+    border: 1px solid #d6d6d6;
+    border-radius: 8px;
+  }
 }
 
 .floating-btn {
