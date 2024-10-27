@@ -1,50 +1,96 @@
 @use '@angular/material' as mat;
 
+// Incluir o núcleo do Material
 @include mat.core();
 
-$mat-primary: (
-  //500: #EC7D10,
-  500: #00b894,
-  //A100: #6eb4ff,
-  A100: green,
-  contrast: (500: #ffffff, A100: #000000, )
+// Paletas principais para o tema claro e escuro
+$primary-palette: (
+  50: #e0f7fa,
+  100: #b2ebf2,
+  200: #80deea,
+  300: #4dd0e1,
+  400: #26c6da,
+  500: #00b894, // Cor principal
+  600: #00acc1,
+  700: #0097a7,
+  800: #00838f,
+  900: #006064,
+  A100: #a7ffeb,
+  A200: #64ffda,
+  A400: #1de9b6,
+  A700: #00bfa5,
+  contrast: (
+    50: #000000,
+    500: #ffffff
+  )
 );
 
-$mat-accent: (
-  500: #C200FB,
-  A100: #ffffff,
-  contrast: (500: #ffffff, A100: #000000, )
+$accent-palette: (
+  50: #e0f2f1,
+  100: #b2dfdb,
+  200: #80cbc4,
+  300: #4db6ac,
+  400: #26a69a,
+  500: #00796b, // Cor acentuada
+  600: #00695c,
+  700: #004d40,
+  800: #002f28,
+  900: #001712,
+  A100: #a7ffeb,
+  A200: #64ffda,
+  A400: #1de9b6,
+  A700: #00bfa5,
+  contrast: (
+    50: #000000,
+    500: #ffffff
+  )
 );
 
-$my-custom-palette: (
-  50: #c5f7d9,
-  100: #9cefb8,
-  200: #71e698,
-  300: #46de78,
-  400: #26d561,
-  500: #64ee85,
-  600: #00b732,
-  700: #008f25,
-  800: #006918,
-  900: #003d0c,
-  A100: #92f3a9,
-  A200: #64ee85,
-  A400: #36e961,
-  A700: #1ed44f,
 
-  contrast: (500: #ffffff, A100: #000000, )
+
+// Definindo paletas para uso do Angular Material
+$app-theme-primary: mat.define-palette($primary-palette, 500);
+$app-theme-accent: mat.define-palette($accent-palette, 500);
+
+// Configuração de tipografia padrão
+$typography-config: mat.define-typography-config(
+  $font-family: 'Roboto, "Helvetica Neue", sans-serif'
 );
 
-$app-theme-primary: mat.define-palette($mat-primary, 500, A100, 500);
-$app-theme-accent: mat.define-palette($my-custom-palette, 500);
+// Definindo o tema claro
+$app-light-theme: mat.define-light-theme((
+  color: (
+    primary: $app-theme-primary,
+    accent: $app-theme-accent,
+    background: (
+      background: #ffffff,
+      status-bar: #f8fafb
+    )
+  ),
+  typography: $typography-config
+));
 
-$tipo: mat.define-typography-config($font-family: 'Roboto, "Helvetica Neue", sans-serif');
+// Definindo o tema escuro
+$app-dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $app-theme-primary,
+    accent: $app-theme-accent,
+    background: (
+      background: #303030,
+      status-bar: #424242
+    )
+  ),
+  typography: $typography-config
+));
 
-$app-theme: mat.define-light-theme((color: (primary: //$my-custom-palette,
-        $app-theme-primary,
-        accent: $app-theme-accent ),
-      typography: $tipo));
+// Aplicando tipografia global
+@include mat.typography-hierarchy($typography-config);
 
-@include mat.typography-hierarchy($tipo);
+// Helper para alternar o tema com base em uma classe
+.dark-theme {
+  @include mat.all-component-themes($app-dark-theme);
+}
 
-@include mat.all-component-themes($app-theme);
+.light-theme {
+  @include mat.all-component-themes($app-light-theme);
+}

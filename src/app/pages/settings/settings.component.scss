@@ -32,10 +32,6 @@ mat-card-content {
   }
 }
 
-.neutro {
-  color: $color-disabled;
-}
-
 /* Define um contêiner geral com altura total do router-outlet */
 .content-container {
   display: flex;
@@ -49,7 +45,7 @@ mat-card-content {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: white;
+  background: var(--background-color);
   padding: 8px;
 }
 

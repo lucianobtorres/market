@@ -3,21 +3,41 @@
 
 @use "./app-theme.scss" as *;
 
-$color-config: mat.get-color-config($app-theme);
-$primary-color: mat.get-color-from-palette(map.get($color-config, "primary"));
-$accent-color: mat.get-color-from-palette(map.get($color-config, "accent"));
-$secondary-color: #FFBC0A;
+// Obtenha as cores da configuração de tema claro
+$color-config: mat.get-color-config($app-light-theme);
+$primary-color-light: mat.get-color-from-palette(map.get($color-config, "primary"));
+$accent-color-light: mat.get-color-from-palette(map.get($color-config, "accent"));
 
-$color-background: #f8fafb;
-$color-background-default: #ffffff;
+// Obtenha as cores da configuração de tema escuro
+$color-config-dark: mat.get-color-config($app-dark-theme);
+$primary-color-dark: mat.get-color-from-palette(map.get($color-config-dark, "primary"));
+$accent-color-dark: mat.get-color-from-palette(map.get($color-config-dark, "accent"));
+
+// Cores comuns
+$secondary-color: #FFBC0A;
 $color-low-emphasis: rgba(0, 0, 0, 0.54);
 $color-medium-emphasis: rgba(0, 0, 0, 0.6);
 $color-high-emphasis: rgba(0, 0, 0, 0.87);
 $color-disabled: rgba(0, 0, 0, 0.38);
 
+// Configurações de fundo
+$background-primary-light: #F5F5F5;
+$background-primary-dark: #1E1E1E;
+$background-accent-light: white;
+$background-accent-dark: black;
+
+// Configurações de hover
+$color-hover-light: #f8fafb;
+$color-hover-dark: #121212;
+
+// Tamanho do Toolbar e outros
+$toolbar-height: 80px;
+$item-menu-height: 40px;
+$page-defaultsize: 1280px;
+
 // Configuração das cores de fonte
-$font-primary: $primary-color;
-$font-accent: $accent-color;
+$font-primary: $primary-color-light;
+$font-accent: $accent-color-light;
 $font-low-emphasis: $color-low-emphasis;
 $font-medium-emphasis: $color-medium-emphasis;
 $font-high-emphasis: $color-high-emphasis;
@@ -28,7 +48,16 @@ $color-status-urgent: #ff0f0f;
 $color-status-resolved: #4caf50;
 $color-status-pendent: #ff8f00;
 
-// Sizes
-$toolbar-height: 80px;
-$item-menu-height: 40px;
-$page-defaultsize: 1280px;
+// Mapa de cores de tema
+$themes: (
+  light: (
+    background: $background-primary-light,
+    primary: $primary-color-light,
+    accent: $accent-color-light,
+  ),
+  dark: (
+    background: $background-primary-dark,
+    primary: $primary-color-dark,
+    accent: $accent-color-dark,
+  ),
+);

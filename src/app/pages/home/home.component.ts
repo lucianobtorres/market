@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { read } from 'fs';
 import { db } from 'src/app/db/model-db';
 import { NotificationService } from 'src/app/services/notification.service';
+import { VersionService } from 'src/app/services/version.service';
 
 @Component({
   templateUrl: './home.component.html',
@@ -11,6 +12,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private notificationService: NotificationService,
+    private versionService: VersionService,
   ) { }
 
   ngOnInit() {
@@ -26,5 +28,7 @@ export class HomeComponent implements OnInit {
       .catch(error => {
         console.error('Erro ao remover a lista ou os itens:', error);
       });
+
+      this.versionService.checkForUpdates();
   }
 }

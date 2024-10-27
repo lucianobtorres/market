@@ -3,35 +3,3 @@
 :host {
   height: 100%;
 }
-mat-card {
-  height: inherit;
-  overflow: auto;
-}
-
-mat-card-content {
-  height: inherit;
-  gap: 32px;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-.features {
-  mat-icon:not(.btn),
-  small {
-    color: $color-disabled;
-  }
-
-  display: flex;
-  gap: 16px;
-  align-items: center;
-
-  span {
-    font-weight: 500;
-  }
-}
-
-.neutro {
-  color: $color-disabled;
-}

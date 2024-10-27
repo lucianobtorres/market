@@ -21,7 +21,6 @@ mat-card-content {
 }
 
 .features {
-
   mat-icon:not(.btn),
   small {
     color: $color-disabled;
@@ -34,8 +33,4 @@ mat-card-content {
   span {
     font-weight: 500;
   }
-}
-
-.neutro {
-  color: $color-disabled;
 }

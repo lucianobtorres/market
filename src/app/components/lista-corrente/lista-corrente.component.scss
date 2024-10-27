@@ -1,3 +1,5 @@
+@use 'theme-variables' as *;
+
 :host {
   overflow: hidden;
   height: 100%;
@@ -74,7 +76,6 @@ mat-list-item#itens {
   display: flex;
   justify-content: flex-end;
   gap: 16px;
-  color: #333;
   align-items: center;
 }
 
@@ -88,9 +89,8 @@ h3 {
 }
 
 .swipeable-item {
-  width: 100%; /* Garante que ocupe todo o espaço */
-  background-color: white; /* Cor de fundo padrão */
-  transition: background-color 0.3s ease; /* Transição para a cor de fundo */
+  width: 100%;
+  transition: background-color 0.3s ease;
 }
 
 mat-list {
@@ -100,7 +100,6 @@ mat-list {
 }
 
 .list-wait {
-  background-color: #fff;
   margin-bottom: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -126,7 +125,7 @@ mat-list-item::after {
   /* Ajusta onde a borda termina */
   bottom: 0;
   height: 1px;
-  background-color: #e0e0e0;
+  background-color: #ccc;
 }
 
 app-lista-corrente-item {
@@ -140,8 +139,6 @@ app-lista-corrente-item {
   bottom: 8vh;
   right: 8vw;
   z-index: 100;
-  background-color: #00b894;
-  color: white;
   border: none;
   border-radius: 50px;
   cursor: pointer;
@@ -149,7 +146,7 @@ app-lista-corrente-item {
 }
 
 .floating-btn:hover {
-  background-color: #019875;
+  filter: brightness(10%);
 }
 
 @media (max-width: 600px) {

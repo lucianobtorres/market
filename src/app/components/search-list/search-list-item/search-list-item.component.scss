@@ -23,7 +23,6 @@
 
 .item-name {
   font-size: 1rem;
-  color: #333;
   flex-grow: 1;
 }
 
@@ -64,7 +63,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px; /* Espaçamento entre os botões */
+  gap: 8px;
+  /* Espaçamento entre os botões */
 }
 
 .counter-button {
@@ -73,7 +73,6 @@
   align-items: center;
   width: 24px;
   height: 24px;
-  background-color: rgba(0, 0, 0, 0.05);
   border: none;
   border-radius: 35%;
   cursor: pointer;
@@ -83,7 +82,7 @@
 }
 
 .counter-button:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  filter: brightness(0.9);
   opacity: 1;
 }
 

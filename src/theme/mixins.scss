@@ -1,12 +1,12 @@
-@use "theme-variables.scss" as t;
+@use "theme-variables.scss" as *;
 
 @mixin toolbar-config {
-  height: t.$toolbar-height;
+  height: $toolbar-height;
   background-color: inherit;
 }
 
 @mixin page-default {
-  $width: min(t.$page-defaultsize, 100%);
+  $width: min($page-defaultsize, 100%);
 
   width: $width;
   max-width: $width;
@@ -24,6 +24,6 @@
   cursor: pointer;
 
   &:hover {
-    color: t.$accent-color;
+    color: $accent-color-light;
   }
 }

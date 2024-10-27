@@ -32,6 +32,7 @@ import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.c
 import { NotificationListComponent } from './notification-list/notification-list.component';
 import { SettingsComponent } from '../pages/settings/settings.component';
 import { ShortDatePipe } from '../pipes/short-date.pipe';
+import { IconOutlinedDirective } from '../directives/icon-outlined.directive';
 
 export const components = [
   HomeComponent,
@@ -57,7 +58,7 @@ export const components = [
 ]
 
 const directives = [
-  TextEllipsisDirective,
+  TextEllipsisDirective, IconOutlinedDirective
 ];
 
 const pipes = [

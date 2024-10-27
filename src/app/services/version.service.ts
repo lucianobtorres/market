@@ -31,7 +31,7 @@ export class VersionService {
   }
 
   checkForUpdates(): void {
-    combineLatest([this.updates.versionUpdates, this.getVersion()])
+    combineLatest([this.updates.versionUpdates,  this.getVersion()])
       .subscribe(([event, currentVersion]) => {
         const notificacaoUpdate = {
           title: 'Atualização',

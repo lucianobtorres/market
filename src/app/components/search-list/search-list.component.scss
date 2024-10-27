@@ -37,12 +37,7 @@ mat-list-item {
   padding-bottom: 0;
 }
 
-mat-list-item:hover {
-  background-color: #f0f0f0;
-}
-
 .show-barcode {
-  background-color: rgba(0, 0, 0, 0.1);
   border-radius: 50%;
   transition: background-color 0.2s ease;
 }

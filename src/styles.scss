@@ -1,33 +1,72 @@
 @use 'mixins' as m;
 @use 'theme-variables' as *;
+@use 'theme-mixins' as *;
+@use 'app-theme' as *;
 @use '@angular/material' as mat;
 
-body {
-  background-color: $color-background;
+body.light-theme {
+  background-color: $background-primary-light;
+  color: $font-high-emphasis;
+
+  a {
+    color: $font-primary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background: $primary-color-light;
+    outline: 2px $background-primary-light solid;
+    background-clip: padding-box;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background: $background-primary-light;
+    outline: 2px $background-primary-light solid;
+    background-clip: padding-box;
+  }
+
+  .primary-color {
+    color: $primary-color-light;
+  }
+
+  @include setlight();
+}
+
+body.dark-theme {
+  background-color: $background-primary-dark;
+  color: $font-high-emphasis;
+
+  // Estilos que usam as cores do tema
+  a {
+    color: $font-primary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background: $primary-color-dark;
+    outline: 2px $background-primary-dark solid;
+    background-clip: padding-box;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background: $background-primary-dark;
+    outline: 2px $background-primary-dark solid;
+    background-clip: padding-box;
+  }
+
+  .primary-color {
+    color: $primary-color-dark;
+  }
+
+  @include setDark();
 }
 
 ::-webkit-scrollbar {
   cursor: pointer;
   width: 8px;
   height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  border-radius: 8px;
-  background: $color-background;
-  outline: 2px $color-background solid;
-  background-clip: padding-box;
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 8px;
-  background: $primary-color;
-  outline: 2px $color-background solid;
-  background-clip: padding-box;
-}
-
-.primary-color {
-  color: $primary-color;
 }
 
 .texto-ellipsis {
@@ -54,10 +93,25 @@ snack-bar-container.app-toast-container {
   right: 0 !important;
 }
 
+.component-container {
+  height: inherit;
+  gap: 32px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 32px;
+  background-color: white;
+}
+
 mat-card {
   box-sizing: border-box;
-  height: calc(100vh - 64px);
   overflow: hidden;
+  background-color: inherit;
+}
+
+mat-card-content {
+  background-color: inherit;
 }
 
 div.mat-expansion-panel-body {
@@ -66,7 +120,6 @@ div.mat-expansion-panel-body {
 
 $size-mark: 4px;
 $right: 5px;
-//$position: relative;
 $clip: polygon(50% 0%, 0% 100%, 100% 100%);
 
 .dw::before {
@@ -74,7 +127,6 @@ $clip: polygon(50% 0%, 0% 100%, 100% 100%);
   border-left: $size-mark solid transparent;
   border-right: $size-mark solid transparent;
   border-top: $size-mark solid $color-status-pendent;
-  //position: $position;
   right: $right;
   top: 10px;
   vertical-align: sub;
@@ -105,9 +157,11 @@ $clip: polygon(50% 0%, 0% 100%, 100% 100%);
   margin: 0;
   max-width: 100vw;
   max-height: 100vh;
-  border-radius: 0; /* Remove bordas arredondadas */
+  border-radius: 0;
 }
 
-h3, h4, .mat-card-heade.mat-card-title {
+h3,
+h4,
+.mat-card-heade.mat-card-title {
   font-weight: 400;
 }

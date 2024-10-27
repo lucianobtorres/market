@@ -1,3 +1,5 @@
+@use 'theme-variables' as *;
+
 .bottom-sheet {
   min-height: 400px;
   display: flex;
@@ -7,7 +9,7 @@
   .drag-handle {
     width: 50px;
     height: 5px;
-    background-color: #ccc;
+    background-color: $color-disabled;
     border-radius: 2.5px;
     margin: 0 auto 16px;
     cursor: pointer; // Mudança de cursor para indicar que pode ser clicado/arrastado
@@ -41,10 +43,7 @@
   margin-top: 8px;
 }
 
-
-.floating-primary-btn {
-  background-color: #00b894;
-  color: white;
+.floating-btn {
   border: none;
   border-radius: 50px;
   cursor: pointer;
