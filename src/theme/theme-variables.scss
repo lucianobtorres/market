@@ -1,7 +1,6 @@
 @use "@angular/material" as mat;
+@use "app-theme" as *;
 @use "sass:map";
-
-@use "./app-theme.scss" as *;
 
 // Obtenha as cores da configuração de tema claro
 $color-config: mat.get-color-config($app-light-theme);
@@ -22,7 +21,7 @@ $color-disabled: rgba(0, 0, 0, 0.38);
 
 // Configurações de fundo
 $background-primary-light: #F5F5F5;
-$background-primary-dark: #1E1E1E;
+$background-primary-dark: #424242;
 $background-accent-light: white;
 $background-accent-dark: black;
 
@@ -48,16 +47,3 @@ $color-status-urgent: #ff0f0f;
 $color-status-resolved: #4caf50;
 $color-status-pendent: #ff8f00;
 
-// Mapa de cores de tema
-$themes: (
-  light: (
-    background: $background-primary-light,
-    primary: $primary-color-light,
-    accent: $accent-color-light,
-  ),
-  dark: (
-    background: $background-primary-dark,
-    primary: $primary-color-dark,
-    accent: $accent-color-dark,
-  ),
-);

@@ -60,12 +60,9 @@ $typography-config: mat.define-typography-config(
 // Definindo o tema claro
 $app-light-theme: mat.define-light-theme((
   color: (
+    theme-type: light,
     primary: $app-theme-primary,
     accent: $app-theme-accent,
-    background: (
-      background: #ffffff,
-      status-bar: #f8fafb
-    )
   ),
   typography: $typography-config
 ));
@@ -73,24 +70,25 @@ $app-light-theme: mat.define-light-theme((
 // Definindo o tema escuro
 $app-dark-theme: mat.define-dark-theme((
   color: (
+    theme-type: dark,
     primary: $app-theme-primary,
     accent: $app-theme-accent,
-    background: (
-      background: #303030,
-      status-bar: #424242
-    )
   ),
   typography: $typography-config
 ));
 
-// Aplicando tipografia global
-@include mat.typography-hierarchy($typography-config);
-
-// Helper para alternar o tema com base em uma classe
-.dark-theme {
-  @include mat.all-component-themes($app-dark-theme);
-}
 
 .light-theme {
-  @include mat.all-component-themes($app-light-theme);
+  @include mat.all-component-colors($app-light-theme);
+  @include mat.button-color($app-light-theme);
+  @include mat.core-color($app-light-theme);
 }
+
+.dark-theme {
+  @include mat.all-component-colors($app-dark-theme);
+  @include mat.button-color($app-dark-theme);
+  @include mat.core-color($app-dark-theme);
+}
+
+// Aplicando tipografia global
+@include mat.typography-hierarchy($typography-config);

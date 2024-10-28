@@ -4,6 +4,10 @@
   height: 100%;
 }
 
+:host ::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
 .search-header {
   display: flex;
   align-items: center;
@@ -31,10 +35,6 @@
     cursor: pointer;
     display: flex;
     justify-content: space-between;
-  }
-
-  :host ::ng-deep .mat-form-field-wrapper {
-    padding-bottom: 0;
   }
 
   .show-barcode {

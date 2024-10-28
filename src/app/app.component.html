@@ -1,8 +1,8 @@
-<button mat-icon-button (click)="toggleTheme()">
-    <mat-icon> {{ iconTheme}} </mat-icon>
-</button>
 <div class="logo">
     <mat-icon [svgIcon]="iconeLogo" (click)="goHome()"></mat-icon>
+    <button mat-icon-button class="btn-theme" (click)="toggleTheme()">
+        <mat-icon [matTooltip]="iconTheme"> {{ iconTheme }} </mat-icon>
+    </button>
 </div>
 <main>
     <router-outlet>

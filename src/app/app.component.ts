@@ -80,6 +80,23 @@ export class AppComponent implements AfterViewInit, OnInit {
       this.deferredPrompt = event;
       installButton?.removeAttribute("hidden");
     });
+
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    console.log(prefersDark)
+    if (prefersDark) {
+      this.themeService.theme = 'light-theme';
+      this.themeService.toggleTheme();
+    }
+
+    // Escute as mudanças no sistema operacional
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      if (event.matches) {
+        this.themeService.theme = 'light-theme';
+      } else {
+        this.themeService.theme = 'dark-theme';
+      }
+      this.toggleTheme();
+    });
   }
 
   ngAfterViewInit(): void {

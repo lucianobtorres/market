@@ -10,39 +10,28 @@
     background-color: $background-primary-light;
   }
 
-  // .notification-item {
-  //   button {
-  //     color: $primary-color-light;
-  //   }
-  // }
+  .notification-item {
+    button {
+      color: $primary-color-light;
+    }
+  }
 
   #scan-line {
-    background-color: $primary-color-dark;
-    box-shadow: 0px 0px 10px $primary-color-dark;
+    background-color: $primary-color-light;
+    box-shadow: 0px 0px 10px $primary-color-light;
   }
 
-  mat-card-title.mat-card-title {
+  mat-card-title.mat-card-title, .detalhe:hover, .active-menu-item {
     color: $primary-color-light;
   }
 
-  .swipeable-item {
+  .swipeable-item, .list-wait {
     background-color: $background-accent-light;
-  }
-
-  .list-wait {
-    background-color: $background-accent-light;
-  }
-
-  .detalhe:hover {
-    color: $primary-color-light;
   }
 
   mat-list-item:hover {
+    cursor: pointer;
     background-color: $color-hover-light;
-  }
-
-  .active-menu-item {
-    color: $primary-color-light;
   }
 
   .component-container {
@@ -56,47 +45,31 @@
     background-color: $accent-color-dark;
   }
 
-  .notification-list {
+  .notification-list, .component-container {
     background-color: $background-primary-dark;
   }
 
-  // .notification-item {
-  //   button {
-  //     color: $primary-color-dark;
-  //   }
-  // }
+  .notification-item {
+    button {
+      color: $primary-color-dark;
+    }
+  }
 
   #scan-line {
     background-color: $primary-color-dark;
     box-shadow: 0px 0px 10px $primary-color-dark;
   }
 
-  mat-card-title.mat-card-title {
-    color: $primary-color-light;
-  }
-
-  .swipeable-item {
-    background-color: $background-accent-dark;
-  }
-
-  .list-wait {
-    background-color: $background-accent-dark;
-  }
-
-  .detalhe:hover {
+  mat-card-title.mat-card-title, .detalhe:hover, .active-menu-item {
     color: $primary-color-dark;
+  }
+
+  .swipeable-item, .list-wait {
+    background-color: $background-accent-dark;
   }
 
   mat-list-item:hover {
+    cursor: pointer;
     background-color: $color-hover-dark;
   }
-
-  .active-menu-item {
-    color: $primary-color-dark;
-  }
-
-  .component-container {
-    background-color: $background-primary-dark;
-  }
-
 }

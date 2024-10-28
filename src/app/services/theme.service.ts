@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
 
 export type ThemeTyped = 'dark-theme' | 'light-theme';
 
