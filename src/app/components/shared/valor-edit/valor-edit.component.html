@@ -20,7 +20,7 @@
 
         <mat-form-field >
             <mat-label>Preço</mat-label>
-            <input matInput type="number" inputmode="decimal" [formControl]="editForm.controls.preco"
+            <input #preco_input matInput type="number" inputmode="decimal" [formControl]="editForm.controls.preco" (blur)="onInputBlur()" (focus)="onInputFocus()"
                 placeholder="Ex: 12.50" autofocus #campoFoco>
         </mat-form-field>
 

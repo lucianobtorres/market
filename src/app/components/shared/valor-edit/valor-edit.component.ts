@@ -1,10 +1,11 @@
-import { AfterViewInit, Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { ItemUnit } from 'src/app/models/item-unit';
 import { ShoppingItem } from 'src/app/models/interfaces';
 import { ShoppingItemService } from 'src/app/services/shopping-item.service';
+import { Subject } from 'rxjs';
 
 
 export interface FormEdicaoValor {
@@ -18,7 +19,7 @@ export interface FormEdicaoValor {
   templateUrl: './valor-edit.component.html',
   styleUrls: ['./valor-edit.component.scss']
 })
-export class ValorEditComponent implements AfterViewInit {
+export class ValorEditComponent implements AfterViewInit, OnInit, OnDestroy {
   editForm!: FormGroup<FormEdicaoValor>;
   units = Object.values(ItemUnit);
 
@@ -42,6 +43,32 @@ export class ValorEditComponent implements AfterViewInit {
     this.setValues();
   }
 
+  @ViewChild('bottomSheetContent') bottomSheetContent!: ElementRef;
+  @ViewChild('preco_input', { static: false }) inputField!: ElementRef;
+  private ngUnsubscribe = new Subject<void>();
+  private keyboardOpen = false;
+
+  ngOnInit() {
+    window.addEventListener('resize', this.handleResize.bind(this));
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('resize', this.handleResize.bind(this));
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  private handleResize() {
+    const isKeyboardOpen = window.innerHeight < 600; // Ajuste este valor conforme necessário
+    if (isKeyboardOpen && !this.keyboardOpen) {
+      this.keyboardOpen = true;
+      // O teclado está aberto, dê foco ao campo
+      setTimeout(() => this.inputField.nativeElement.focus(), 300); // Atraso para permitir que o teclado apareça
+    } else if (!isKeyboardOpen) {
+      this.keyboardOpen = false;
+    }
+  }
+
   constructor(
     private readonly fb: FormBuilder,
     private readonly dbService: ShoppingItemService,
@@ -50,6 +77,19 @@ export class ValorEditComponent implements AfterViewInit {
   ) {
     this.itemsList = [data.item];
     this.currentIndex = 0;
+  }
+
+
+  onInputFocus(): void {
+    // Ajusta a posição do bottom sheet quando o campo é focado
+    const bottomSheetElement = this.bottomSheetContent.nativeElement;
+    bottomSheetElement.style.transform = 'translateY(-200px)'; // Ajuste conforme necessário
+  }
+
+  onInputBlur(): void {
+    // Retorna a posição do bottom sheet ao desfocar
+    const bottomSheetElement = this.bottomSheetContent.nativeElement;
+    bottomSheetElement.style.transform = 'translateY(0)';
   }
 
   ngAfterViewInit(): void {

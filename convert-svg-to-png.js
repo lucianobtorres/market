@@ -57,9 +57,27 @@ const convertSvgToPng = async (fileName, outputSizes, outputPath, options = {}) 
           .toFile(outputFilePath);
 
       } else {
-        // Processo padrão para ícones
-        await sharp(inputPath)
+        // Para ícones, aplicar fundo slategray
+        const iconBuffer = await sharp(inputPath)
           .resize(originalWidth, originalHeight, { fit: 'contain' }) // Ajusta a imagem para caber no tamanho especificado
+          .toBuffer();
+
+        // Cria uma nova imagem com o fundo desejado
+        await sharp({
+          create: {
+            width: originalWidth,
+            height: originalHeight,
+            channels: 4,
+            background: { r: 112, g: 128, b: 144, alpha: 1 }, // Cor slategray
+          }
+        })
+          .composite([
+            {
+              input: iconBuffer,
+              gravity: 'center', // Centraliza o ícone
+              blend: 'over'
+            }
+          ])
           .png()
           .toFile(outputFilePath);
       }
