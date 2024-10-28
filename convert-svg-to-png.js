@@ -15,8 +15,9 @@ if (!fs.existsSync(outputDirSplash)) {
   fs.mkdirSync(outputDirSplash, { recursive: true });
 }
 
-// Define um percentual para a escala
-const scalePercent = 0.8; // 80% do tamanho original
+// Define um percentual para a escala e a margem em pixels
+const scalePercent = 0.86; // 80% do tamanho original
+const margin = 6; // margem de 4 pixels ao redor do ícone
 
 // Função para converter SVG para PNG com diferentes tamanhos
 const convertSvgToPng = async (fileName, outputSizes, outputPath, options = {}) => {
@@ -28,10 +29,14 @@ const convertSvgToPng = async (fileName, outputSizes, outputPath, options = {}) 
     for (const size of outputSizes) {
       const outputFilePath = path.join(outputPath, `${baseName}-${size.width}x${size.height}.png`);
 
-      // Calcular novo tamanho com base no percentual
       const scaledWidth = Math.floor(size.width * scalePercent);
       const scaledHeight = Math.floor(size.height * scalePercent);
 
+      // Calcular novo tamanho, considerando a margem total
+      const iconWidth = Math.floor(originalWidth * scalePercent) - 2 * margin;
+      const iconHeight = Math.floor(originalHeight * scalePercent) - 2 * margin;
+
+      // Checa se estamos gerando uma splash screen com fundo colorido
       if (options.isSplash) {
         // Cria a imagem de fundo com a cor desejada
         const iconBuffer = await sharp(inputPath)
@@ -43,7 +48,7 @@ const convertSvgToPng = async (fileName, outputSizes, outputPath, options = {}) 
             width: scaledWidth,
             height: scaledHeight,
             channels: 4,
-            background: options.background, // cor de fundo (slategray)
+            background: options.background, // cor de fundo slategray
           }
         })
           .composite([
@@ -57,12 +62,11 @@ const convertSvgToPng = async (fileName, outputSizes, outputPath, options = {}) 
           .toFile(outputFilePath);
 
       } else {
-        // Para ícones, aplicar fundo slategray
+        // Processo padrão para ícones com fundo colorido
         const iconBuffer = await sharp(inputPath)
-          .resize(originalWidth, originalHeight, { fit: 'contain' }) // Ajusta a imagem para caber no tamanho especificado
+          .resize(iconWidth, iconHeight)
           .toBuffer();
 
-        // Cria uma nova imagem com o fundo desejado
         await sharp({
           create: {
             width: originalWidth,
@@ -74,7 +78,8 @@ const convertSvgToPng = async (fileName, outputSizes, outputPath, options = {}) 
           .composite([
             {
               input: iconBuffer,
-              gravity: 'center', // Centraliza o ícone
+              top: Math.floor((originalHeight - iconHeight) / 2),
+              left: Math.floor((originalWidth - iconWidth) / 2),
               blend: 'over'
             }
           ])
@@ -82,7 +87,7 @@ const convertSvgToPng = async (fileName, outputSizes, outputPath, options = {}) 
           .toFile(outputFilePath);
       }
 
-      console.log(`Convertido ${fileName} para ${size.width}x${size.height}px PNG.`);
+      console.log(`Convertido ${fileName} para ${size.width}x${size.height}px PNG com margem de ${margin}px.`);
     }
   } catch (error) {
     console.error(`Erro ao converter ${fileName}:`, error);

@@ -27,11 +27,13 @@
 
   .swipeable-item, .list-wait {
     background-color: $background-accent-light;
+    border-radius: 16px;
   }
 
   mat-list-item:hover {
     cursor: pointer;
     background-color: $color-hover-light;
+    border-radius: 16px;
   }
 
   .component-container {
@@ -66,10 +68,12 @@
 
   .swipeable-item, .list-wait {
     background-color: $background-accent-dark;
+    border-radius: 16px;
   }
 
   mat-list-item:hover {
     cursor: pointer;
     background-color: $color-hover-dark;
+    border-radius: 16px;
   }
 }

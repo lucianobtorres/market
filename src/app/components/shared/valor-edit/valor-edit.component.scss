@@ -1,5 +1,10 @@
+:host {
+  mat-bottom-sheet-container{
+    border-radius: 16px;
+  }
+}
+
 .bottom-sheet {
-  min-height: 400px;
   display: flex;
   flex-direction: column;
   gap: 16px;
