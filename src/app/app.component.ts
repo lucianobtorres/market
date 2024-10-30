@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IconsRegisterService } from './services/icons-register.service';
 import { ROTAS } from './app-routing.module';
 import { ThemeService, ThemeTyped } from './services/theme.service';
+import { Utils } from './utils/util';
 
 @Component({
   selector: 'app-root',
@@ -13,11 +14,16 @@ export class AppComponent implements AfterViewInit, OnInit {
   public iconeLogo = IconsRegisterService.LOGO;
   title = 'Market';
 
+  isMobile: boolean = false;
+
   deferredPrompt: any;
   public showInstallButton = false;
 
 
-  constructor(private router: Router, private themeService: ThemeService) {
+  constructor(
+    private router: Router,
+    private themeService: ThemeService,
+  ) {
     router.canceledNavigationResolution = 'computed';
 
     history.pushState(null, '', location.href);
@@ -26,45 +32,54 @@ export class AppComponent implements AfterViewInit, OnInit {
     };
   }
 
+  @HostListener('window:resize', [])
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize() {
+    this.isMobile = window.innerWidth < 840;
+  }
+
   ngOnInit() {
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       window.addEventListener('beforeinstallprompt', (e) => {
-          e.preventDefault();
+        e.preventDefault();
 
-          const deferredPrompt:any = e;
+        const deferredPrompt: any = e;
 
-          const installButton = document.createElement('button');
-          installButton.textContent = 'Install App';
-          installButton.style.position = 'fixed';
-          installButton.style.top = '10px';
-          installButton.style.left = '50%';
-          installButton.style.transform = 'translateX(-50%)';
-          installButton.style.zIndex = '9999';
-          installButton.style.padding = '10px 20px';
-          installButton.classList.add('btn-grad');
-          installButton.style.color = 'white';
-          installButton.style.border = 'none';
-          installButton.style.borderRadius = '5px';
-          installButton.style.cursor = 'pointer';
+        const installButton = document.createElement('button');
+        installButton.textContent = 'Install App';
+        installButton.style.position = 'fixed';
+        installButton.style.top = '10px';
+        installButton.style.left = '50%';
+        installButton.style.transform = 'translateX(-50%)';
+        installButton.style.zIndex = '9999';
+        installButton.style.padding = '10px 20px';
+        installButton.classList.add('btn-grad');
+        installButton.style.color = 'white';
+        installButton.style.border = 'none';
+        installButton.style.borderRadius = '5px';
+        installButton.style.cursor = 'pointer';
 
-          installButton.addEventListener('click', () => {
+        installButton.addEventListener('click', () => {
 
-              deferredPrompt.prompt();
+          deferredPrompt.prompt();
 
-              deferredPrompt.userChoice.then((choiceResult: { outcome: string; }) => {
-                  if (choiceResult.outcome === 'accepted') {
-                      console.log('App installed');
-                  } else {
-                      console.log('App installation declined');
-                  }
+          deferredPrompt.userChoice.then((choiceResult: { outcome: string; }) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('App installed');
+            } else {
+              console.log('App installation declined');
+            }
 
-                  installButton.style.display = 'none';
-              });
+            installButton.style.display = 'none';
           });
+        });
 
-          document.body.appendChild(installButton);
+        document.body.appendChild(installButton);
       });
-  }
+    }
     window.addEventListener('appinstalled', () => {
       // Hide the app-provided install promotion
       // hideInstallPromotion();
@@ -100,6 +115,7 @@ export class AppComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
+    this.checkScreenSize();
     //this.startup();
   }
 

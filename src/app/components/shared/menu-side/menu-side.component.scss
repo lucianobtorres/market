@@ -1,0 +1,67 @@
+@use "theme-variables" as *;
+
+nav {
+
+  padding: 16px;
+  color: #fff;
+
+  .container-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  button:not(.active-menu-item) {
+    color: slategray;
+  }
+
+  button {
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    border-radius: 8px;
+    flex: 1;
+    background: inherit;
+    height: 100%;
+    padding: 16px;
+  }
+
+  button:hover:not(.active-menu-item) {
+    color: inherit;
+  }
+
+  mat-list-item:hover {
+    cursor: pointer;
+  }
+
+  mat-list-item {
+    width: 100%;
+    color: rgba(0, 0, 0, 0.54);
+    height: 48px;
+  }
+
+  .menu-tabs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    height: 100%;
+  }
+
+  mat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
+
+:host ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+  padding: 0 ;
+}

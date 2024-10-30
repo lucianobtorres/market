@@ -7,6 +7,10 @@
   justify-content: center;
 }
 
+:host ::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
 .list-header {
   display: flex;
   flex-direction: column;
@@ -34,14 +38,14 @@ mat-list-item#itens {
   display: flex;
   padding: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  align-items: center;
 }
 
 .edicao-container{
   padding-top: 16px;
   display: flex;
-  gap: 64px;
   width: 100%;
-  justify-content: center;
+  justify-content: space-evenly;
   height: 100%;
   overflow: hidden;
 }

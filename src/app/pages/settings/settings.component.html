@@ -1,10 +1,11 @@
-<mat-card class="mat-elevation-z0 content-container">
-    <div class="header-container">
-        <app-header>
-            Configurações
-        </app-header>
+<div class="component-container">
+    <app-header>
+        Configurações
+    </app-header>
+    <div class="content-container">
+        <div style="overflow: auto;">
+            <app-notification-list></app-notification-list>
+        </div>
     </div>
-    <mat-card-content class="scrollable-content">
-        <app-notification-list></app-notification-list>
-    </mat-card-content>
-</mat-card>
+</div>
+

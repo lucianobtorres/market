@@ -1,11 +1,28 @@
-<div class="logo">
-    <mat-icon [svgIcon]="iconeLogo" (click)="goHome()"></mat-icon>
-    <button mat-icon-button class="btn-theme" (click)="toggleTheme()">
-        <mat-icon [matTooltip]="iconTheme"> {{ iconTheme }} </mat-icon>
-    </button>
+<div class="app-container">
+
+    <!-- Cabeçalho com logo e tema -->
+    <header class="app-header">
+        <div class="logo">
+            <mat-icon [svgIcon]="iconeLogo" (click)="goHome()"></mat-icon>
+            <button mat-icon-button class="btn-theme" (click)="toggleTheme()">
+                <mat-icon [matTooltip]="iconTheme">{{ iconTheme }}</mat-icon>
+            </button>
+        </div>
+    </header>
+
+    <!-- Menu lateral (desktop) ou no rodapé (mobile) -->
+    <div class="app-main">
+        <aside class="app-sidenav">
+            <app-menu-side></app-menu-side>
+        </aside>
+
+        <!-- Conteúdo principal -->
+        <main class="content">
+            <router-outlet></router-outlet>
+        </main>
+
+    </div>
+    <!-- Menu no footer apenas para mobile -->
+    <app-menu-footer *ngIf="isMobile"></app-menu-footer>
+
 </div>
-<main>
-    <router-outlet>
-    </router-outlet>
-</main>
-<app-menu></app-menu>

@@ -1,7 +1,58 @@
-:host {
+/* Layout Principal */
+.app-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: slategray;
+}
+
+.app-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Estilo para o Menu Lateral */
+.app-sidenav {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.01);
+}
+
+/* Conteúdo Principal */
+.content {
+  flex: 1;
+  overflow-y: hidden;
+}
+
+/* Menu no Rodapé */
+.app-footer {
+  display: none;
+}
+
+/* Estilos Responsivos */
+@media (max-width: 840px) {
+  .app-main {
+    flex-direction: column;
+  }
+
+  .app-sidenav {
+    display: none; /* Esconde o menu lateral no mobile */
+  }
+
+  .app-footer {
+    display: flex; /* Exibe o menu no rodapé no mobile */
+    justify-content: center;
+  }
 }
 
 .logo {
@@ -11,6 +62,7 @@
   background: slategray;
   padding: 16px;
   gap: 32px;
+  width: 100%;
 
   mat-icon {
     height: auto;
@@ -24,11 +76,4 @@
     justify-content: center;
     opacity: 0.4;
   }
-}
-
-main {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  flex-grow: 1;
 }

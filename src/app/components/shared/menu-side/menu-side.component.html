@@ -1,0 +1,13 @@
+<nav class="container-button">
+    <mat-list>
+        <mat-list-item *ngFor="let link of navLinks" mat-button [routerLink]="link.location">
+            <button
+            routerLinkActive="active-menu-item">
+            <div class="menu-tabs">
+                <mat-icon>{{ link.icon }}</mat-icon>
+                <span>{{ link.label }}</span>
+                </div>
+            </button>
+        </mat-list-item>
+    </mat-list>
+</nav>

@@ -3,18 +3,15 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-page-not-found',
   template: `
-  <mat-card class="mat-elevation-z0">
-    <div fxLayoutAlign="space-between">
+  <div class="component-container">
         <app-header>
           Página não encontrada
         </app-header>
-    </div>
-  </mat-card>
+  </div>
   `,
   styles: [`
-  mat-card {
-    height: 100vh;
-    overflow: hidden;
+  :host {
+    height: 100%;
   }
   `]
 })

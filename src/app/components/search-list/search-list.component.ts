@@ -119,26 +119,40 @@ export class SearchListComponent implements OnInit {
 
 
   private getFilteredItems(searchTerm: string) {
+    // Se não houver termo de busca, simplesmente retorna todos os itens
     if (!searchTerm) {
-      this.filteredItems = this.items.value;
-      this.sortFilter();
-      return;
+        this.filteredItems = this.items.value;
+        this.sortFilter();
+        return;
     }
 
-    const filtro = this.items.value.filter(x => x.nome.toLowerCase().includes(searchTerm.toLowerCase()));
-    this.filteredItems = filtro.length
-      ? filtro
-      : [{
-        nome: searchTerm,
-        adding: true,
-        dataCompra: new Date(),
-        quantidade: 1,
-        unidade: ItemUnit.UNIDADE,
-        shoppingListId: this.idLista
-      }];
+    // Filtra os itens com base no termo de busca
+    const filtro = this.items.value.filter(x =>
+        x.nome.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-      this.sortFilter();
-  }
+    // Sempre inclui o item que está sendo digitado na lista de resultados
+    this.filteredItems = filtro.length
+        ? [...filtro, {
+            nome: searchTerm,
+            adding: true,
+            dataCompra: new Date(),
+            quantidade: 1,
+            unidade: ItemUnit.UNIDADE,
+            shoppingListId: this.idLista
+          }]
+        : [{
+            nome: searchTerm,
+            adding: true,
+            dataCompra: new Date(),
+            quantidade: 1,
+            unidade: ItemUnit.UNIDADE,
+            shoppingListId: this.idLista
+          }];
+
+    this.sortFilter();
+}
+
 
   async toggleItem(item: CombinedItem) {
     const isInList = this.shoppingList.find(shoppingItem => shoppingItem.nome === item.nome);

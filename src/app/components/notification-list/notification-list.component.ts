@@ -22,9 +22,11 @@ export class NotificationListComponent implements OnInit {
 
   ngOnInit(): void {
     this.itens$.subscribe((itens) => {
-      console.log(itens)
       this.notifications = itens;
-      this.notifications.sort((a,b) => a.timestamp.getTime() - b.timestamp.getTime())
+      this.notifications.sort((a,b) => a.timestamp.getTime() - b.timestamp.getTime());
+      for (let index = 0; index < 4; index++) {
+        this.notifications.push(...itens)
+      }
     });
   }
 

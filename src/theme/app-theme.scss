@@ -91,4 +91,7 @@ $app-dark-theme: mat.define-dark-theme((
 }
 
 // Aplicando tipografia global
-@include mat.typography-hierarchy($typography-config);
+
+:root, html, body {
+  @include mat.typography-hierarchy($typography-config);
+}

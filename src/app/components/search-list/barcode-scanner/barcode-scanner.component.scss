@@ -8,7 +8,17 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 8px;
     margin-top: 20px;
+  }
+
+  .btn-scan-preco {
+    opacity: 0.4;
+    backdrop-filter: blur(10px);
+    top: 4px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background-color: white;
   }
 
   /* Exibição do código de barras */
@@ -64,5 +74,9 @@
 
   mat-form-field {
     margin-inline: 16px;
+  }
+  .selected-chip {
+    background-color: #00b894; /* Cor personalizada ao selecionar */
+    color: white; /* Cor do texto ao selecionar */
   }
 }

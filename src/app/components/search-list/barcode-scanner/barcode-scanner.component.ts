@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Output, EventEmitter, ElementRef } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 
 // @ts-ignore
 import Quagga from 'quagga';
 import { from, Observable } from 'rxjs';
+import { createWorker } from 'tesseract.js';
 
 @Component({
   selector: 'app-barcode-scanner',
@@ -12,10 +13,13 @@ import { from, Observable } from 'rxjs';
 })
 export class BarcodeScannerComponent implements OnInit, OnDestroy {
   // Referências aos elementos do DOM
-  @ViewChild('interactive') targetElement!: HTMLElement;
+  @ViewChild('interactive') targetElement!: ElementRef<HTMLElement>;
+  @ViewChild('capturedCanvas') capturedCanvas!: ElementRef<HTMLCanvasElement>;
   @Output() produtoEncontrado = new EventEmitter<string>();
 
+  isProcessingOcr = false;
   isCameraAccessible = true;
+  preco: string[] = [];
   productName: string | null = null;
   productImageSrc: string | null = null;
   barcode: string = "";
@@ -118,6 +122,130 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
       this.productName != 'Nome não encontrado' &&
       this.productName != 'Produto não encontrado') {
       this.produtoEncontrado.emit(`${this.productName}`);
+    }
+  }
+
+  async scan_preco(): Promise<void> {
+    console.log('scaneando preço')
+    if (this.isProcessingOcr) {
+
+      console.log('aguardando processamento anterior')
+      return;
+    }
+
+    this.isProcessingOcr = true;
+    console.log('processando...')
+
+    await this.getVideoElement()
+      .then(async video => {
+        console.log('processando video...', video);
+        const canvas = this.capturedCanvas?.nativeElement;
+
+        if (video && canvas) {
+          console.log('video && canvas encontrado...');
+
+          // Ajustar dimensões do canvas
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            console.log('desenhando a imagem no canvas...');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Processa o frame com OCR
+            const worker = await createWorker({
+              logger: m => console.log(m),
+            });
+
+            console.log('carregando worker para leitura...');
+            await worker.load();
+            await worker.loadLanguage('por');
+            await worker.initialize('por');
+
+            // Realiza o reconhecimento de texto
+            const { data: { text } } = await worker.recognize(canvas);
+            console.log('imagem reconhecida...');
+
+            // Melhora o texto extraído
+            const cleanedText = this.cleanExtractedText(text);
+            this.extractPriceFromText(cleanedText);
+
+            console.log('finalizando worker...');
+            await worker.terminate();
+            this.isProcessingOcr = false;
+
+          }
+        } else {
+          this.isProcessingOcr = false;
+        }
+      }).catch((erro) => {
+        console.log(erro);
+        this.isProcessingOcr = false;
+      });
+
+      this.isProcessingOcr = false;
+  }
+
+  private getVideoElement(retryCount: number = 5, delay: number = 200): Promise<HTMLVideoElement> {
+    return new Promise((resolve, reject) => {
+
+      console.log('tentando obter worker do elemento de video...')
+      const video = this.targetElement.nativeElement.querySelector('video');
+
+      if (video) {
+
+        console.log('elemento de video encontrado...')
+        resolve(video);
+      } else if (retryCount === 0) {
+        this.isProcessingOcr = false;
+        console.log('Não foi possível encontrar o elemento de vídeo...')
+        reject('Não foi possível encontrar o elemento de vídeo.');
+      } else {
+        // Tentar novamente após um pequeno delay
+        setTimeout(() => {
+          console.log('nova tentativa...')
+          this.getVideoElement(retryCount - 1, delay).then(resolve).catch(reject);
+        }, delay);
+      }
+    });
+  }
+
+  // Função para limpar o texto reconhecido
+  private cleanExtractedText(text: string): string {
+    // Remove caracteres especiais e múltiplos espaços
+    return text.replace(/[^0-9R$\s.,]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  private extractPriceFromText(text: string): void {
+    console.log('extraindo preço...', text);
+
+    // Regex para capturar todos os preços
+    const priceMatches = text.match(/R?\$\s?\d+,\d{2}|(?<!R\$)\d+,\d{2}/g);
+
+    if (priceMatches && priceMatches.length > 0) {
+      const uniquePrices = Array.from(new Set(priceMatches.map(price => price.trim())));
+      console.log('Preços encontrados:', uniquePrices);
+      this.preco = uniquePrices; // Armazena como array de preços
+    } else {
+      console.log('preço não encontrado');
+    }
+  }
+
+  selectedPrices: string[] = [];
+
+  toggleSelection(price: string): void {
+    const index = this.selectedPrices.indexOf(price);
+    if (index === -1) {
+      this.selectedPrices.push(price); // Adiciona o preço selecionado
+    } else {
+      this.selectedPrices.splice(index, 1); // Remove o preço selecionado
+    }
+
+    if (this.selectedPrices.length > 0) {
+      this.preco = []; // Limpa os preços após a seleção
     }
   }
 }

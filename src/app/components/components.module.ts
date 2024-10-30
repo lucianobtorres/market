@@ -10,7 +10,7 @@ import { MaterialModule } from '../module/material.module';
 import { HomeComponent } from '../pages/home/home.component';
 
 import { HeaderComponent } from './shared/header/header.component';
-import { MenuComponent } from './shared/menu/menu.component';
+import { MenuFooterComponent } from './shared/menu-footer/menu-footer.component';
 import { ToastComponent } from './shared/toast/toast.component';
 import { ConvertWithFunctionPipe } from '../pipes/convert-with-function.pipe';
 import { BarcodeScannerComponent } from './search-list/barcode-scanner/barcode-scanner.component';
@@ -33,12 +33,14 @@ import { NotificationListComponent } from './notification-list/notification-list
 import { SettingsComponent } from '../pages/settings/settings.component';
 import { ShortDatePipe } from '../pipes/short-date.pipe';
 import { IconOutlinedDirective } from '../directives/icon-outlined.directive';
+import { MenuSideComponent } from './shared/menu-side/menu-side.component';
 
 export const components = [
   HomeComponent,
   SettingsComponent,
   HeaderComponent,
-  MenuComponent,
+  MenuFooterComponent,
+  MenuSideComponent,
   ToastComponent,
   BarcodeScannerComponent,
   ListaCorrenteComponent,

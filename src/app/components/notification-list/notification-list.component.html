@@ -1,22 +1,22 @@
-<mat-card class="mat-elevation-z0 notification-container">
+<mat-card class="mat-elevation-z0 notification-container component-container">
     <div class="notification-header" (click)="toggleNotifications()">
         <p>Notificações</p>
-        <mat-icon  [ngClass]="{'rotated': showNotifications}">expand_less</mat-icon>
+        <mat-icon [ngClass]="{'rotated': showNotifications}">expand_less</mat-icon>
     </div>
-    <mat-card-content  *ngIf="showNotifications">
+    <mat-card-content *ngIf="showNotifications">
         <div class="notification-list">
-        <div *ngFor="let notification of notifications" class="notification-item"
-            [ngClass]="{'unread': !notification.read}">
-            <div class="notification-content">
-                <h3>{{ notification.title }}</h3>
-                <p>{{ notification.message }}</p>
-                <span class="notification-time">{{ notification.timestamp | shortDate:true }}</span>
+            <div *ngFor="let notification of notifications" class="notification-item"
+                [ngClass]="{'unread': !notification.read}">
+                <div class="notification-content">
+                    <h3>{{ notification.title }}</h3>
+                    <p>{{ notification.message }}</p>
+                    <span class="notification-time">{{ notification.timestamp | shortDate:true }}</span>
+                </div>
+                <button mat-icon-button (click)="markAsRead(notification)">
+                    <mat-icon>{{ notification.read ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+                </button>
             </div>
-            <button mat-icon-button (click)="markAsRead(notification)">
-                <mat-icon>{{ notification.read ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-            </button>
-        </div>
 
-    </div>
+        </div>
     </mat-card-content>
 </mat-card>

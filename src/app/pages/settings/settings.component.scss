@@ -26,16 +26,6 @@
     overflow: hidden;
   }
 
-
-  /* Define o cabeçalho como fixo */
-  .header-container {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: var(--background-color);
-    padding: 8px;
-  }
-
   /* Define a área rolável para o conteúdo */
   .scrollable-content {
     overflow-y: auto;
