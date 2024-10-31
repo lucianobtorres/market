@@ -127,8 +127,6 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
   }
 
   async scan_preco(): Promise<void> {
-    this.preco = ['1,25', '2,99']
-    return;
     console.log('scaneando preço')
     if (this.isProcessingOcr) {
 
