@@ -12,10 +12,13 @@
     </mat-form-field>
 </div>
 
-<app-barcode-scanner *ngIf="showBarCode" (produtoEncontrado)="onProdutoEncontrado($event)"></app-barcode-scanner>
+<app-barcode-scanner *ngIf="showBarCode"
+    (produtoEncontrado)="onProdutoEncontrado($event)"
+    (informarPreco)="onInformarPreco($event)"
+></app-barcode-scanner>
 
 <div class="search-content">
-    <mat-list>
+    <mat-list class="itens-search">
         <mat-list-item *ngFor="let item of filteredItems" (click)="toggleItem(item)">
             <app-search-list-item [item]="item" (qtdChanged)="qtdChanged($event, item)" (itemChanged)="itemChanged($event)"></app-search-list-item>
         </mat-list-item>

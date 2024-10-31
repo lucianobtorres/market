@@ -13,12 +13,12 @@
   }
 
   .btn-scan-preco {
-    opacity: 0.4;
+    opacity: 0.6;
     backdrop-filter: blur(10px);
     top: 4px;
     border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    background-color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+    // background-color: white;
   }
 
   /* Exibição do código de barras */
@@ -75,8 +75,18 @@
   mat-form-field {
     margin-inline: 16px;
   }
+
   .selected-chip {
-    background-color: #00b894; /* Cor personalizada ao selecionar */
-    color: white; /* Cor do texto ao selecionar */
+    background-color: #00b894;
+    /* Cor personalizada ao selecionar */
+    color: white;
+    /* Cor do texto ao selecionar */
+  }
+
+  .result {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 8px;
   }
 }

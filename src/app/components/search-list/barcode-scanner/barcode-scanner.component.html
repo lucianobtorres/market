@@ -6,19 +6,22 @@
             <div id="scan-line"></div>
         </div>
         <canvas #capturedCanvas style="display: none;"></canvas>
-        <button mat-stroked-button color="primary" class="btn-scan-preco" [disabled]="isProcessingOcr" (click)="scan_preco()">
-            <div style="display: flex; gap: 8px; align-items: center;">
-                <mat-icon *ngIf="isProcessingOcr">hourglass_empty</mat-icon> <!-- Ícone de loading -->
-                <mat-icon *ngIf="!isProcessingOcr">paid</mat-icon>
-                <small>{{ isProcessingOcr ? 'Processando...' : 'Ler preço' }}</small>
-            </div>
-        </button>
-        <mat-chip-list>
-            <mat-chip *ngFor="let price of preco; let i = index"
-                [ngClass]="{'selected-chip': selectedPrices.includes(price)}" (click)="toggleSelection(price)">
-                {{ price }}
-            </mat-chip>
-        </mat-chip-list>
+        <div class="result">
+            <button mat-stroked-button color="primary" class="btn-scan-preco" [disabled]="isProcessingOcr"
+                (click)="scan_preco()">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <mat-icon *ngIf="isProcessingOcr">hourglass_empty</mat-icon> <!-- Ícone de loading -->
+                    <mat-icon *ngIf="!isProcessingOcr">paid</mat-icon>
+                    <small>{{ isProcessingOcr ? 'Processando...' : 'Ler preço' }}</small>
+                </div>
+            </button>
+            <mat-chip-list>
+                <mat-chip *ngFor="let price of preco; let i = index"
+                    [ngClass]="{'selected-chip': selectedPrices.includes(price)}" (click)="selectPreco(price)">
+                    {{ price }}
+                </mat-chip>
+            </mat-chip-list>
+        </div>
     </ng-container>
 </div>
 

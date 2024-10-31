@@ -14,7 +14,7 @@
   padding: 16px;
   gap: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
+}
 
   .search-field {
     width: 100%;
@@ -22,7 +22,12 @@
 
   .search-content {
     display: flex;
+    overflow: hidden;
+  }
+
+  .itens-search {
     overflow: auto;
+    height: 100%;
   }
 
   mat-list {
@@ -41,4 +46,4 @@
     border-radius: 50%;
     transition: background-color 0.2s ease;
   }
-}
+

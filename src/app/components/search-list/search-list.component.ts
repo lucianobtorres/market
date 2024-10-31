@@ -91,8 +91,8 @@ export class SearchListComponent implements OnInit {
       quantidade: isInShoppingList ? isInShoppingList.quantidade : this.getIncrement(item.unidade),
       completed: isInShoppingList ? isInShoppingList.completed : false,
       id: isInShoppingList ? isInShoppingList.id : undefined,
-      preco: isInShoppingList ? isInShoppingList.preco: item.preco,
-      unidade: isInShoppingList ? isInShoppingList.unidade: item.unidade,
+      preco: isInShoppingList ? isInShoppingList.preco : item.preco,
+      unidade: isInShoppingList ? isInShoppingList.unidade : item.unidade,
       shoppingListId: this.idLista
     };
   }
@@ -119,39 +119,37 @@ export class SearchListComponent implements OnInit {
 
 
   private getFilteredItems(searchTerm: string) {
-    // Se não houver termo de busca, simplesmente retorna todos os itens
     if (!searchTerm) {
-        this.filteredItems = this.items.value;
-        this.sortFilter();
-        return;
+      this.filteredItems = this.items.value;
+      this.sortFilter();
+      return;
     }
 
     // Filtra os itens com base no termo de busca
     const filtro = this.items.value.filter(x =>
-        x.nome.toLowerCase().includes(searchTerm.toLowerCase())
+      x.nome.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // Sempre inclui o item que está sendo digitado na lista de resultados
-    this.filteredItems = filtro.length
-        ? [...filtro, {
-            nome: searchTerm,
-            adding: true,
-            dataCompra: new Date(),
-            quantidade: 1,
-            unidade: ItemUnit.UNIDADE,
-            shoppingListId: this.idLista
-          }]
-        : [{
-            nome: searchTerm,
-            adding: true,
-            dataCompra: new Date(),
-            quantidade: 1,
-            unidade: ItemUnit.UNIDADE,
-            shoppingListId: this.idLista
-          }];
+    // Verifica se existe um item com nome exatamente igual ao termo de busca
+    const itemExato = filtro.find(x => x.nome.toLowerCase() === searchTerm.toLowerCase());
+
+    // Se não houver um item exatamente igual, inclui o item digitado na lista de resultados
+    this.filteredItems = itemExato
+      ? filtro
+      : [
+        ...filtro,
+        {
+          nome: searchTerm,
+          adding: true,
+          dataCompra: new Date(),
+          quantidade: 1,
+          unidade: ItemUnit.UNIDADE,
+          shoppingListId: this.idLista
+        }
+      ];
 
     this.sortFilter();
-}
+  }
 
 
   async toggleItem(item: CombinedItem) {
@@ -245,4 +243,23 @@ export class SearchListComponent implements OnInit {
     this.searchControl.markAsDirty();
     this.searchControl.markAsTouched();
   }
+
+  onInformarPreco(price: string) {
+    const preco = this.parsePrice(price);
+    console.log(preco)
+    const itensAdd = this.filteredItems.filter(x => !x.adding);
+    if (itensAdd.length) {
+      console.log(itensAdd[0])
+      itensAdd[0].preco = Number(preco);
+      this.itemChanged(itensAdd[0]);
+    }
+  }
+
+  private parsePrice(price: string): number {
+    // Remove o símbolo "R$", espaços extras e substitui "," por "."
+    const sanitizedPrice = price.replace(/R\$\s?/, '').replace(',', '.').trim();
+
+    // Converte para número e retorna o resultado
+    return parseFloat(sanitizedPrice);
+}
 }

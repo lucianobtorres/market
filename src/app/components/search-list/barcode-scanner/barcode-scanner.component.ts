@@ -15,6 +15,7 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
   // Referências aos elementos do DOM
   @ViewChild('interactive') targetElement!: ElementRef<HTMLElement>;
   @ViewChild('capturedCanvas') capturedCanvas!: ElementRef<HTMLCanvasElement>;
+  @Output() informarPreco = new EventEmitter<string>();
   @Output() produtoEncontrado = new EventEmitter<string>();
 
   isProcessingOcr = false;
@@ -126,6 +127,8 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
   }
 
   async scan_preco(): Promise<void> {
+    this.preco = ['1,25', '2,99']
+    return;
     console.log('scaneando preço')
     if (this.isProcessingOcr) {
 
@@ -236,10 +239,10 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
 
   selectedPrices: string[] = [];
 
-  toggleSelection(price: string): void {
-    const index = this.selectedPrices.indexOf(price);
+  selectPreco(preco: string): void {
+    const index = this.selectedPrices.indexOf(preco);
     if (index === -1) {
-      this.selectedPrices.push(price); // Adiciona o preço selecionado
+      this.selectedPrices.push(preco); // Adiciona o preço selecionado
     } else {
       this.selectedPrices.splice(index, 1); // Remove o preço selecionado
     }
@@ -247,5 +250,7 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
     if (this.selectedPrices.length > 0) {
       this.preco = []; // Limpa os preços após a seleção
     }
+
+    this.informarPreco.emit(preco);
   }
 }
