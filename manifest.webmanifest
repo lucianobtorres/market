@@ -14,13 +14,13 @@
   "orientation":"portrait",
   "icons": [
     {
-      "src": "assets/icons/icon-72x72.png",
+      "src": "assets/icons/icon-72x72.png?v=2",
       "sizes": "72x72",
       "type": "image/png",
       "purpose": "maskable any"
     },
     {
-      "src": "assets/icons/icon-96x96.png",
+      "src": "assets/icons/icon-96x96.png?v=2",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "maskable any"
@@ -28,22 +28,22 @@
   ],
   "splash_screens": [
     {
-      "src": "assets/splash/logo-640x1136.png",
+      "src": "assets/splash/logo-640x1136.png?v=2",
       "sizes": "640x1136",
       "type": "image/png"
     },
     {
-      "src": "assets/splash/logo-1242x2208.png",
+      "src": "assets/splash/logo-1242x2208.png?v=2",
       "sizes": "1242x2208",
       "type": "image/png"
     },
     {
-      "src": "assets/splash/logo-1668x2388.png",
+      "src": "assets/splash/logo-1668x2388.png?v=2",
       "sizes": "1668x2388",
       "type": "image/png"
     },
     {
-      "src": "assets/splash/logo-2048x2732.png",
+      "src": "assets/splash/logo-2048x2732.png?v=2",
       "sizes": "2048x2732",
       "type": "image/png"
     }
