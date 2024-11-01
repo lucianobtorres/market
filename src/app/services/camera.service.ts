@@ -1,9 +1,6 @@
-import { ElementRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { createWorker } from 'tesseract.js';
-
-// @ts-ignore
-import Quagga from 'quagga';
 
 @Injectable({
   providedIn: 'root',
@@ -14,58 +11,14 @@ export class CameraService {
     return this.barcode$.asObservable();
   }
 
-  isCameraAccessible = false;
   isProcessingOcr = false;
   productName: string | null = null;
-
-  initializeQuagga(camera: ElementRef<HTMLElement>): void {
-    Quagga.init({
-      inputStream: {
-        name: 'Live',
-        type: 'LiveStream',
-        target: camera,
-        constraints: {
-          width: 640,
-          height: 480,
-          frameRate: { ideal: 15, max: 15 },
-          facingMode: 'environment', // Usar câmera traseira
-          advanced: [
-            { focusMode: "continuous" },
-            { imageStabilization: true }
-          ]
-        }
-      },
-      decoder: {
-        readers: ['code_128_reader', 'ean_reader', 'upc_reader'] // Formatos de código de barras
-      }
-    }, (err: unknown) => {
-      if (err) {
-        this.isCameraAccessible = false;
-        console.error('Erro ao inicializar Quagga:', err);
-        return;
-      }
-
-      this.isCameraAccessible = true;
-      Quagga.start();
-    });
-
-    Quagga.onDetected((result: { codeResult: { code: string } }) => {
-      this.barcode$.next(result.codeResult.code);
-    });
-  }
-
-  finalizeQuagga(): void {
-    if (this.isCameraAccessible) Quagga.stop();
-    this.isCameraAccessible = false;
-    this.barcode$.next('');
-  }
 
   public checkCameraAvailability(): Observable<boolean> {
     return from(
       navigator.mediaDevices.enumerateDevices().then(devices => {
         const videoInputDevices = devices.filter(device => device.kind === 'videoinput');
-        this.isCameraAccessible = videoInputDevices.length > 0;
-        return this.isCameraAccessible;
+        return videoInputDevices.length > 0;
       })
     );
   }

@@ -97,7 +97,6 @@ export class AppComponent implements AfterViewInit, OnInit {
     });
 
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    console.log(prefersDark)
     if (prefersDark) {
       this.themeService.theme = 'light-theme';
       this.themeService.toggleTheme();

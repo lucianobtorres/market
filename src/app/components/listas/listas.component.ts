@@ -14,7 +14,6 @@ export class ListasComponent implements OnInit{
   constructor(private readonly itemShoppingListService: ItemShoppingListService) { }
   ngOnInit(): void {
     this.itemShoppingListService.listas$.subscribe((listas) => {
-      console.log(listas)
       this.itensList = listas;
     });
   }
