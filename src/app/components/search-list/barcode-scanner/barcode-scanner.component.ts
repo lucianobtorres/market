@@ -3,9 +3,8 @@ import { ProductService } from 'src/app/services/product.service';
 import { CameraService } from 'src/app/services/camera.service';
 import { Subscription } from 'rxjs';
 import { FeedbackService } from 'src/app/services/feedback.service';
+import { QuaggaService } from 'src/app/services/quagga.service';
 
-// @ts-ignore
-import Quagga from 'quagga';
 
 @Component({
   selector: 'app-barcode-scanner',
@@ -23,11 +22,9 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
     return this.cameraService.isProcessingOcr;
   }
 
-  // public get isCameraAccessible(): boolean {
-  //   return this.cameraService.isCameraAccessible;
-  // }
-
-  isCameraAccessible = true;
+  get isCameraAccessible(): boolean {
+    return this.quaggaService.isCameraAccessible;
+  }
 
   preco: string[] = [];
   productName: string | null = null;
@@ -39,67 +36,24 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
     private productService: ProductService,
     private feedbackService: FeedbackService,
     private cameraService: CameraService,
+    private quaggaService: QuaggaService,
   ) {
-    // this.subs = this.cameraService.barcode.subscribe((barcode) => {
-    //   this.processBarcode(barcode);
-    //   this.feedbackService.haptic();
-    // });
+    this.subs = this.quaggaService.barcode$.subscribe((barcode) => {
+      this.processBarcode(barcode);
+      this.feedbackService.haptic();
+    });
   }
 
   ngOnInit(): void {
     this.cameraService.checkCameraAvailability().subscribe((cameraAvailable: boolean) => {
       if (cameraAvailable) {
-        this.initializeQuagga(this.targetElement);  // Inicia o Quagga se a câmera estiver disponível
-      } else {
-        this.isCameraAccessible = false;
+        this.quaggaService.initializeQuagga(this.targetElement);  // Inicia o Quagga se a câmera estiver disponível
       }
     });
-  }
-
-  initializeQuagga(camera: ElementRef<HTMLElement>): void {
-    Quagga.init({
-      inputStream: {
-        name: 'Live',
-        type: 'LiveStream',
-        target: camera,
-        constraints: {
-          width: 640,
-          height: 480,
-          frameRate: { ideal: 15, max: 15 },
-          facingMode: 'environment', // Usar câmera traseira
-          advanced: [
-            { focusMode: "continuous" },
-            { imageStabilization: true }
-          ]
-        }
-      },
-      decoder: {
-        readers: ['code_128_reader', 'ean_reader', 'upc_reader'] // Formatos de código de barras
-      }
-    }, (err: unknown) => {
-      if (err) {
-        this.isCameraAccessible = false;
-        console.error('Erro ao inicializar Quagga:', err);
-        return;
-      }
-
-      this.isCameraAccessible = true;
-      Quagga.start();
-    });
-
-    Quagga.onDetected((result: { codeResult: { code: string } }) => {
-      this.processBarcode(result.codeResult.code);
-    });
-  }
-
-
-  finalizeQuagga(): void {
-    if (this.isCameraAccessible) Quagga.stop();
-    this.isCameraAccessible = false;
   }
 
   ngOnDestroy(): void {
-    this.finalizeQuagga();
+    this.quaggaService.finalizeQuagga();
     this.subs.unsubscribe();
   }
 
@@ -149,7 +103,7 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
     }
   }
 
-  async scan_preco(): Promise<void> {
+  async processPreco(): Promise<void> {
     // this.preco = ['12.99','12.99','12.99','12.99','12.99', ]
     // return ;
     console.log('scaneando preço')

@@ -8,7 +8,7 @@
         <canvas #capturedCanvas style="display: none;"></canvas>
         <div class="result">
             <button mat-stroked-button color="primary" class="btn-scan-preco" [disabled]="isProcessingOcr"
-                (click)="scan_preco()">
+                (click)="processPreco()">
                 <div style="display: flex; gap: 8px; align-items: center;">
                     <mat-icon *ngIf="isProcessingOcr">hourglass_empty</mat-icon> <!-- Ícone de loading -->
                     <mat-icon *ngIf="!isProcessingOcr">paid</mat-icon>
