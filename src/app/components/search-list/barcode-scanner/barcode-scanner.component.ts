@@ -40,10 +40,10 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
     private feedbackService: FeedbackService,
     private cameraService: CameraService,
   ) {
-    this.subs = this.cameraService.barcode.subscribe((barcode) => {
-      this.processBarcode(barcode);
-      this.feedbackService.haptic();
-    });
+    // this.subs = this.cameraService.barcode.subscribe((barcode) => {
+    //   this.processBarcode(barcode);
+    //   this.feedbackService.haptic();
+    // });
   }
 
   ngOnInit(): void {
@@ -88,7 +88,7 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
     });
 
     Quagga.onDetected((result: { codeResult: { code: string } }) => {
-      this.barcode = result.codeResult.code;
+      this.processBarcode(result.codeResult.code);
     });
   }
 
