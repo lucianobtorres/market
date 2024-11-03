@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { db } from '../db/model-db';
 import { liveQuery } from 'dexie';
-import { ShoppingList, ShoppingItem, ItemShoppingList } from '../models/interfaces';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Items, ItemShoppingList, Lists } from '../models/interfaces';
 
 
 @Injectable({
@@ -10,42 +10,51 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ItemShoppingListService {
   private listasSubject$ = new BehaviorSubject<ItemShoppingList[]>([]);
-  public listas$ = this.listasSubject$.asObservable();
+  get listas$(): Observable<ItemShoppingList[]> {
+    return this.listasSubject$.asObservable();
+  }
 
-  private currentLists: ShoppingList[] = [];
-  private currentItems: ShoppingItem[] = [];
+  private loaded = false;
+
+  private currentLists: Lists[] = [];
+  private currentItems: Items[] = [];
 
   constructor() {
     this.loadData();
   }
 
   private loadData() {
-    // Subscribing to shopping items using liveQuery
-    liveQuery(() => db.shoppingItems.toArray()).subscribe(itens => {
-      this.currentItems = itens;
+    // Subscribing to shopping lists using liveQuery
+    liveQuery(() => db.lists.toArray()).subscribe(lists => {
+      this.currentLists = lists;
+      this.loaded ||= true;
       this.combineData();
     });
 
-    // Subscribing to shopping lists using liveQuery
-    liveQuery(() => db.shoppingLists.toArray()).subscribe(lists => {
-      this.currentLists = lists;
+    // Subscribing to shopping items using liveQuery
+    liveQuery(() => db.items.toArray()).subscribe(itens => {
+      this.currentItems = itens;
+      this.loaded ||= true;
       this.combineData();
     });
   }
 
   private combineData() {
-    if (!this.currentLists.length) {
-      this.listasSubject$.next([]);
+    if (!this.loaded) {
       return;
     }
 
+    console.info("Dados carregados:", this.currentLists, this.currentItems);
+
     if (this.currentLists.length || this.currentItems.length) {
       const combinedLists = this.currentLists.map(list => ({
-        shopping: list,
-        itens: this.currentItems.filter(item => item.shoppingListId === list.id)
+        lists: list,
+        itens: this.currentItems.filter(item => item.listId === list.id)
       }));
 
       this.listasSubject$.next(combinedLists);
+    } else {
+      this.listasSubject$.next([]);
     }
   }
 }

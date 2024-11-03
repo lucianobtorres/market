@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Optional, Output } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { FormListaCorrenteItemComponent } from './form-lista-corrente-item/form-lista-corrente-item.component';
-import { ShoppingItem, ShoppingList } from 'src/app/models/interfaces';
+import { Items, Lists, PurchaseHistory } from 'src/app/models/interfaces';
 
-import { db } from 'src/app/db/model-db';
+import { db, ModelDB } from 'src/app/db/model-db';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { SearchDialogComponent } from '../search-list/search-dialog/search-dialog.component';
 import { Utils } from 'src/app/utils/util';
@@ -18,25 +18,25 @@ import { ItemShoppingListService } from 'src/app/services/item-shopping-list.ser
 export class ListaCorrenteComponent implements OnInit {
   @Input() idLista: number = 0;
   @Output() closeEmit = new EventEmitter<void>();
-  private list: ShoppingList = {} as ShoppingList;
-  private items: ShoppingItem[] = [];
+  private list: Lists = {} as Lists;
+  private items: Items[] = [];
 
   get listNome(): string {
-    return this.list.nome;
+    return this.list.name;
   }
 
-  get itemListWait(): ShoppingItem[] {
-    return this.items.filter(x => !x.completed);
+  get itemListWait(): Items[] {
+    return this.items.filter(x => !x.isPurchased);
   }
 
-  get itemListDone(): ShoppingItem[] {
-    return this.items.filter(x => x.completed);
+  get itemListDone(): Items[] {
+    return this.items.filter(x => x.isPurchased);
   }
 
   get subtotalValue(): number {
     return this.itemListDone.reduce((total, item) => {
-      if (item.preco) {
-        return total + item.preco * (item.quantidade || 1);
+      if (item.price) {
+        return total + item.price * (item.quantity || 1);
       }
       return total;
     }, 0);
@@ -44,8 +44,8 @@ export class ListaCorrenteComponent implements OnInit {
 
   get totalValue(): number {
     return this.items.reduce((total, item) => {
-      if (item.preco) {
-        return total + item.preco * (item.quantidade || 1);
+      if (item.price) {
+        return total + item.price * (item.quantity || 1);
       }
       return total;
     }, 0);
@@ -54,7 +54,7 @@ export class ListaCorrenteComponent implements OnInit {
   constructor(
     @Optional() private readonly dialog: MatDialog,
     private readonly bottomSheet: MatBottomSheet,
-    private readonly itemShoppingListService: ItemShoppingListService,
+    private readonly listsService: ItemShoppingListService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: { idLista: number }
   ) { }
 
@@ -63,12 +63,12 @@ export class ListaCorrenteComponent implements OnInit {
       this.idLista = this.data.idLista;
     }
 
-    this.itemShoppingListService.listas$.subscribe((listas) => {
+    this.listsService.listas$.subscribe((listas) => {
       if (listas.length) {
-        const selectedList = listas.find(x => x.shopping.id === this.idLista);
+        const selectedList = listas.find(x => x.lists.id === this.idLista);
 
         if (selectedList) {
-          this.list = selectedList.shopping;
+          this.list = selectedList.lists;
           this.items = selectedList.itens;
         }
       }
@@ -107,7 +107,7 @@ export class ListaCorrenteComponent implements OnInit {
     return Utils.isMobile();
   }
 
-  editItem(item: ShoppingItem, items: ShoppingItem[], index: number): void {
+  editItem(item: Items, items: Items[], index: number): void {
     const bottomSheetRef = this.bottomSheet.open(FormListaCorrenteItemComponent, {
       data: { itemsList: items, currentIndex: index },
       // disableClose: true
@@ -120,13 +120,45 @@ export class ListaCorrenteComponent implements OnInit {
     });
   }
 
+  async finalizarCompra() {
+    const db = new ModelDB();
+    const listaId = this.list.id;
+    const itensComprados = await db.items.where('listId').equals(listaId!).and(item => item.isPurchased).toArray();
+
+    if (itensComprados.length) {
+
+    }
+    const historico: PurchaseHistory = {
+      listId: listaId!,
+      dateCompleted: new Date(),
+      items: []
+    };
+
+    const items = itensComprados.map(item => ({
+      itemId: item.id ?? 0,
+      name: item.name,
+      quantity: item.quantity ?? 1,
+      unit: item.unit,
+      price: item.price
+    }))
+
+    if (items.length) {
+      historico.items = items;
+    }
+
+    await db.purchasesHistory.add(historico);
+
+    // Opção: atualizar o status da lista ou limpar a lista de itens, dependendo da UX desejada.
+    await db.lists.update(listaId!, { status: 'completed' });
+  }
+
   private startX = 0;
   private currentX = 0;
   private isSwiping = false;
   private threshold = 75; // Limite de deslocamento para ativar o comportamento de swipe
 
   // Captura a posição inicial do toque
-  onTouchStart(event: TouchEvent, item: ShoppingItem): void {
+  onTouchStart(event: TouchEvent, item: Items): void {
     this.startX = event.touches[0].clientX;
     this.isSwiping = true;
   }
@@ -162,9 +194,9 @@ export class ListaCorrenteComponent implements OnInit {
     this.isSwiping = false;
   }
 
-  completeItem(item: ShoppingItem): void {
-    item.completed = !item.completed;
-    db.shoppingItems.update(item.id!, item);
+  completeItem(item: Items): void {
+    item.isPurchased = !item.isPurchased;
+    db.items.update(item.id!, item);
   }
 
   isEditing = false;
@@ -172,13 +204,13 @@ export class ListaCorrenteComponent implements OnInit {
 
   enableEditing() {
     this.isEditing = true;
-    this.editingName = this.list.nome;
+    this.editingName = this.list.name;
   }
 
   updateName() {
     if (this.editingName.trim() !== '') {
-      this.list.nome = this.editingName;
-      db.shoppingLists.update(this.list.id!, this.list);
+      this.list.name = this.editingName;
+      db.lists.update(this.list.id!, this.list);
     }
 
     this.isEditing = false;

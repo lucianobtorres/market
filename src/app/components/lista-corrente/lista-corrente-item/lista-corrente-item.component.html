@@ -2,10 +2,10 @@
 
     <div class="produto">
         <button class="item-actions mark-btn" (click)="toggleItemComprado($event)">
-            {{ item.completed ? '✓' : '○' }}
+            {{ item.isPurchased ? '✓' : '○' }}
         </button>
 
-        <h4 style="margin: 0;">{{ item.nome | capitalize: true }}</h4>
+        <h4 style="margin: 0;">{{ item.name | capitalize: true }}</h4>
 
 
     </div>
@@ -13,8 +13,8 @@
 
         <div class="detalhe" (click)="editItem($event)">
 
-            <small>{{ item.quantidade | number:'1.1-2'}} {{ item.unidade }}</small>
-            <small *ngIf="item.preco">{{ item.preco | currency}}</small>
+            <small>{{ item.quantity | number:'1.1-2'}} {{ item.unit }}</small>
+            <small *ngIf="item.price">{{ item.price | currency}}</small>
 
         </div>
         <button class="item-actions remove-btn" (click)="removeItem($event)">×</button>

@@ -13,9 +13,9 @@ export const ROTAS = {
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: `${ROTAS.lista}/:id`, component: ListaCorrenteDetalhadaComponent },
-  { path: ROTAS.config, component: SettingsComponent },
   { path: ROTAS.home, component: HomeComponent },
+  { path: ROTAS.config, component: SettingsComponent },
+  { path: `${ROTAS.lista}/:id`, component: ListaCorrenteDetalhadaComponent },
   {
     path: '**',
     loadChildren: () =>

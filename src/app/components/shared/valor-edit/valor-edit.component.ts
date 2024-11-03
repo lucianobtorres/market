@@ -3,8 +3,8 @@ import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { ItemUnit } from 'src/app/models/item-unit';
-import { ShoppingItem } from 'src/app/models/interfaces';
-import { ShoppingItemService } from 'src/app/services/shopping-item.service';
+import { Items } from 'src/app/models/interfaces';
+import { ItemsService } from 'src/app/services/items.service';
 
 
 export interface FormEdicaoValor {
@@ -23,11 +23,11 @@ export class ValorEditComponent implements AfterViewInit {
   units = Object.values(ItemUnit);
 
   @ViewChild("campoFoco") campoFoco!: ElementRef;
-  public get item(): ShoppingItem {
+  public get item(): Items {
     return this.itemsList[this.currentIndex];
   }
 
-  itemsList: ShoppingItem[] = [];
+  itemsList: Items[] = [];
   private _currentIndex = 0;
   public get valorCalculado() {
     return (this.editForm.controls.preco?.value ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
@@ -46,9 +46,9 @@ export class ValorEditComponent implements AfterViewInit {
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly dbService: ShoppingItemService,
+    private readonly dbService: ItemsService,
     private readonly bottomSheetRef: MatBottomSheetRef<ValorEditComponent>,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: { item: ShoppingItem }
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: { item: Items }
   ) {
     this.itemsList = [data.item];
     this.currentIndex = 0;
@@ -64,25 +64,26 @@ export class ValorEditComponent implements AfterViewInit {
   }
 
   private setValues() {
-    const data: ShoppingItem = this.item;
+    const data: Items = this.item;
     this.editForm = this.fb.group({
-      quantidade: this.fb.nonNullable.control(data.quantidade || 1, [Validators.required, Validators.min(1)]),
-      unidade: [data.unidade || 'un' as ItemUnit, Validators.required],
-      preco: [data.preco || 0, [Validators.min(0)]],
+      quantidade: this.fb.nonNullable.control(data.quantity || 1, [Validators.required, Validators.min(1)]),
+      unidade: [data.unit || 'un' as ItemUnit, Validators.required],
+      preco: [data.price || 0, [Validators.min(0)]],
     });
   }
 
   saveCurrentItem() {
     if (this.editForm.valid) {
-      const updatedItem: ShoppingItem = {
+      const updatedItem: Items = {
         id: this.item.id,
-        completed: this.item.completed,
-        nome: this.item.nome ?? '',
-        quantidade: this.editForm.value.quantidade ?? 1,
-        preco: this.editForm.value.preco ?? undefined,
-        unidade: this.editForm.value.unidade ?? ItemUnit.UNIDADE,
+        isPurchased: this.item.isPurchased,
+        name: this.item.name ?? '',
+        quantity: this.editForm.value.quantidade ?? 1,
+        price: this.editForm.value.preco ?? undefined,
+        unit: this.editForm.value.unidade ?? ItemUnit.UNIDADE,
         notas: this.item.notas,
-        shoppingListId: this.item.shoppingListId
+        listId: this.item.listId,
+        addedDate: this.item.addedDate,
       };
 
       this.dbService.update(this.item.id!, updatedItem, 'atualizado..');

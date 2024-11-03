@@ -8,17 +8,17 @@ import { ItemShoppingListService } from 'src/app/services/item-shopping-list.ser
   templateUrl: './listas.component.html',
   styleUrls: ['./listas.component.scss'],
 })
-export class ListasComponent implements OnInit{
+export class ListasComponent implements OnInit {
   public itensList: ItemShoppingList[] = [];
 
-  constructor(private readonly itemShoppingListService: ItemShoppingListService) { }
+  constructor(private readonly listsService: ItemShoppingListService) { }
   ngOnInit(): void {
-    this.itemShoppingListService.listas$.subscribe((listas) => {
+    this.listsService.listas$.subscribe((listas) => {
       this.itensList = listas;
     });
   }
 
   novaLista() {
-    db.shoppingLists.add({ nome: "Nova Lista" });
+    db.lists.add({ name: "Nova Lista", status: 'active', createdDate: new Date });
   }
 }

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { ShoppingItem } from 'src/app/models/interfaces';
-import { ShoppingItemService } from 'src/app/services/shopping-item.service';
+import { Items } from 'src/app/models/interfaces';
+import { ItemsService } from 'src/app/services/items.service';
 import { ValorEditComponent } from '../../shared/valor-edit/valor-edit.component';
 
 @Component({
@@ -10,22 +10,22 @@ import { ValorEditComponent } from '../../shared/valor-edit/valor-edit.component
   styleUrls: ['./lista-corrente-item.component.scss'],
 })
 export class ListaCorrenteItemComponent {
-  @Input() item!: ShoppingItem;
+  @Input() item!: Items;
 
   constructor(
-    private readonly dbService: ShoppingItemService,
+    private readonly dbService: ItemsService,
     private readonly bottomSheet: MatBottomSheet,
   ) { }
 
   toggleItemComprado(event: Event) {
     event.stopPropagation();
-    this.item.completed = !this.item.completed;
+    this.item.isPurchased = !this.item.isPurchased;
     this.dbService.update(
       this.item.id!,
       this.item,
-      this.item.completed
-        ? `${this.item.nome} comprado..`
-        : `${this.item.nome} devolvido..`);
+      this.item.isPurchased
+        ? `${this.item.name} comprado..`
+        : `${this.item.name} devolvido..`);
   }
 
   removeItem(event: Event) {

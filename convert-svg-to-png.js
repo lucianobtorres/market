@@ -87,7 +87,7 @@ const convertSvgToPng = async (fileName, outputSizes, outputPath, options = {}) 
           .toFile(outputFilePath);
       }
 
-      console.log(`Convertido ${fileName} para ${size.width}x${size.height}px PNG com margem de ${margin}px.`);
+      console.info(`Convertido ${fileName} para ${size.width}x${size.height}px PNG com margem de ${margin}px.`);
     }
   } catch (error) {
     console.error(`Erro ao converter ${fileName}:`, error);

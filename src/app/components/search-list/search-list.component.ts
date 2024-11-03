@@ -4,9 +4,9 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { liveQuery } from 'dexie';
 import { BehaviorSubject, debounceTime } from 'rxjs';
 import { db } from 'src/app/db/model-db';
-import { CombinedItem, ShoppingItem } from 'src/app/models/interfaces';
+import { CombinedItem, Items } from 'src/app/models/interfaces';
 import { ItemUnit } from 'src/app/models/item-unit';
-import { ShoppingItemService } from 'src/app/services/shopping-item.service';
+import { ItemsService } from 'src/app/services/items.service';
 
 @Component({
   selector: 'app-search-list',
@@ -17,16 +17,16 @@ export class SearchListComponent implements OnInit {
   @Input() idLista: number = 0;
   @Output() closeEmit = new EventEmitter<void>();
   private items = new BehaviorSubject<CombinedItem[]>([]);
-  private shoppingList: ShoppingItem[] = [];
+  private shoppingList: Items[] = [];
   protected showBarCode = false;
   protected searchControl = new FormControl();
   protected filteredItems: CombinedItem[] = [];
 
-  private itemsSearch$ = liveQuery(() => db.boughtItems.toArray());
-  private itemsShopping$ = liveQuery(() => db.shoppingItems.toArray());
+  private itemsSearch$ = liveQuery(() => db.purchases.toArray());
+  private itemsShopping$ = liveQuery(() => db.items.toArray());
 
   constructor(
-    private readonly dbService: ShoppingItemService,
+    private readonly dbService: ItemsService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: { idLista: number }
   ) { }
 
@@ -46,7 +46,7 @@ export class SearchListComponent implements OnInit {
     });
 
     this.itemsShopping$.subscribe((itens) => {
-      this.shoppingList = itens.filter(x => x.shoppingListId === this.idLista);
+      this.shoppingList = itens.filter(x => x.listId === this.idLista);
       this.updateAddingStatus(this.shoppingList);
     });
   }
@@ -60,7 +60,7 @@ export class SearchListComponent implements OnInit {
 
     // Filtra os itens que não estão na lista atual
     const itemsToAdd = itemsList.filter(item =>
-      !this.items.value.some(x => x.nome === item.nome)
+      !this.items.value.some(x => x.name === item.name)
     );
 
     // Atualiza cada item com as propriedades necessárias
@@ -84,15 +84,15 @@ export class SearchListComponent implements OnInit {
   }
 
   private ajustaDadosItem(item: CombinedItem) {
-    const isInShoppingList = this.shoppingList.find(shoppingItem => shoppingItem.nome === item.nome);
+    const isInShoppingList = this.shoppingList.find(shoppingItem => shoppingItem.name === item.name);
     return {
       ...item,
       adding: !isInShoppingList, // Define 'adding' como verdadeiro se não estiver na lista
-      quantidade: isInShoppingList ? isInShoppingList.quantidade : this.getIncrement(item.unidade),
-      completed: isInShoppingList ? isInShoppingList.completed : false,
+      quantidade: isInShoppingList ? isInShoppingList.quantity : this.getIncrement(item.unit),
+      completed: isInShoppingList ? isInShoppingList.isPurchased : false,
       id: isInShoppingList ? isInShoppingList.id : undefined,
-      preco: isInShoppingList ? isInShoppingList.preco : item.preco,
-      unidade: isInShoppingList ? isInShoppingList.unidade : item.unidade,
+      preco: isInShoppingList ? isInShoppingList.price : item.price,
+      unidade: isInShoppingList ? isInShoppingList.unit : item.unit,
       shoppingListId: this.idLista
     };
   }
@@ -101,7 +101,7 @@ export class SearchListComponent implements OnInit {
     this.filteredItems.sort((a, b) => {
       // Definindo a prioridade para os estados dos itens
       const getStatusPriority = (item: CombinedItem) => {
-        if (item.completed) return 3; // Itens completados no final
+        if (item.isPurchased) return 3; // Itens completados no final
         if (!item.adding) return 2;   // Itens já adicionados ficam no meio
         return 1;                     // Itens que ainda serão adicionados no topo
       };
@@ -110,7 +110,7 @@ export class SearchListComponent implements OnInit {
 
       // Se os itens tiverem a mesma prioridade de status, ordene por nome
       if (statusComparison === 0) {
-        return a.nome.localeCompare(b.nome);
+        return a.name.localeCompare(b.name);
       }
 
       return statusComparison;
@@ -127,11 +127,11 @@ export class SearchListComponent implements OnInit {
 
     // Filtra os itens com base no termo de busca
     const filtro = this.items.value.filter(x =>
-      x.nome.toLowerCase().includes(searchTerm.toLowerCase())
+      x.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     // Verifica se existe um item com nome exatamente igual ao termo de busca
-    const itemExato = filtro.find(x => x.nome.toLowerCase() === searchTerm.toLowerCase());
+    const itemExato = filtro.find(x => x.name.toLowerCase() === searchTerm.toLowerCase());
 
     // Se não houver um item exatamente igual, inclui o item digitado na lista de resultados
     this.filteredItems = itemExato
@@ -139,12 +139,12 @@ export class SearchListComponent implements OnInit {
       : [
         ...filtro,
         {
-          nome: searchTerm,
+          name: searchTerm,
           adding: true,
-          dataCompra: new Date(),
-          quantidade: 1,
-          unidade: ItemUnit.UNIDADE,
-          shoppingListId: this.idLista
+          purchaseDate: new Date(),
+          quantity: 1,
+          unit: ItemUnit.UNIDADE,
+          listId: this.idLista
         }
       ];
 
@@ -153,31 +153,35 @@ export class SearchListComponent implements OnInit {
 
 
   async toggleItem(item: CombinedItem) {
-    const isInList = this.shoppingList.find(shoppingItem => shoppingItem.nome === item.nome);
+    const isInList = this.shoppingList.find(shoppingItem => shoppingItem.name === item.name);
 
     if (isInList && isInList.id) {
       // Se o item já está na lista, removê-lo
       await this.dbService.delete(isInList.id);
     } else {
       // Se o item não está na lista, adicioná-lo
-      const itemFound = this.items.value.find(x => x.nome === item.nome);
-      const minValue = this.getIncrement(item.unidade);
+      const itemFound = this.items.value.find(x => x.name === item.name);
+      const minValue = this.getIncrement(item.unit);
 
       // Se o item não foi encontrado na lista de pesquisa, crie um novo
-      const itemAdd: ShoppingItem = itemFound ? {
-        ...itemFound,
-        quantidade: item.quantidade,
-        completed: item.completed ?? false,
-        preco: item.preco,
-        unidade: item.unidade,
-        shoppingListId: this.idLista
-      } : {
-        nome: item.nome,
-        quantidade: item.quantidade || minValue,
-        completed: false,
-        unidade: item.unidade ?? ItemUnit.UNIDADE,
-        shoppingListId: this.idLista
-      };
+      const itemAdd: Items = itemFound
+        ? {
+          ...itemFound,
+          quantity: item.quantity,
+          isPurchased: item.isPurchased ?? false,
+          price: item.price,
+          unit: item.unit,
+          listId: this.idLista,
+          addedDate: item.addedDate ?? new Date(),
+        }
+        : {
+          name: item.name,
+          quantity: item.quantity || minValue,
+          isPurchased: false,
+          unit: item.unit ?? ItemUnit.UNIDADE,
+          listId: this.idLista,
+          addedDate: new Date(),
+        };
 
       await this.dbService.add(itemAdd);
       this.updateAddingStatus([itemAdd]);
@@ -185,22 +189,22 @@ export class SearchListComponent implements OnInit {
   }
 
   async qtdChanged(somar: boolean, item: CombinedItem) {
-    const itemToUpdate = item.id ? item : this.items.value.find(x => x.nome === item.nome);
+    const itemToUpdate = item.id ? item : this.items.value.find(x => x.name === item.name);
 
     if (itemToUpdate?.id) {
-      await db.shoppingItems
+      await db.items
         .where("id")
         .equals(itemToUpdate.id)
         .modify(item => {
-          if (!item.quantidade) {
-            item.quantidade = this.getIncrement(item.unidade);
+          if (!item.quantity) {
+            item.quantity = this.getIncrement(item.unit);
           } else {
-            const qtdToChange = this.getIncrement(item.unidade);
-            if (somar) item.quantidade += qtdToChange;
+            const qtdToChange = this.getIncrement(item.unit);
+            if (somar) item.quantity += qtdToChange;
             else {
-              item.quantidade -= qtdToChange;
-              if (item.quantidade < qtdToChange) {
-                item.quantidade = qtdToChange;
+              item.quantity -= qtdToChange;
+              if (item.quantity < qtdToChange) {
+                item.quantity = qtdToChange;
               }
             }
           }
@@ -210,13 +214,13 @@ export class SearchListComponent implements OnInit {
 
   async itemChanged(itemToUpdate: CombinedItem) {
     if (itemToUpdate?.id) {
-      await db.shoppingItems
+      await db.items
         .where("id")
         .equals(itemToUpdate.id)
         .modify(item => {
-          item.quantidade = itemToUpdate.quantidade;
-          item.preco = itemToUpdate.preco;
-          item.unidade = itemToUpdate.unidade;
+          item.quantity = itemToUpdate.quantity;
+          item.price = itemToUpdate.price;
+          item.unit = itemToUpdate.unit;
         });
     }
   }
@@ -246,11 +250,10 @@ export class SearchListComponent implements OnInit {
 
   onInformarPreco(price: string) {
     const preco = this.parsePrice(price);
-    console.log(preco)
+
     const itensAdd = this.filteredItems.filter(x => !x.adding);
     if (itensAdd.length) {
-      console.log(itensAdd[0])
-      itensAdd[0].preco = Number(preco);
+      itensAdd[0].price = Number(preco);
       this.itemChanged(itensAdd[0]);
     }
   }
@@ -261,5 +264,5 @@ export class SearchListComponent implements OnInit {
 
     // Converte para número e retorna o resultado
     return parseFloat(sanitizedPrice);
-}
+  }
 }

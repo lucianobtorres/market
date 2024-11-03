@@ -10,10 +10,7 @@ import Quagga from 'quagga';
 export class QuaggaService {
   private barcodeDetected = new Subject<string>();
   public barcode$ = this.barcodeDetected.asObservable();
-  public isProcessingOcr: boolean = false;
   public isCameraAccessible: boolean = true;
-
-  constructor() {}
 
   initializeQuagga(camera: ElementRef<HTMLElement>): void {
     Quagga.init({

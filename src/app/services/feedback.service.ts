@@ -9,7 +9,7 @@ export class FeedbackService {
     if (navigator.vibrate) {
       navigator.vibrate(duration);
     } else {
-      console.log("Dispositivo não suporta feedback tátil.");
+      console.error("Dispositivo não suporta feedback tátil.");
     }
   }
 }

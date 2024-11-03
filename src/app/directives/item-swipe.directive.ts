@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Output, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[appItemSwipe]'
@@ -15,7 +15,6 @@ export class SwipeDirective {
 
   constructor(private el: ElementRef, private renderer: Renderer2) {
     this.originalElement = this.el.nativeElement;
-    console.log('asd')
   }
 
   @HostListener('touchstart', ['$event'])

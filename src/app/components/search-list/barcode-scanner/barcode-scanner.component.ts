@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild, Output, EventEmitter, ElementRef } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
-import { CameraService } from 'src/app/services/camera.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { FeedbackService } from 'src/app/services/feedback.service';
-import { QuaggaService } from 'src/app/services/quagga.service';
+import { CameraService } from 'src/app/services/camera.service';
 
+
+// @ts-ignore
+import Quagga from 'quagga';
 
 @Component({
   selector: 'app-barcode-scanner',
@@ -22,11 +24,10 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
     return this.cameraService.isProcessingOcr;
   }
 
-  get isCameraAccessible(): boolean {
-    return this.quaggaService.isCameraAccessible;
-  }
+  isCameraAccessible = true;
 
   preco: string[] = [];
+  selectedPrices: string[] = [];
   productName: string | null = null;
   productImageSrc: string | null = null;
   barcode: string = "";
@@ -36,9 +37,8 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
     private productService: ProductService,
     private feedbackService: FeedbackService,
     private cameraService: CameraService,
-    private quaggaService: QuaggaService,
   ) {
-    this.subs = this.quaggaService.barcode$.subscribe((barcode) => {
+    this.subs = this.barcode$.subscribe((barcode) => {
       this.processBarcode(barcode);
       this.feedbackService.haptic();
     });
@@ -47,13 +47,13 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cameraService.checkCameraAvailability().subscribe((cameraAvailable: boolean) => {
       if (cameraAvailable) {
-        this.quaggaService.initializeQuagga(this.targetElement);  // Inicia o Quagga se a câmera estiver disponível
+        this.initializeQuagga(this.targetElement);
       }
     });
   }
 
   ngOnDestroy(): void {
-    this.quaggaService.finalizeQuagga();
+    this.finalizeQuagga();
     this.subs.unsubscribe();
   }
 
@@ -106,9 +106,9 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
   async processPreco(): Promise<void> {
     // this.preco = ['12.99','12.99','12.99','12.99','12.99', ]
     // return ;
-    console.log('scaneando preço')
+    console.info('scaneando preço')
     if (this.cameraService.isProcessingOcr) {
-      console.log('aguardando processamento anterior')
+      console.info('aguardando processamento anterior')
       return;
     }
 
@@ -123,38 +123,36 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
             this.feedbackService.haptic();
           })
           .catch((erro) => {
-            console.log(erro);
+            console.error(erro);
           });
 
       }).catch((erro) => {
-        console.log(erro);
+        console.error(erro);
       });
   }
 
   private getVideoElement(retryCount: number = 5, delay: number = 200): Promise<HTMLVideoElement> {
     return new Promise((resolve, reject) => {
 
-      console.log('tentando obter worker do elemento de video...')
+      console.info('tentando obter worker do elemento de video...')
       const video = this.targetElement.nativeElement.querySelector('video');
 
       if (video) {
 
-        console.log('elemento de video encontrado...')
+        console.info('elemento de video encontrado...')
         resolve(video);
       } else if (retryCount === 0) {
-        console.log('Não foi possível encontrar o elemento de vídeo...')
+        console.error('Não foi possível encontrar o elemento de vídeo...')
         reject('Não foi possível encontrar o elemento de vídeo.');
       } else {
         // Tentar novamente após um pequeno delay
         setTimeout(() => {
-          console.log('nova tentativa...')
+          console.info('nova tentativa...')
           this.getVideoElement(retryCount - 1, delay).then(resolve).catch(reject);
         }, delay);
       }
     });
   }
-
-  selectedPrices: string[] = [];
 
   selectPreco(preco: string): void {
     const index = this.selectedPrices.indexOf(preco);
@@ -169,5 +167,52 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
     }
 
     this.informarPreco.emit(preco);
+  }
+
+  //
+
+
+  private barcodeDetected = new Subject<string>();
+  public barcode$ = this.barcodeDetected.asObservable();
+
+  initializeQuagga(camera: ElementRef<HTMLElement>): void {
+    Quagga.init({
+      inputStream: {
+        name: 'Live',
+        type: 'LiveStream',
+        target: camera.nativeElement,
+        constraints: {
+          width: 640,
+          height: 480,
+          frameRate: { ideal: 15, max: 15 },
+          facingMode: 'environment', // Usar câmera traseira
+          advanced: [
+            { focusMode: "continuous" },
+            { imageStabilization: true }
+          ]
+        }
+      },
+      decoder: {
+        readers: ['code_128_reader', 'ean_reader', 'upc_reader'] // Formatos de código de barras
+      }
+    }, (err: unknown) => {
+      if (err) {
+        this.isCameraAccessible = false;
+        console.error('Erro ao inicializar Quagga:', err);
+        return;
+      }
+
+      this.isCameraAccessible = true;
+      Quagga.start();
+    });
+
+    Quagga.onDetected((result: { codeResult: { code: string } }) => {
+      this.barcodeDetected.next(result.codeResult.code);
+    });
+  }
+
+  finalizeQuagga(): void {
+    if (this.isCameraAccessible) Quagga.stop();
+    this.isCameraAccessible = false;
   }
 }

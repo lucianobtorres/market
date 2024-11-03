@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BoughtItems } from '../models/interfaces';
+import { Items } from '../models/interfaces';
 import { DBRepository } from '../models/db.repository';
 import { ToastService } from './toast.service';
 import { db } from '../db/model-db';
@@ -7,9 +7,9 @@ import { db } from '../db/model-db';
 @Injectable({
   providedIn: 'root'
 })
-export class BoughtItemsService extends DBRepository<BoughtItems> {
+export class ItemsService extends DBRepository<Items> {
   constructor(ts: ToastService) {
     super(ts);
-    this.table = db.boughtItems;
+    this.table = db.items;
   }
 }

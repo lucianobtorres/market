@@ -1,6 +1,6 @@
+import { Items, Purchases, Lists, NotificationModel, PurchaseHistory } from '../models/interfaces';
+import { Migrations } from './migrations';
 import Dexie, { Table } from 'dexie';
-import { ShoppingItem, BoughtItems, ShoppingList, NotificationModel } from '../models/interfaces';
-import { CURRENT_DATABASE_VERSION, Migrations } from './migrations';
 
 
 export interface VersionDB {
@@ -10,23 +10,64 @@ export interface VersionDB {
 
 export class ModelDB extends Dexie {
   notifications!: Table<NotificationModel, number>;
-  shoppingLists!: Table<ShoppingList, number>;
-  shoppingItems!: Table<ShoppingItem, number>;
-  boughtItems!: Table<BoughtItems, number>;
 
-  //versionDB!: Table<VersionDB, number>;
-  //historicoCompras!: Table<IHistoricoCompras, number>;
+  lists!: Table<Lists, number>;
+  items!: Table<Items, number>;
+  purchases!: Table<Purchases, number>;
+  purchasesHistory!: Table<PurchaseHistory, number>;
+
+  versionDB!: Table<VersionDB, number>;
 
   constructor() {
     super('Model-DB');
 
-    this.version(CURRENT_DATABASE_VERSION).stores({
-      //versions: '++id, version',
-      //historicoCompras: '++id, compra, produto, data',
+    console.info('Versão 1 do banco')
+    this.version(1).stores({
+      versionDB: '++id, version',
+
       notifications: '++id, title, message, read, timestamp',
+
+      // Preserva as tabelas antigas temporariamente para migração dos dados
       shoppingItems: '++id, nome, notas, quantidade, unidade, preco, completed, shoppingListId',
       boughtItems: '++id, nome, notas, quantidade, unidade, preco, completed, dataCompra',
       shoppingLists: '++id, nome',
+    })
+
+    console.info('Versão 2 do banco')
+    this.version(2).stores({
+      versionDB: '++id, version',
+
+      notifications: '++id, title, message, read, timestamp',
+
+      lists: '++id, name, createdDate, status',
+      items: '++id, name, quantity, unit, listId, isPurchased, addedDate',
+      purchases: '++id, name, quantity, unit, listId, purchaseDate',
+
+      //Preserva as tabelas antigas temporariamente para migração dos dados
+      shoppingItems: '++id, nome, notas, quantidade, unidade, preco, completed, shoppingListId',
+      boughtItems: '++id, nome, notas, quantidade, unidade, preco, completed, dataCompra',
+      shoppingLists: '++id, nome',
+
+    }).upgrade(async (tx) => {
+      // Adiciona um controle inicial de versão se não existir
+      const existingVersion = await tx.table('versionDB').get(1);
+      if (!existingVersion) {
+        console.info('adicionando controle de versão na versão 2')
+        await tx.table('versionDB').add({ id: 1, version: 1 });
+      }
+    });
+
+
+    console.info('Versão 3 do banco')
+    this.version(1).stores({
+      versionDB: '++id, version',
+
+      notifications: '++id, title, message, read, timestamp',
+
+      lists: '++id, name, createdDate, status',
+      items: '++id, name, quantity, unit, listId, isPurchased, addedDate',
+      purchases: '++id, name, quantity, unit, listId, purchaseDate',
+      purchasesHistory: '++id, listId, dateCompleted, items',
     });
 
     Migrations.createMigrations(this);

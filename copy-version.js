@@ -19,7 +19,7 @@ fs.readFile(packageJsonPath, 'utf8', (err, data) => {
     if (err) {
       console.error('Erro ao escrever version.json:', err);
     } else {
-      console.log('Versão copiada para version.json com sucesso!');
+      console.info('Versão copiada para version.json com sucesso!');
     }
   });
 });

@@ -1,6 +1,6 @@
 import { ItemUnit } from "./item-unit";
 
-export type CombinedItem = (BoughtItems & Partial<ShoppingItem>) | (ShoppingItem & Partial<BoughtItems>);
+export type CombinedItem = (Purchases & Partial<Items>) | (Items & Partial<Purchases>);
 
 export interface NotificationModel {
   id?: number;
@@ -11,40 +11,51 @@ export interface NotificationModel {
 }
 
 export interface ItemShoppingList {
-  shopping: ShoppingList,
-  itens: ShoppingItem[]
+  lists: Lists,
+  itens: Items[]
 }
 
-export interface ShoppingList {
-  id?: number,
-  nome: string,
+export interface Lists {
+  id?: number;
+  name: string;
+  createdDate: Date;
+  status: 'active' | 'completed';
 }
 
-export interface BoughtItems extends ConfigItems {
-  adding: boolean,
-  dataCompra: Date,
+export interface Purchases extends ConfigItems {
+  adding: boolean;
+  purchaseDate: Date;
 }
 
-export interface ShoppingItem extends ConfigItems {
-  quantidade?: number;
-  preco?: number;
-  completed: boolean;
-  shoppingListId: number;
+export interface Items extends ConfigItems {
+  price?: number;
+  listId: number;
+  isPurchased: boolean;
+  addedDate: Date;
+
 }
 
 export interface ConfigItems {
   id?: number;
-  nome: string;
+  name: string;
   notas?: string;
-  unidade: ItemUnit;
+  quantity?: number;
+  unit: ItemUnit;
 }
 
-export interface IHistoricoCompras {
+export interface PurchaseHistory {
   id?: number;
-  comprado: boolean;
-  item: string;
-  data: string;
+  listId: number;
+  dateCompleted: Date;
+  items: Array<{
+    itemId: number;
+    name: string;
+    quantity: number;
+    unit: string;
+    price?: number;
+  }>;
 }
+
 
 export interface VersionDB {
   id?: number;

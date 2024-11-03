@@ -1,47 +1,61 @@
 import { IDictionary } from '../utils/idictionary';
 import { ModelDB } from '././model-db';
 
-import { migrateToVersion1 } from './migrations/001_initial_schema';
+import { migrate as m1 } from './migrations/001_initial_schema';
+import { migrate as m2 } from './migrations/002_modify_schema';
+import { migrate as m3 } from './migrations/003_migration';
 
-export const CURRENT_DATABASE_VERSION = 1;
-const VERSION_DB = 'db_version';
+export const CURRENT_DATABASE_VERSION = 3;
 
 type functionMigrate = (db: ModelDB) => Promise<void>;
 
+// Cria um dicionário de funções de migração que carrega os módulos dinamicamente
+
 export const migrations: IDictionary<functionMigrate> = {
-  1: migrateToVersion1,
+  1: m1,
+  2: m2,
+  3: m3,
 };
 
 export abstract class Migrations {
   public static async createMigrations(db: ModelDB) {
-    if (Migrations.needsMigration()) {
+    if (await Migrations.needsMigration(db)) {
+
+      console.info('Executando migrations..')
       await db.transaction('rw', db.tables, async () => {
-        const currentVersion = Migrations.getDatabaseVersion() ?? 0;
+        const currentVersion = await Migrations.getDatabaseVersion(db) ?? 0;
 
         for (let version: number = currentVersion + 1; version <= CURRENT_DATABASE_VERSION; version++) {
+          console.info(`executando migration: ${version}`)
+
           if (migrations[version]) {
             await migrations[version](db);
           }
         }
 
-        Migrations.setDatabaseVersion(CURRENT_DATABASE_VERSION);
+        console.info(`ajustando database: ${CURRENT_DATABASE_VERSION}`)
+        await Migrations.setDatabaseVersion(CURRENT_DATABASE_VERSION, db);
       });
 
-      console.log('Migrações concluídas.');
+      console.info('Migrações concluídas.');
+    } else {
+      console.info('Base está atualizada.');
     }
   }
 
-  private static getDatabaseVersion(): number {
-    const version = localStorage.getItem(VERSION_DB);
-    return version ? parseInt(version, 10) : 0;
+  private static async getDatabaseVersion(db: ModelDB): Promise<number> {
+    const meta = await db.versionDB?.get({ id: 1 });
+    return meta?.version ?? 0;
   }
 
-  private static setDatabaseVersion(version: number) {
-    localStorage.setItem(VERSION_DB, version.toString());
+  private static async setDatabaseVersion(version: number, db: ModelDB) {
+    if (db.tables.some(table => table.name === "versionDB")) {
+      await db.versionDB.put({ id: 1, version: version });
+    }
   }
 
-  private static needsMigration(): boolean {
-    const version = Migrations.getDatabaseVersion();
+  private static async needsMigration(db: ModelDB): Promise<boolean> {
+    const version = await Migrations.getDatabaseVersion(db);
     return version < CURRENT_DATABASE_VERSION;
   }
 }
