@@ -60,7 +60,7 @@
   justify-content: space-between;
   box-sizing: border-box;
   background: slategray;
-  padding: 16px;
+  padding: 8px;
   gap: 32px;
   width: 100%;
 
@@ -75,5 +75,13 @@
     align-items: center;
     justify-content: center;
     opacity: 0.4;
+  }
+
+  .menu-home{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
   }
 }

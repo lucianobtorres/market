@@ -5,6 +5,7 @@ import { db } from 'src/app/db/model-db';
 import { ItemShoppingList } from 'src/app/models/interfaces';
 import { Utils } from 'src/app/utils/util';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { ItemShoppingListService } from 'src/app/services/item-shopping-list.service';
 
 @Component({
   selector: 'app-listas-item',
@@ -21,7 +22,10 @@ export class ListItemComponent {
   }
 
   constructor(
-    private readonly router: Router, private dialog: MatDialog) {
+    private readonly router: Router,
+    private readonly dialog: MatDialog,
+    private readonly itemShoppingListService: ItemShoppingListService
+  ) {
   }
 
   isMobile(): boolean {
@@ -65,6 +69,9 @@ export class ListItemComponent {
   }
 
   onShareList() {
-    throw new Error('Method not implemented.');
+    const idList = this.item.lists.id;
+    if (!idList) return;
+    if (this.item.lists.share) this.itemShoppingListService.removeShare(idList);
+    else this.itemShoppingListService.shareList(idList);
   }
 }

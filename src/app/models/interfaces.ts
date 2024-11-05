@@ -19,6 +19,7 @@ export interface Lists {
   id?: number;
   name: string;
   createdDate: Date;
+  share?: string;
   status: 'active' | 'completed';
 }
 

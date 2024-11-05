@@ -57,14 +57,25 @@ export class ModelDB extends Dexie {
       }
     });
 
-
     console.info('Versão 3 do banco')
-    this.version(1).stores({
+    this.version(3).stores({
       versionDB: '++id, version',
 
       notifications: '++id, title, message, read, timestamp',
 
       lists: '++id, name, createdDate, status',
+      items: '++id, name, quantity, unit, listId, isPurchased, addedDate',
+      purchases: '++id, name, quantity, unit, listId, purchaseDate',
+      purchasesHistory: '++id, listId, dateCompleted, items',
+    });
+
+    console.info('Versão 4 do banco')
+    this.version(4).stores({
+      versionDB: '++id, version',
+
+      notifications: '++id, title, message, read, timestamp',
+
+      lists: '++id, name, createdDate, status, share',
       items: '++id, name, quantity, unit, listId, isPurchased, addedDate',
       purchases: '++id, name, quantity, unit, listId, purchaseDate',
       purchasesHistory: '++id, listId, dateCompleted, items',

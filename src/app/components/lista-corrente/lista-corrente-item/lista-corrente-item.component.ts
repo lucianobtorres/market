@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { Items } from 'src/app/models/interfaces';
-import { ItemsService } from 'src/app/services/items.service';
+import { ItemsService } from 'src/app/services/db/items.service';
 import { ValorEditComponent } from '../../shared/valor-edit/valor-edit.component';
 
 @Component({

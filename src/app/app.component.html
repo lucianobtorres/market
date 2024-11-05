@@ -4,9 +4,17 @@
     <header class="app-header">
         <div class="logo">
             <mat-icon [svgIcon]="iconeLogo" (click)="goHome()"></mat-icon>
-            <button mat-icon-button class="btn-theme" (click)="toggleTheme()">
-                <mat-icon [matTooltip]="iconTheme">{{ iconTheme }}</mat-icon>
-            </button>
+            <div class="menu-home">
+
+                <button mat-icon-button class="btn-theme" (click)="toggleTheme()">
+                    <mat-icon [matTooltip]="iconTheme">{{ iconTheme }}</mat-icon>
+                </button>
+                <button mat-icon-button class="btn-theme" (click)="fileInput.click()">
+                    <input hidden (change)="uploadList($event)" #fileInput type="file">
+                    <mat-icon>backup</mat-icon>
+                </button>
+
+            </div>
         </div>
     </header>
 

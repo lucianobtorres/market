@@ -3,7 +3,8 @@ import { ModelDB } from '././model-db';
 
 import { migrate as m1 } from './migrations/001_initial_schema';
 import { migrate as m2 } from './migrations/002_modify_schema';
-import { migrate as m3 } from './migrations/003_migration';
+import { migrate as m3 } from './migrations/003_remove_oldSchema';
+import { migrate as m4 } from './migrations/004_include_share';
 
 export const CURRENT_DATABASE_VERSION = 3;
 
@@ -12,9 +13,7 @@ type functionMigrate = (db: ModelDB) => Promise<void>;
 // Cria um dicionário de funções de migração que carrega os módulos dinamicamente
 
 export const migrations: IDictionary<functionMigrate> = {
-  1: m1,
-  2: m2,
-  3: m3,
+  1: m1, 2: m2, 3: m3, 4: m4,
 };
 
 export abstract class Migrations {

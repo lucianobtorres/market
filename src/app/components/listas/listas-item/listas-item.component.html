@@ -7,9 +7,9 @@
 </div>
 
 <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="onShareList()" disabled>
+    <button mat-menu-item (click)="onShareList()">
         <mat-icon>share</mat-icon>
-        <span>Compartilhar Lista</span>
+        <span> {{this.item.lists.share ? 'Remover compartilhamento' : 'Compartilhar Lista'}} </span>
     </button>
 
     <button mat-menu-item (click)="abrirLista()">

@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { ItemUnit } from 'src/app/models/item-unit';
 import { Items } from 'src/app/models/interfaces';
-import { ItemsService } from 'src/app/services/items.service';
+import { ItemsService } from 'src/app/services/db/items.service';
 
 
 export interface FormEdicaoValor {

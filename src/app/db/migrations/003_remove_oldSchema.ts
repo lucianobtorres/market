@@ -1,7 +1,7 @@
 import { ModelDB } from '../model-db';
 
 export async function migrate(db: ModelDB): Promise<void> {
-  console.info('Ajuste dos dados.');
+  console.info('Remoção da estrutura anterior.');
   await db.transaction('rw', db.tables, async () => {
     await db.table('shoppingItems').clear();
     await db.table('boughtItems').clear();

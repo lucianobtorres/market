@@ -6,7 +6,7 @@ import { BehaviorSubject, debounceTime } from 'rxjs';
 import { db } from 'src/app/db/model-db';
 import { CombinedItem, Items } from 'src/app/models/interfaces';
 import { ItemUnit } from 'src/app/models/item-unit';
-import { ItemsService } from 'src/app/services/items.service';
+import { ItemsService } from 'src/app/services/db/items.service';
 
 @Component({
   selector: 'app-search-list',

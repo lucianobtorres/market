@@ -4,6 +4,7 @@ import { IconsRegisterService } from './services/icons-register.service';
 import { ROTAS } from './app-routing.module';
 import { ThemeService, ThemeTyped } from './services/theme.service';
 import { Utils } from './utils/util';
+import { ItemShoppingListService } from './services/item-shopping-list.service';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ export class AppComponent implements AfterViewInit, OnInit {
   constructor(
     private router: Router,
     private themeService: ThemeService,
+    private itemShoppingListService: ItemShoppingListService,
   ) {
     router.canceledNavigationResolution = 'computed';
 
@@ -160,5 +162,19 @@ export class AppComponent implements AfterViewInit, OnInit {
   toggleTheme() {
     this.themeService.toggleTheme();
   }
-}
 
+  uploadList(event: Event) {
+    const element = event.currentTarget as HTMLInputElement;
+    if (element && element.files?.length) {
+      const fileReader = new FileReader();
+      const selectedFile = element.files[0];
+      fileReader.readAsText(selectedFile, "UTF-8");
+      fileReader.onload = () => {
+        if (fileReader.result?.toString()) this.itemShoppingListService.importListJSON(fileReader.result?.toString());
+      }
+      fileReader.onerror = (error) => {
+        console.log(error);
+      }
+    }
+  }
+}
