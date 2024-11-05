@@ -17,8 +17,22 @@ export class ListItemComponent {
 
   public get qtdItens(): string {
     const qtd = this.item.itens.length;
-    if (qtd <= 1) return `${qtd} item`
-    else return `${qtd} itens`
+    const done = this.item.itens.filter(x => x.isPurchased)?.length ?? 0;
+
+    if (qtd === 1) return `${done} de ${qtd} item`
+    else if (qtd < 1) return `lista vazia`
+    else return `${done} de ${qtd} itens`
+  }
+
+  get subtotalValue(): number {
+    return this.item.itens
+      .filter(x => x.isPurchased)
+      ?.reduce((total, item) => {
+        if (item.price) {
+          return total + item.price * (item.quantity || 1);
+        }
+        return total;
+      }, 0);
   }
 
   constructor(
@@ -68,10 +82,17 @@ export class ListItemComponent {
       });
   }
 
+  onResetShare() {
+    const idList = this.item.lists.id;
+    if (!idList) return;
+
+    if (this.item.lists.share) this.itemShoppingListService.removeShare(idList);
+  }
+
   onShareList() {
     const idList = this.item.lists.id;
     if (!idList) return;
-    if (this.item.lists.share) this.itemShoppingListService.removeShare(idList);
-    else this.itemShoppingListService.shareList(idList);
+
+    this.itemShoppingListService.shareList(idList);
   }
 }

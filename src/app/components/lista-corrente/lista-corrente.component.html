@@ -21,9 +21,9 @@
             </div>
 
             <div class="total-value" *ngIf="totalValue > 0">
-                <small>subtotal: R$ {{ subtotalValue.toFixed(2) }}</small>
+                <small>subtotal: {{ subtotalValue | currency }}</small>
                 <mat-divider [vertical]="true"></mat-divider>
-                <small>Total: R$ {{ totalValue.toFixed(2) }}</small>
+                <small>Total: {{ totalValue | currency }}</small>
             </div>
         </div>
         <button (click)="finalizarCompra()">Comprado</button>

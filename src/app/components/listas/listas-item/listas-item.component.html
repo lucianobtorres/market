@@ -1,6 +1,12 @@
-<h3 appTextEllipsis matTooltip> {{ this.item.lists.name }} </h3>
 <div class="opcoes">
-    <small> {{ qtdItens }} </small>
+    <h3 appTextEllipsis matTooltip> {{ this.item.lists.name }} </h3>
+    <mat-icon *ngIf="this.item.lists.share" style="opacity: 0.3;">cloud_done</mat-icon>
+</div>
+<div class="opcoes">
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <small> {{ qtdItens }} </small>
+        <small *ngIf="subtotalValue > 0"> {{ subtotalValue | currency}} </small>
+    </div>
     <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
     </button>
@@ -9,7 +15,11 @@
 <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="onShareList()">
         <mat-icon>share</mat-icon>
-        <span> {{this.item.lists.share ? 'Remover compartilhamento' : 'Compartilhar Lista'}} </span>
+        <span>Compartilhar Lista</span>
+    </button>
+    <button mat-menu-item (click)="onResetShare()" *ngIf="this.item.lists.share">
+        <mat-icon>cloud_off</mat-icon>
+        <span>Remover compartilhamento</span>
     </button>
 
     <button mat-menu-item (click)="abrirLista()">
