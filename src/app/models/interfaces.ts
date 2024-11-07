@@ -28,6 +28,10 @@ export interface Purchases extends ConfigItems {
   purchaseDate: Date;
 }
 
+interface PurchaseItem extends Purchases {
+  price?: number;
+}
+
 export interface Items extends ConfigItems {
   price?: number;
   listId: number;
@@ -48,13 +52,7 @@ export interface PurchaseHistory {
   id?: number;
   listId: number;
   dateCompleted: Date;
-  items: Array<{
-    itemId: number;
-    name: string;
-    quantity: number;
-    unit: string;
-    price?: number;
-  }>;
+  items: Array<PurchaseItem>;
 }
 
 

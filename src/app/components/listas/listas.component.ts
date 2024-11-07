@@ -14,7 +14,7 @@ export class ListasComponent implements OnInit {
   constructor(private readonly listsService: ItemShoppingListService) { }
   ngOnInit(): void {
     this.listsService.listas$.subscribe((listas) => {
-      this.itensList = listas;
+      this.itensList = listas.filter(x => x.lists.status !== 'completed');
     });
   }
 

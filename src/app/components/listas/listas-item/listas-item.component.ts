@@ -19,9 +19,11 @@ export class ListItemComponent {
     const qtd = this.item.itens.length;
     const done = this.item.itens.filter(x => x.isPurchased)?.length ?? 0;
 
-    if (qtd === 1) return `${done} de ${qtd} item`
-    else if (qtd < 1) return `lista vazia`
-    else return `${done} de ${qtd} itens`
+    if (qtd < 1) return `lista vazia`
+    else if (done === 0 && qtd === 1) return `${qtd} item`
+    else if (done === 0 && qtd > 1) return `${qtd} itens`
+    else if (done === qtd) return `${qtd} finalizado`
+    else return `${done} de ${qtd} itens`;
   }
 
   get subtotalValue(): number {

@@ -34,6 +34,7 @@ import { SettingsComponent } from '../pages/settings/settings.component';
 import { ShortDatePipe } from '../pipes/short-date.pipe';
 import { IconOutlinedDirective } from '../directives/icon-outlined.directive';
 import { MenuSideComponent } from './shared/menu-side/menu-side.component';
+import { PerfilComponent } from '../pages/perfil/perfil.component';
 
 export const components = [
   HomeComponent,
@@ -56,7 +57,8 @@ export const components = [
   ValorEditComponent,
   ListasComponent,
   ConfirmDialogComponent,
-  NotificationListComponent
+  NotificationListComponent,
+  PerfilComponent,
 ]
 
 const directives = [

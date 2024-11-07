@@ -1,11 +1,18 @@
 <div class="bottom-sheet">
-
     <div class="actions">
+        <h3> {{item.name}} </h3>
         <button mat-raised-button class="floating-btn" color="primary" (click)="saveCurrentItem(); close()">Finalizar</button>
         <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
     </div>
 
     <form [formGroup]="editForm">
+
+        <mat-form-field >
+            <mat-label>Preço</mat-label>
+            <input matInput type="currency" inputmode="decimal" [formControl]="editForm.controls.preco"
+                placeholder="Ex: 12.50" #campoFoco>
+        </mat-form-field>
+
         <mat-form-field>
             <mat-label>Quantidade</mat-label>
             <input matInput type="number" [formControl]="editForm.controls.quantidade" placeholder="Ex: 3">
@@ -18,16 +25,14 @@
             </mat-select>
         </mat-form-field>
 
-        <mat-form-field >
-            <mat-label>Preço</mat-label>
-            <input matInput type="number" inputmode="decimal" [formControl]="editForm.controls.preco"
-                placeholder="Ex: 12.50" #campoFoco>
-        </mat-form-field>
-
-        <mat-form-field >
+        <!-- <mat-form-field >
             <mat-label>Total</mat-label>
             <input matInput type="number" inputmode="decimal" [value]="valorCalculado"
                 placeholder="Ex: 12.50" disabled>
-        </mat-form-field>
+        </mat-form-field> -->
+        <div class="total-value">
+            <small>Total</small>
+            <span> {{valorCalculado | currency}} </span>
+        </div>
     </form>
 </div>

@@ -1,7 +1,18 @@
+@use "theme-mixins" as *;
+@use "theme-variables" as *;
+
 :host {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+body.light-theme :host{
+  background-color: $background-accent-light;
+}
+
+body.dark-theme :host{
+  background-color: $background-accent-dark;
 }
 
 :host ::ng-deep .mat-form-field-wrapper {
@@ -18,6 +29,7 @@
 
   .search-field {
     width: 100%;
+    overflow: hidden;
   }
 
   .search-content {

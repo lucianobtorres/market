@@ -1,33 +1,22 @@
 @use 'theme-variables' as *;
 
+
+:host ::ng-deep .title-header>*>.mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
 .bottom-sheet {
-  min-height: 400px;
   display: flex;
   flex-direction: column;
   gap: 16px;
 
-  .drag-handle {
-    width: 50px;
-    height: 5px;
-    background-color: $color-disabled;
-    border-radius: 2.5px;
-    margin: 0 auto 16px;
-    cursor: pointer; // Mudança de cursor para indicar que pode ser clicado/arrastado
-  }
-
-  .complete-edit {
-    transition: max-height 0.3s ease; // Transição suave ao expandir
-  }
-
-  .simple-edit {
-    min-height: 400px;
+  .edit-form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
   }
 
-  .complete-edit {
-    margin-top: 16px;
+  .full-field {
+    flex: 1
   }
 
   .nav-buttons {
@@ -35,17 +24,44 @@
     justify-content: space-between;
     margin-top: 16px;
   }
-}
 
-.actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 8px;
-}
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+    align-items: center;
 
-.floating-btn {
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    .title-header {
+      margin-right: auto;
+      padding-right: 8px;
+      letter-spacing: 1px;
+    }
+  }
+
+  .floating-btn {
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .valores {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    width: 100%;
+
+
+    mat-form-field {
+      max-width: 88px;
+    }
+
+    .total-value {
+      display: flex;
+      flex-direction: column;
+      margin: 8px;
+      overflow: hidden;
+    }
+
+  }
 }

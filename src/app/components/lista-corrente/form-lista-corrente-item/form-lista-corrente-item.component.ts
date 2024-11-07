@@ -20,12 +20,15 @@ export interface FormEdicaoShopping {
   templateUrl: './form-lista-corrente-item.component.html',
   styleUrls: ['./form-lista-corrente-item.component.scss']
 })
-export class FormListaCorrenteItemComponent implements AfterViewInit {
+export class FormListaCorrenteItemComponent {
   editForm!: FormGroup<FormEdicaoShopping>;
   expanded = false;
   units = Object.values(ItemUnit);
 
-  @ViewChild("campoFoco") campoFoco!: ElementRef;
+  public get valorCalculado() {
+    return (this.editForm.controls.preco?.value ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
+  }
+
   public get item(): Items {
     return this.itemsList[this.currentIndex];
   }
@@ -49,11 +52,6 @@ export class FormListaCorrenteItemComponent implements AfterViewInit {
   ) {
     this.itemsList = data.itemsList;
     this.currentIndex = data.currentIndex;
-  }
-
-  ngAfterViewInit(): void {
-    const inputElement = this.campoFoco.nativeElement;
-    inputElement.select();
   }
 
   private setValues() {
@@ -86,10 +84,6 @@ export class FormListaCorrenteItemComponent implements AfterViewInit {
     }
   }
 
-  toggleExpand() {
-    this.expanded = !this.expanded;
-  }
-
   save(): void {
     this.saveCurrentItem();
   }
@@ -118,5 +112,20 @@ export class FormListaCorrenteItemComponent implements AfterViewInit {
 
   hasNextItem() {
     return this.currentIndex < this.itemsList.length - 1;
+  }
+
+  isEditing = false;
+
+  enableEditing() {
+    this.isEditing = true;
+  }
+
+  updateName(editingName: string) {
+    if (editingName.trim() !== '') {
+      console.log('this.editingName', editingName)
+      this.editForm.controls.nome.setValue(editingName);
+    }
+
+    this.isEditing = false;
   }
 }

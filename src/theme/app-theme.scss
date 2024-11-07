@@ -10,7 +10,8 @@ $primary-palette: (
   200: #80deea,
   300: #4dd0e1,
   400: #26c6da,
-  500: #00b894, // Cor principal
+  500: #00b894,
+  // Cor principal
   600: #00acc1,
   700: #0097a7,
   800: #00838f,
@@ -19,10 +20,8 @@ $primary-palette: (
   A200: #64ffda,
   A400: #1de9b6,
   A700: #00bfa5,
-  contrast: (
-    50: #000000,
-    500: #ffffff
-  )
+  contrast: (50: #000000,
+    500: #ffffff)
 );
 
 $accent-palette: (
@@ -31,7 +30,8 @@ $accent-palette: (
   200: #80cbc4,
   300: #4db6ac,
   400: #26a69a,
-  500: #00796b, // Cor acentuada
+  500: #00796b,
+  // Cor acentuada
   600: #00695c,
   700: #004d40,
   800: #002f28,
@@ -40,10 +40,8 @@ $accent-palette: (
   A200: #64ffda,
   A400: #1de9b6,
   A700: #00bfa5,
-  contrast: (
-    50: #000000,
-    500: #ffffff
-  )
+  contrast: (50: #000000,
+    500: #ffffff)
 );
 
 
@@ -53,29 +51,22 @@ $app-theme-primary: mat.define-palette($primary-palette, 500);
 $app-theme-accent: mat.define-palette($accent-palette, 500);
 
 // Configuração de tipografia padrão
-$typography-config: mat.define-typography-config(
-  $font-family: 'Roboto, "Helvetica Neue", sans-serif'
-);
+$typography-config: mat.define-typography-config($font-family: 'Roboto, "Helvetica Neue", sans-serif'
+  );
 
 // Definindo o tema claro
-$app-light-theme: mat.define-light-theme((
-  color: (
-    theme-type: light,
-    primary: $app-theme-primary,
-    accent: $app-theme-accent,
-  ),
-  typography: $typography-config
-));
+$app-light-theme: mat.define-light-theme((color: (theme-type: light,
+        primary: $app-theme-primary,
+        accent: $app-theme-accent,
+      ),
+      typography: $typography-config));
 
 // Definindo o tema escuro
-$app-dark-theme: mat.define-dark-theme((
-  color: (
-    theme-type: dark,
-    primary: $app-theme-primary,
-    accent: $app-theme-accent,
-  ),
-  typography: $typography-config
-));
+$app-dark-theme: mat.define-dark-theme((color: (theme-type: dark,
+        primary: $app-theme-primary,
+        accent: $app-theme-accent,
+      ),
+      typography: $typography-config));
 
 
 .light-theme {
@@ -92,6 +83,20 @@ $app-dark-theme: mat.define-dark-theme((
 
 // Aplicando tipografia global
 
-:root, html, body {
+:root,
+html,
+body {
   @include mat.typography-hierarchy($typography-config);
+
+  h3 {
+    font-size: 16px;
+  }
+
+  small {
+    font-size: x-small;
+  }
+
+
+  --back-accent: $background-accent-dark;
+  --back-primary: $background-primary-dark;
 }

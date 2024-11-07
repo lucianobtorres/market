@@ -170,7 +170,9 @@ export class AppComponent implements AfterViewInit, OnInit {
       const selectedFile = element.files[0];
       fileReader.readAsText(selectedFile, "UTF-8");
       fileReader.onload = () => {
-        if (fileReader.result?.toString()) this.itemShoppingListService.importListJSON(fileReader.result?.toString());
+        if (fileReader.result?.toString()) {
+          this.itemShoppingListService.importListJSON(fileReader.result?.toString());
+        }
       }
       fileReader.onerror = (error) => {
         console.log(error);

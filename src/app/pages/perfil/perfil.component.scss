@@ -1,0 +1,12 @@
+:host {
+  height: 100%;
+}
+.component-container {
+  height: inherit;
+  gap: 32px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 32px;
+}

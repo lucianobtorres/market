@@ -10,7 +10,7 @@
                     <mat-icon [matTooltip]="iconTheme">{{ iconTheme }}</mat-icon>
                 </button>
                 <button mat-icon-button class="btn-theme" (click)="fileInput.click()">
-                    <input hidden (change)="uploadList($event)" #fileInput type="file" accept=".json">
+                    <input hidden (change)="uploadList($event)" #fileInput type="file" accept=".txt; *.json;">
                     <mat-icon>backup</mat-icon>
                 </button>
 

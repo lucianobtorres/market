@@ -120,14 +120,21 @@ export class ListaCorrenteComponent implements OnInit {
     });
   }
 
-  async finalizarCompra() {
-    const db = new ModelDB();
+  async arquivarCompra() {
     const listaId = this.list.id;
-    const itensComprados = await db.items.where('listId').equals(listaId!).and(item => item.isPurchased).toArray();
+    const itensComprados = await db.items
+      .where('listId')
+      .equals(listaId!)
+      .and(item => item.isPurchased)
+      .toArray();
 
-    if (itensComprados.length) {
+    await db.lists.update(listaId!, { status: 'completed' });
 
+    if (!itensComprados.length) {
+      // await this.removerLista(listaId!);
+      return;
     }
+
     const historico: PurchaseHistory = {
       listId: listaId!,
       dateCompleted: new Date(),
@@ -139,7 +146,9 @@ export class ListaCorrenteComponent implements OnInit {
       name: item.name,
       quantity: item.quantity ?? 1,
       unit: item.unit,
-      price: item.price
+      price: item.price,
+      adding: false,
+      purchaseDate: new Date()
     }))
 
     if (items.length) {
@@ -147,15 +156,20 @@ export class ListaCorrenteComponent implements OnInit {
     }
 
     await db.purchasesHistory.add(historico);
-
-    // Opção: atualizar o status da lista ou limpar a lista de itens, dependendo da UX desejada.
-    await db.lists.update(listaId!, { status: 'completed' });
   }
 
   private startX = 0;
   private currentX = 0;
   private isSwiping = false;
   private threshold = 75; // Limite de deslocamento para ativar o comportamento de swipe
+
+  private async removerLista(listaId: number | undefined) {
+    await db.lists.delete(listaId!);
+    await db.items
+      .where('listId')
+      .equals(listaId!)
+      .delete();
+  }
 
   // Captura a posição inicial do toque
   onTouchStart(event: TouchEvent, item: Items): void {

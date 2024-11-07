@@ -9,7 +9,7 @@
   //   transition: transform 0.3s ease;
   //   /* Suaviza a rotação */
   // }
-
+  opacity: 0.8;
   height: 100%;
 
   .rotated {
@@ -45,6 +45,10 @@
 
       .notification-content {
         flex: 1;
+
+        span {
+          color: $font-primary;
+        }
       }
 
       .notification-time {
