@@ -73,7 +73,7 @@ export class FormListaCorrenteItemComponent {
         name: this.editForm.value.nome ?? '',
         quantity: this.editForm.value.quantidade ?? 1,
         price: this.editForm.value.preco ?? undefined,
-        unit: this.editForm.value.unidade ?? ItemUnit.UNIDADE,
+        unit: this.editForm.value.unidade ?? ItemUnit.UNID,
         notas: this.editForm.value.anotacao ?? undefined,
         listId: this.item.listId,
         addedDate: this.item.addedDate,

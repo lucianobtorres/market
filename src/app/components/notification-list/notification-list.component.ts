@@ -24,9 +24,6 @@ export class NotificationListComponent implements OnInit {
     this.itens$.subscribe((itens) => {
       this.notifications = itens;
       this.notifications.sort((a,b) => a.timestamp.getTime() - b.timestamp.getTime());
-      for (let index = 0; index < 4; index++) {
-        this.notifications.push(...itens)
-      }
     });
   }
 

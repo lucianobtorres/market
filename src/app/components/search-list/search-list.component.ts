@@ -143,7 +143,7 @@ export class SearchListComponent implements OnInit {
           adding: true,
           purchaseDate: new Date(),
           quantity: 1,
-          unit: ItemUnit.UNIDADE,
+          unit: ItemUnit.UNID,
           listId: this.idLista
         }
       ];
@@ -178,7 +178,7 @@ export class SearchListComponent implements OnInit {
           name: item.name,
           quantity: item.quantity || minValue,
           isPurchased: false,
-          unit: item.unit ?? ItemUnit.UNIDADE,
+          unit: item.unit ?? ItemUnit.UNID,
           listId: this.idLista,
           addedDate: new Date(),
         };
@@ -229,10 +229,10 @@ export class SearchListComponent implements OnInit {
     switch (unidade) {
       case ItemUnit.KG:
       case ItemUnit.GRAMAS:
-        return 0.5;
+        return 1;
       case ItemUnit.LITRO:
       case ItemUnit.ML:
-        return 0.1
+        return 1
       default:
         return 1;
     }

@@ -67,7 +67,7 @@ export class ValorEditComponent implements AfterViewInit {
     const data: Items = this.item;
     this.editForm = this.fb.group({
       quantidade: this.fb.nonNullable.control(data.quantity || 1, [Validators.required, Validators.min(1)]),
-      unidade: [data.unit || 'un' as ItemUnit, Validators.required],
+      unidade: [data.unit || ItemUnit.UNID, Validators.required],
       preco: [data.price || 0, [Validators.min(0)]],
     });
   }
@@ -80,7 +80,7 @@ export class ValorEditComponent implements AfterViewInit {
         name: this.item.name ?? '',
         quantity: this.editForm.value.quantidade ?? 1,
         price: this.editForm.value.preco ?? undefined,
-        unit: this.editForm.value.unidade ?? ItemUnit.UNIDADE,
+        unit: this.editForm.value.unidade ?? ItemUnit.UNID,
         notas: this.item.notas,
         listId: this.item.listId,
         addedDate: this.item.addedDate,

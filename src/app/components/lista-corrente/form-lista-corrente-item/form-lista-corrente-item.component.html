@@ -14,7 +14,7 @@
             </mat-form-field>
 
             <ng-container *ngIf="!isEditing">
-                <h3 (click)="enableEditing()"> {{ editForm.controls.nome.value }} </h3>
+                <h2 (click)="enableEditing()"> {{ editForm.controls.nome.value }} </h2>
             </ng-container>
 
         </div>
@@ -56,7 +56,7 @@
             <input matInput [formControl]="editForm.controls.anotacao">
         </mat-form-field>
 
-        <div class="actions">
+        <div class="actions" style="justify-content: space-around;">
             <button mat-icon-button (click)="goToPreviousItem()" [disabled]="!hasPreviousItem()">
                 <mat-icon>arrow_back</mat-icon>
             </button>

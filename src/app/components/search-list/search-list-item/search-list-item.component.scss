@@ -95,4 +95,22 @@
     height: 16px;
     width: 16px;
   }
+
+  .detalhe {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+    white-space: nowrap;
+    cursor: pointer;
+    background: white;
+    opacity: 0.7;
+    border-radius: 8px;
+    color: black;
+    padding: 4px;
+    min-width: 50px;
+    box-shadow: 0px 0px 2px 2px #00b894;
+    box-sizing: border-box;
+    margin: 2px;
+  }
 }

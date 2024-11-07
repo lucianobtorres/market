@@ -32,10 +32,10 @@ export async function migrate(db: ModelDB) {
         { id: 2, nome: 'Leite', unidade: ItemUnit.LITRO, adding: false, dataCompra: new Date() },
         { id: 3, nome: 'Arroz', unidade: ItemUnit.KG, adding: false, dataCompra: new Date() },
         { id: 4, nome: 'Feijão', unidade: ItemUnit.KG, adding: false, dataCompra: new Date() },
-        { id: 5, nome: 'Sabonete', unidade: ItemUnit.UNIDADE, adding: false, dataCompra: new Date() },
+        { id: 5, nome: 'Sabonete', unidade: ItemUnit.UNID, adding: false, dataCompra: new Date() },
         { id: 6, nome: 'Detergente', unidade: ItemUnit.LITRO, adding: false, dataCompra: new Date() },
-        { id: 7, nome: 'Papel Higiênico', unidade: ItemUnit.UNIDADE, adding: false, dataCompra: new Date() },
-        { id: 8, nome: 'Macarrão', unidade: ItemUnit.UNIDADE, adding: false, dataCompra: new Date() },
+        { id: 7, nome: 'Papel Higiênico', unidade: ItemUnit.UNID, adding: false, dataCompra: new Date() },
+        { id: 8, nome: 'Macarrão', unidade: ItemUnit.UNID, adding: false, dataCompra: new Date() },
         { id: 9, nome: 'Óleo de Soja', unidade: ItemUnit.LITRO, adding: false, dataCompra: new Date() },
         { id: 10, nome: 'Frango', unidade: ItemUnit.KG, adding: false, dataCompra: new Date() }
 
@@ -47,7 +47,7 @@ export async function migrate(db: ModelDB) {
       await db.table('shoppingItems').bulkAdd([
         { shoppingListId: 1, id: 1, nome: 'Leite', quantidade: 2, unidade: ItemUnit.LITRO, completed: false, },
         { shoppingListId: 1, id: 2, nome: 'Arroz', quantidade: 1, unidade: ItemUnit.KG, completed: false, },
-        { shoppingListId: 1, id: 3, nome: 'Sabonete', quantidade: 5, unidade: ItemUnit.UNIDADE, completed: false, },
+        { shoppingListId: 1, id: 3, nome: 'Sabonete', quantidade: 5, unidade: ItemUnit.UNID, completed: false, },
         { shoppingListId: 1, id: 4, nome: 'Detergente', quantidade: 1, unidade: ItemUnit.LITRO, completed: false, },
         { shoppingListId: 1, id: 5, nome: 'Óleo de Soja', quantidade: 1, unidade: ItemUnit.LITRO, completed: false, },
 

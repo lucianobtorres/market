@@ -4,7 +4,7 @@ export enum ItemUnit {
   GRAMAS = 'gramas',
   LITRO = 'litro',
   ML = 'ml',
-  UNIDADE = 'unidade',
+  UNID = 'unid.',
   PCT = 'pacote'
 }
 

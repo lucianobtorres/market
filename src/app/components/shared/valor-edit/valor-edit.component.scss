@@ -1,3 +1,5 @@
+@use "theme-variables" as *;
+
 :host {
   mat-bottom-sheet-container{
     border-radius: 16px;
@@ -52,10 +54,12 @@
     margin-top: 8px;
     align-items: center;
 
-    h3 {
+    h2 {
       margin-right: auto;
       padding-right: 8px;
       letter-spacing: 1px;
+      color: $primary-color-light;
+      cursor: pointer;
     }
   }
 

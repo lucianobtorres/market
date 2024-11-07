@@ -1,6 +1,6 @@
 <div class="bottom-sheet">
     <div class="actions">
-        <h3> {{item.name}} </h3>
+        <h2> {{item.name}} </h2>
         <button mat-raised-button class="floating-btn" color="primary" (click)="saveCurrentItem(); close()">Finalizar</button>
         <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
     </div>
@@ -24,12 +24,6 @@
                 <mat-option *ngFor="let unit of units" [value]="unit">{{ unit }}</mat-option>
             </mat-select>
         </mat-form-field>
-
-        <!-- <mat-form-field >
-            <mat-label>Total</mat-label>
-            <input matInput type="number" inputmode="decimal" [value]="valorCalculado"
-                placeholder="Ex: 12.50" disabled>
-        </mat-form-field> -->
         <div class="total-value">
             <small>Total</small>
             <span> {{valorCalculado | currency}} </span>
