@@ -21,9 +21,12 @@
             </div>
 
             <div class="total-value" *ngIf="totalValue > 0">
-                <small>subtotal: {{ subtotalValue | currency }}</small>
+                <small style="opacity: 0.5;">subtotal: {{ subtotalValue | currency }}</small>
                 <mat-divider [vertical]="true"></mat-divider>
-                <small>Total: {{ totalValue | currency }}</small>
+                <small style="
+                color: #00b894;
+                font-weight: 500;
+                letter-spacing: 1px;">Total: {{ totalValue | currency }}</small>
             </div>
         </div>
         <button mat-button
@@ -51,13 +54,6 @@
     <div class="edicao-container">
         <div class="list-container">
             <mat-list class="list-wait">
-                <!-- <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice" #itemswipe
-                (click)="editItem(item, itemListWait, indice)" class="swipeable-item"
-                (touchstart)="onTouchStart($event, item)"
-                (touchmove)="onTouchMove($event, item)"
-                (touchend)="onTouchEnd(item)"
-                [ngStyle]="{'transform': 'translateX(' + item.translateX + 'px)'}"
-            ><app-lista-corrente-item [item]="item"></app-lista-corrente-item> -->
                 <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice"
                     (click)="editItem(item, itemListWait, indice)" class="swipeable-item"><app-lista-corrente-item
                         [item]="item"></app-lista-corrente-item>

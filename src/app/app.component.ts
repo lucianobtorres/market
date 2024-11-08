@@ -2,9 +2,8 @@ import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IconsRegisterService } from './services/icons-register.service';
 import { ROTAS } from './app-routing.module';
-import { ThemeService, ThemeTyped } from './services/theme.service';
-import { Utils } from './utils/util';
-import { ItemShoppingListService } from './services/item-shopping-list.service';
+import { ThemeService } from './services/theme.service';
+import { ItemListService } from './services/item-list.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +23,7 @@ export class AppComponent implements AfterViewInit, OnInit {
   constructor(
     private router: Router,
     private themeService: ThemeService,
-    private itemShoppingListService: ItemShoppingListService,
+    private itemShoppingListService: ItemListService,
   ) {
     router.canceledNavigationResolution = 'computed';
 

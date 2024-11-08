@@ -10,7 +10,7 @@ import { ItemsService } from 'src/app/services/db/items.service';
 export interface FormEdicaoValor {
   quantidade: FormControl<number>;
   unidade: FormControl<ItemUnit | null>;
-  preco: FormControl<number | null>;
+  preco: FormControl<string | null>;
 }
 
 @Component({
@@ -30,7 +30,7 @@ export class ValorEditComponent implements AfterViewInit {
   itemsList: Items[] = [];
   private _currentIndex = 0;
   public get valorCalculado() {
-    return (this.editForm.controls.preco?.value ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
+    return (this.convertValueToDecimal() ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
   }
 
   public get currentIndex() {
@@ -68,7 +68,7 @@ export class ValorEditComponent implements AfterViewInit {
     this.editForm = this.fb.group({
       quantidade: this.fb.nonNullable.control(data.quantity || 1, [Validators.required, Validators.min(1)]),
       unidade: [data.unit || ItemUnit.UNID, Validators.required],
-      preco: [data.price || 0, [Validators.min(0)]],
+      preco: [this.item.price?.toString() ?? null, [Validators.min(0)]],
     });
   }
 
@@ -79,7 +79,7 @@ export class ValorEditComponent implements AfterViewInit {
         isPurchased: this.item.isPurchased,
         name: this.item.name ?? '',
         quantity: this.editForm.value.quantidade ?? 1,
-        price: this.editForm.value.preco ?? undefined,
+        price: this.convertValueToDecimal(),
         unit: this.editForm.value.unidade ?? ItemUnit.UNID,
         notas: this.item.notas,
         listId: this.item.listId,
@@ -89,6 +89,30 @@ export class ValorEditComponent implements AfterViewInit {
       this.dbService.update(this.item.id!, updatedItem, 'atualizado..');
       this.itemsList[this.currentIndex] = updatedItem;
     }
+  }
+  convertValueToDecimal(): number | undefined {
+    const value = this.editForm.value.preco;
+
+    // Verifica se o valor tem uma vírgula e a substitui por ponto para cálculos
+    if (typeof value === 'string' && value.includes(',')) {
+        const convertido = value.replace(',', '.');
+        return Number(convertido);
+    }
+
+    return Number(value);
+  }
+
+  convertDecimalToValue(): string | null {
+    const value = this.item.price?.toString();
+    console.log(value)
+
+    // Verifica se o valor tem uma vírgula e a substitui por ponto para cálculos
+    if (typeof value === 'string' && value.includes('.')) {
+        const convertido = value.replace('.', ',');
+        return convertido;
+    }
+
+    return this.item.price?.toString() ?? null;
   }
 
   save(): void {

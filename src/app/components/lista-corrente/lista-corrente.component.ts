@@ -3,11 +3,11 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { FormListaCorrenteItemComponent } from './form-lista-corrente-item/form-lista-corrente-item.component';
 import { Items, Lists, PurchaseHistory } from 'src/app/models/interfaces';
 
-import { db, ModelDB } from 'src/app/db/model-db';
+import { db } from 'src/app/db/model-db';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { SearchDialogComponent } from '../search-list/search-dialog/search-dialog.component';
 import { Utils } from 'src/app/utils/util';
-import { ItemShoppingListService } from 'src/app/services/item-shopping-list.service';
+import { ItemListService } from 'src/app/services/item-list.service';
 
 @Component({
   selector: 'app-lista-corrente',
@@ -54,7 +54,7 @@ export class ListaCorrenteComponent implements OnInit {
   constructor(
     @Optional() private readonly dialog: MatDialog,
     private readonly bottomSheet: MatBottomSheet,
-    private readonly listsService: ItemShoppingListService,
+    private readonly listsService: ItemListService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: { idLista: number }
   ) { }
 

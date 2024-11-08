@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { db } from 'src/app/db/model-db';
 import { ItemShoppingList } from 'src/app/models/interfaces';
-import { ItemShoppingListService } from 'src/app/services/item-shopping-list.service';
+import { ItemListService } from 'src/app/services/item-list.service';
 
 @Component({
   selector: 'app-listas',
@@ -11,7 +11,7 @@ import { ItemShoppingListService } from 'src/app/services/item-shopping-list.ser
 export class ListasComponent implements OnInit {
   public itensList: ItemShoppingList[] = [];
 
-  constructor(private readonly listsService: ItemShoppingListService) { }
+  constructor(private readonly listsService: ItemListService) { }
   ngOnInit(): void {
     this.listsService.listas$.subscribe((listas) => {
       this.itensList = listas.filter(x => x.lists.status !== 'completed');

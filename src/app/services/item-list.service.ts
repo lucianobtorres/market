@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import { db } from '../db/model-db';
 import { liveQuery } from 'dexie';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Items, ItemShoppingList, Lists } from '../models/interfaces';
+import { Items, ItemShoppingList as ItemListModel, Lists } from '../models/interfaces';
 
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ItemShoppingListService {
-  private listasSubject$ = new BehaviorSubject<ItemShoppingList[]>([]);
-  get listas$(): Observable<ItemShoppingList[]> {
+export class ItemListService {
+  private listasSubject$ = new BehaviorSubject<ItemListModel[]>([]);
+  get listas$(): Observable<ItemListModel[]> {
     return this.listasSubject$.asObservable();
   }
 
@@ -126,8 +126,9 @@ export class ItemShoppingListService {
 
           console.info('atualiza itens da lista existente')
           dadosImportados.itens
-            .forEach((item: Items) => (item.listId = listaExistente.id!));
+            .forEach((item: Items) => item.listId = listaExistente.id!);
 
+          await db.items.bulkAdd(dadosImportados.itens);
           return;
         }
       }

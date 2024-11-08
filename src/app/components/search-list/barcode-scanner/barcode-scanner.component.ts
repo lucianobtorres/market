@@ -25,7 +25,6 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
   }
 
   isCameraAccessible = true;
-
   preco: string[] = [];
   selectedPrices: string[] = [];
   productName: string | null = null;
@@ -46,6 +45,9 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.cameraService.checkCameraAvailability().subscribe((cameraAvailable: boolean) => {
+      const storedCameraValue = localStorage.getItem('cameraEnabled');
+      this.isCameraAccessible = storedCameraValue ? JSON.parse(storedCameraValue) : false;
+
       if (cameraAvailable) {
         this.initializeQuagga(this.targetElement);
       }
@@ -198,11 +200,13 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
     }, (err: unknown) => {
       if (err) {
         this.isCameraAccessible = false;
+        localStorage.setItem('cameraEnabled', JSON.stringify(this.isCameraAccessible));
         console.error('Erro ao inicializar Quagga:', err);
         return;
       }
 
       this.isCameraAccessible = true;
+      localStorage.setItem('cameraEnabled', JSON.stringify(this.isCameraAccessible));
       Quagga.start();
     });
 
@@ -213,6 +217,5 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
 
   finalizeQuagga(): void {
     if (this.isCameraAccessible) Quagga.stop();
-    this.isCameraAccessible = false;
   }
 }

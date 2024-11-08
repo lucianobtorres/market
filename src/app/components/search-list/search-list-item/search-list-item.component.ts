@@ -32,7 +32,6 @@ export class SearchListItemComponent {
     event.stopPropagation();
     const bottomSheetRef = this.bottomSheet.open(ValorEditComponent, {
       data: { item: this.item },
-      // disableClose: true
     });
 
     bottomSheetRef.afterDismissed().subscribe(result => {

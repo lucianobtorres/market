@@ -13,7 +13,7 @@
 
         <div class="detalhe" (click)="editItem($event)">
 
-            <small>{{ item.quantity | number:'1.1-1'}} {{ item.unit }}</small>
+            <small>{{ item.quantity | number }} {{ item.unit }}</small>
             <small *ngIf="item.price">{{ item.price | currency}}</small>
 
         </div>

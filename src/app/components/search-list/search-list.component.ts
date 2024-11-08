@@ -16,14 +16,14 @@ import { ItemsService } from 'src/app/services/db/items.service';
 export class SearchListComponent implements OnInit {
   @Input() idLista: number = 0;
   @Output() closeEmit = new EventEmitter<void>();
-  private items = new BehaviorSubject<CombinedItem[]>([]);
-  private shoppingList: Items[] = [];
+  private itemsSearch$ = new BehaviorSubject<CombinedItem[]>([]);
+  private itemsDB: Items[] = [];
   protected showBarCode = false;
   protected searchControl = new FormControl();
   protected filteredItems: CombinedItem[] = [];
 
-  private itemsSearch$ = liveQuery(() => db.purchases.toArray());
-  private itemsShopping$ = liveQuery(() => db.items.toArray());
+  private itemsPurchased$ = liveQuery(() => db.purchases.toArray());
+  private itemsDB$ = liveQuery(() => db.items.toArray());
 
   constructor(
     private readonly dbService: ItemsService,
@@ -41,13 +41,14 @@ export class SearchListComponent implements OnInit {
         this.getFilteredItems(value);
       });
 
-    this.itemsSearch$.subscribe((itens) => {
+    this.itemsPurchased$.subscribe((itens) => {
       this.updateAddingStatus(itens);
     });
 
-    this.itemsShopping$.subscribe((itens) => {
-      this.shoppingList = itens.filter(x => x.listId === this.idLista);
-      this.updateAddingStatus(this.shoppingList);
+    this.itemsDB$.subscribe((itens) => {
+      const itensDB = itens.filter(x => x.listId === this.idLista);
+      this.itemsDB = itensDB;
+      this.updateAddingStatus(itensDB);
     });
   }
 
@@ -56,23 +57,23 @@ export class SearchListComponent implements OnInit {
   }
 
   private updateAddingStatus(itemsList: CombinedItem[]) {
-    if (!this.shoppingList) return;
+    if (!itemsList) return;
 
     // Filtra os itens que não estão na lista atual
     const itemsToAdd = itemsList.filter(item =>
-      !this.items.value.some(x => x.name === item.name)
+      !this.itemsSearch$.value.some(x => x.name === item.name)
     );
 
     // Atualiza cada item com as propriedades necessárias
-    this.items.next(
-      [...this.items.value, ...itemsToAdd].map(item => {
+    this.itemsSearch$.next(
+      [...this.itemsSearch$.value, ...itemsToAdd].map(item => {
         return this.ajustaDadosItem(item);
       })
     );
 
     // Atualiza filteredItems apenas se o campo de busca estiver limpo
     if (this.searchControl.pristine) {
-      this.filteredItems = this.items.value;
+      this.filteredItems = this.itemsSearch$.value;
     }
 
     // Atualiza o estado 'adding' e 'quantidade' para cada item em filteredItems
@@ -83,17 +84,18 @@ export class SearchListComponent implements OnInit {
     this.sortFilter();
   }
 
-  private ajustaDadosItem(item: CombinedItem) {
-    const isInShoppingList = this.shoppingList.find(shoppingItem => shoppingItem.name === item.name);
+  private ajustaDadosItem(item: CombinedItem): CombinedItem {
+    const isInShoppingList = this.itemsDB.find(shoppingItem => shoppingItem.name === item.name);
     return {
       ...item,
       adding: !isInShoppingList, // Define 'adding' como verdadeiro se não estiver na lista
-      quantidade: isInShoppingList ? isInShoppingList.quantity : this.getIncrement(item.unit),
-      completed: isInShoppingList ? isInShoppingList.isPurchased : false,
+      quantity: isInShoppingList ? isInShoppingList.quantity : this.getIncrement(item.unit),
+      isPurchased: isInShoppingList ? isInShoppingList.isPurchased : false,
       id: isInShoppingList ? isInShoppingList.id : undefined,
-      preco: isInShoppingList ? isInShoppingList.price : item.price,
-      unidade: isInShoppingList ? isInShoppingList.unit : item.unit,
-      shoppingListId: this.idLista
+      price: isInShoppingList ? isInShoppingList.price : item.price,
+      unit: isInShoppingList ? isInShoppingList.unit : item.unit,
+      listId: this.idLista,
+      name: item.name,
     };
   }
 
@@ -102,8 +104,8 @@ export class SearchListComponent implements OnInit {
       // Definindo a prioridade para os estados dos itens
       const getStatusPriority = (item: CombinedItem) => {
         if (item.isPurchased) return 3; // Itens completados no final
-        if (!item.adding) return 2;   // Itens já adicionados ficam no meio
-        return 1;                     // Itens que ainda serão adicionados no topo
+        if (!item.adding) return 2;     // Itens já adicionados ficam no meio
+        return 1;                       // Itens que ainda serão adicionados no topo
       };
 
       const statusComparison = getStatusPriority(a) - getStatusPriority(b);
@@ -120,13 +122,13 @@ export class SearchListComponent implements OnInit {
 
   private getFilteredItems(searchTerm: string) {
     if (!searchTerm) {
-      this.filteredItems = this.items.value;
+      this.filteredItems = this.itemsSearch$.value;
       this.sortFilter();
       return;
     }
 
     // Filtra os itens com base no termo de busca
-    const filtro = this.items.value.filter(x =>
+    const filtro = this.itemsSearch$.value.filter(x =>
       x.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -153,14 +155,14 @@ export class SearchListComponent implements OnInit {
 
 
   async toggleItem(item: CombinedItem) {
-    const isInList = this.shoppingList.find(shoppingItem => shoppingItem.name === item.name);
+    const isInList = this.itemsDB.find(shoppingItem => shoppingItem.name === item.name);
 
     if (isInList && isInList.id) {
       // Se o item já está na lista, removê-lo
       await this.dbService.delete(isInList.id);
     } else {
       // Se o item não está na lista, adicioná-lo
-      const itemFound = this.items.value.find(x => x.name === item.name);
+      const itemFound = this.itemsSearch$.value.find(x => x.name === item.name);
       const minValue = this.getIncrement(item.unit);
 
       // Se o item não foi encontrado na lista de pesquisa, crie um novo
@@ -189,7 +191,7 @@ export class SearchListComponent implements OnInit {
   }
 
   async qtdChanged(somar: boolean, item: CombinedItem) {
-    const itemToUpdate = item.id ? item : this.items.value.find(x => x.name === item.name);
+    const itemToUpdate = item.id ? item : this.itemsSearch$.value.find(x => x.name === item.name);
 
     if (itemToUpdate?.id) {
       await db.items

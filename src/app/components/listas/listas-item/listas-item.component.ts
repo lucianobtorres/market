@@ -5,7 +5,7 @@ import { db } from 'src/app/db/model-db';
 import { ItemShoppingList } from 'src/app/models/interfaces';
 import { Utils } from 'src/app/utils/util';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
-import { ItemShoppingListService } from 'src/app/services/item-shopping-list.service';
+import { ItemListService } from 'src/app/services/item-list.service';
 
 @Component({
   selector: 'app-listas-item',
@@ -40,7 +40,7 @@ export class ListItemComponent {
   constructor(
     private readonly router: Router,
     private readonly dialog: MatDialog,
-    private readonly itemShoppingListService: ItemShoppingListService
+    private readonly itemShoppingListService: ItemListService
   ) {
   }
 
