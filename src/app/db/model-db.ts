@@ -1,4 +1,4 @@
-import { Items, Purchases, Lists, NotificationModel, PurchaseHistory } from '../models/interfaces';
+import { Items, Purchases, Lists, NotificationModel, PurchaseHistory, Inventory } from '../models/interfaces';
 import { Migrations } from './migrations';
 import Dexie, { Table } from 'dexie';
 
@@ -15,6 +15,7 @@ export class ModelDB extends Dexie {
   items!: Table<Items, number>;
   purchases!: Table<Purchases, number>;
   purchasesHistory!: Table<PurchaseHistory, number>;
+  inventory!: Table<Inventory, number>;
 
   versionDB!: Table<VersionDB, number>;
 
@@ -79,6 +80,19 @@ export class ModelDB extends Dexie {
       items: '++id, name, quantity, unit, listId, isPurchased, addedDate',
       purchases: '++id, name, quantity, unit, listId, purchaseDate',
       purchasesHistory: '++id, listId, dateCompleted, items',
+    });
+
+    console.info('Versão 5 do banco')
+    this.version(5).stores({
+      versionDB: '++id, version',
+
+      notifications: '++id, title, message, read, timestamp',
+
+      lists: '++id, name, createdDate, status, share',
+      items: '++id, name, quantity, unit, listId, isPurchased, addedDate',
+      purchases: '++id, name, quantity, unit, listId, purchaseDate',
+      purchasesHistory: '++id, listId, dateCompleted, items, store',
+      inventory: '++id, name, category, initialQuantity, currentQuantity, unit, lastRestockedDate, estimatedDepletionDate, consumptionRate',
     });
 
     Migrations.createMigrations(this);

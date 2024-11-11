@@ -30,7 +30,7 @@ export class ValorEditComponent implements AfterViewInit {
   itemsList: Items[] = [];
   private _currentIndex = 0;
   public get valorCalculado() {
-    return (this.convertValueToDecimal() ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
+    return (this.dbService.convertValueToDecimal(this.editForm.value.preco) ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
   }
 
   public get currentIndex() {
@@ -56,11 +56,9 @@ export class ValorEditComponent implements AfterViewInit {
 
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      const inputElement = this.campoFoco.nativeElement;
-      inputElement.select();
-      inputElement.focus();
-    }, 2000);
+    const inputElement = this.campoFoco.nativeElement;
+    inputElement.select();
+    inputElement.focus();
   }
 
   private setValues() {
@@ -79,7 +77,7 @@ export class ValorEditComponent implements AfterViewInit {
         isPurchased: this.item.isPurchased,
         name: this.item.name ?? '',
         quantity: this.editForm.value.quantidade ?? 1,
-        price: this.convertValueToDecimal(),
+        price: this.dbService.convertValueToDecimal(this.editForm.value.preco),
         unit: this.editForm.value.unidade ?? ItemUnit.UNID,
         notas: this.item.notas,
         listId: this.item.listId,
@@ -89,30 +87,6 @@ export class ValorEditComponent implements AfterViewInit {
       this.dbService.update(this.item.id!, updatedItem, 'atualizado..');
       this.itemsList[this.currentIndex] = updatedItem;
     }
-  }
-  convertValueToDecimal(): number | undefined {
-    const value = this.editForm.value.preco;
-
-    // Verifica se o valor tem uma vírgula e a substitui por ponto para cálculos
-    if (typeof value === 'string' && value.includes(',')) {
-        const convertido = value.replace(',', '.');
-        return Number(convertido);
-    }
-
-    return Number(value);
-  }
-
-  convertDecimalToValue(): string | null {
-    const value = this.item.price?.toString();
-    console.log(value)
-
-    // Verifica se o valor tem uma vírgula e a substitui por ponto para cálculos
-    if (typeof value === 'string' && value.includes('.')) {
-        const convertido = value.replace('.', ',');
-        return convertido;
-    }
-
-    return this.item.price?.toString() ?? null;
   }
 
   save(): void {

@@ -1,0 +1,58 @@
+<div class="bottom-sheet">
+
+    <div class="actions">
+        <div class="title-header">
+
+            <!-- <mat-form-field *ngIf="isEditing">
+                <mat-label>Nome do Item</mat-label>
+                <input matInput [formControl]="editForm.controls.nome" (blur)="updateName(campoFoco.value)"
+                    (keydown.enter)="updateName(campoFoco.value)" placeholder="Ex: Leite" autofocus #campoFoco>
+                <button matSuffix mat-icon-button (click)="updateName(campoFoco.value)">
+                    <mat-icon matTooltip="Atualizar..">done</mat-icon>
+                </button>
+            </mat-form-field> -->
+
+            <!-- <ng-container *ngIf="!isEditing">
+                <h2 (click)="enableEditing()"> {{ editForm.controls.nome.value | titlecase }} </h2>
+            </ng-container> -->
+            <h2> {{ editForm.controls.nome.value | titlecase }} </h2>
+        </div>
+
+        <button mat-raised-button class="floating-btn" color="primary" [matMenuTriggerFor]="menulists">
+            <mat-icon>add</mat-icon>
+            Incluir na lista
+        </button>
+
+        <mat-menu #menulists="matMenu">
+            <button mat-menu-item *ngFor="let list of lists" (click)="addToList(itemDispensa, list.id!)">
+                {{ list.name }}
+            </button>
+        </mat-menu>
+
+        <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+    </div>
+</div>
+<div class="notification-content">
+    <div class="propriedade">
+        <small>Itens na dispensa</small>
+        <div class="value-update">
+            <span style="margin-right: 16px;">
+                {{ itemDispensa.currentQuantity}}
+            </span>
+            <!-- <button class="counter-button" (click)="increase($event)">
+                <mat-icon>add</mat-icon>
+            </button>
+            <button class="counter-button" (click)="decrease($event)">
+                <mat-icon>remove</mat-icon>
+            </button> -->
+        </div>
+    </div>
+    <div class="propriedade" *ngIf="itemDispensa.lastRestockedDate">
+        <small>Data da última compra</small>
+        <span>{{ itemDispensa.lastRestockedDate | shortDate}}</span>
+    </div>
+    <div class="propriedade" *ngIf="itemDispensa.estimatedDepletionDate">
+        <small>Comprar novamente em</small>
+        <span>{{ itemDispensa.estimatedDepletionDate | shortDate}}</span>
+    </div>
+</div>

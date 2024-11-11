@@ -46,4 +46,9 @@ export class ListaCorrenteItemComponent {
       }
     });
   }
+
+  public getPrice = (value: number | string | undefined) => {
+    if (!value) return undefined;
+    return this.dbService.convertValueToDecimal(`${value}`);
+  }
 }

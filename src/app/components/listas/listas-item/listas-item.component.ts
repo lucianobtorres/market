@@ -97,4 +97,11 @@ export class ListItemComponent {
 
     this.itemShoppingListService.shareList(idList);
   }
+
+  onCopyList() {
+    const idList = this.item.lists.id;
+    if (!idList) return;
+
+    this.itemShoppingListService.duplicarLista(idList);
+  }
 }

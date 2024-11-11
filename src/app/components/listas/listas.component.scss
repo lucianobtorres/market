@@ -1,3 +1,5 @@
+@use "theme-variables" as *;
+
 :host {
   overflow: auto;
   cursor: pointer;
@@ -30,7 +32,7 @@
   mat-list-item {
     box-sizing: border-box;
     border: 1px solid #d6d6d6;
-    border-radius: 8px;
+    border-radius: $radius-default;
   }
 }
 
@@ -43,6 +45,7 @@
   border-radius: 50px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-sizing: content-box;
 }
 
 @media (min-width: 1200px) {

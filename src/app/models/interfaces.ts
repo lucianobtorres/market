@@ -28,7 +28,7 @@ export interface Purchases extends ConfigItems {
   purchaseDate: Date;
 }
 
-interface PurchaseItem extends Purchases {
+export interface PurchaseItem extends Purchases {
   price?: number;
 }
 
@@ -37,7 +37,6 @@ export interface Items extends ConfigItems {
   listId: number;
   isPurchased: boolean;
   addedDate: Date;
-
 }
 
 export interface ConfigItems {
@@ -53,8 +52,20 @@ export interface PurchaseHistory {
   listId: number;
   dateCompleted: Date;
   items: Array<PurchaseItem>;
+  store?: string;
 }
 
+export interface Inventory {
+  id?: number;
+  name: string;
+  category: string;
+  initialQuantity: number;
+  currentQuantity: number;
+  unit: ItemUnit;
+  lastRestockedDate: Date;
+  estimatedDepletionDate: Date | null;
+  consumptionRate: number | null;
+}
 
 export interface VersionDB {
   id?: number;

@@ -1,5 +1,20 @@
 <div class="component-container">
     <app-header>
-        Em breve..
+        Perfil
     </app-header>
+    <div class="content-container">
+        <div style="overflow: auto;">
+            <mat-list>
+                <mat-list-item (click)="navigateDispensa()">
+                    <div style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        width: 100%;"
+                    ><span>Dispensa</span><mat-icon>chevron_right</mat-icon>
+                    </div>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </div>
 </div>

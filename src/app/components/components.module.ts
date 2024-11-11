@@ -35,6 +35,8 @@ import { ShortDatePipe } from '../pipes/short-date.pipe';
 import { IconOutlinedDirective } from '../directives/icon-outlined.directive';
 import { MenuSideComponent } from './shared/menu-side/menu-side.component';
 import { PerfilComponent } from '../pages/perfil/perfil.component';
+import { DispensaComponent as DispensaComponent } from './dispensa/dispensa.component';
+import { DispensaItemDetalhesComponent } from './dispensa/dispensa-item-detalhe/dispensa-item-detalhes.component';
 
 export const components = [
   HomeComponent,
@@ -59,6 +61,8 @@ export const components = [
   ConfirmDialogComponent,
   NotificationListComponent,
   PerfilComponent,
+  DispensaComponent,
+  DispensaItemDetalhesComponent,
 ]
 
 const directives = [

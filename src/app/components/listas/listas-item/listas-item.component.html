@@ -13,10 +13,16 @@
 </div>
 
 <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="onCopyList()">
+        <mat-icon>file_copy</mat-icon>
+        <span>Copiar Lista</span>
+    </button>
+
     <button mat-menu-item (click)="onShareList()">
         <mat-icon>share</mat-icon>
         <span>Compartilhar Lista</span>
     </button>
+
     <button mat-menu-item (click)="onResetShare()" *ngIf="this.item.lists.share">
         <mat-icon>cloud_off</mat-icon>
         <span>Remover compartilhamento</span>

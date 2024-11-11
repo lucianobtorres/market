@@ -8,6 +8,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { SearchDialogComponent } from '../search-list/search-dialog/search-dialog.component';
 import { Utils } from 'src/app/utils/util';
 import { ItemListService } from 'src/app/services/item-list.service';
+import { InventoryService } from 'src/app/services/db/inventory.service';
 
 @Component({
   selector: 'app-lista-corrente',
@@ -54,6 +55,7 @@ export class ListaCorrenteComponent implements OnInit {
   constructor(
     @Optional() private readonly dialog: MatDialog,
     private readonly bottomSheet: MatBottomSheet,
+    private readonly inventoryService: InventoryService,
     private readonly listsService: ItemListService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: { idLista: number }
   ) { }
@@ -131,7 +133,6 @@ export class ListaCorrenteComponent implements OnInit {
     await db.lists.update(listaId!, { status: 'completed' });
 
     if (!itensComprados.length) {
-      // await this.removerLista(listaId!);
       return;
     }
 
@@ -156,6 +157,8 @@ export class ListaCorrenteComponent implements OnInit {
     }
 
     await db.purchasesHistory.add(historico);
+    this.inventoryService.insertInventory(historico);
+    this.closeEmit.emit();
   }
 
   private startX = 0;

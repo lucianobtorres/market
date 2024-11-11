@@ -179,6 +179,47 @@ export class ItemListService {
     }
   }
 
+  async duplicarLista(listaId: number): Promise<void> {
+    try {
+      console.info('Realizando duplicação')
+        const listaExistente = await db.lists
+          .where('id')
+          .equals(listaId)
+          .first();
+
+        if (!listaExistente) {
+          return;
+        }
+
+      console.info('cria uma nova lista')
+      delete listaExistente.id;
+      listaExistente.name = `${listaExistente.name} - Cópia`
+      listaExistente.share = undefined;
+      const novaListaId = await db.lists.add(listaExistente);
+
+        const itensExistente = await db.items
+          .where('listId')
+          .equals(listaId)
+          .toArray();
+
+      if (!itensExistente?.length) {
+        return;
+      }
+
+      console.info('inclui itens na nova lista')
+      itensExistente
+        .forEach((item: Items) => {
+          delete item.id;
+          item.listId = novaListaId;
+        });
+
+      await db.items.bulkAdd(itensExistente);
+
+    } catch (error) {
+      console.error('Erro ao importar lista:', error);
+    }
+  }
+
   // Verifica se o dispositivo é desktop
   verificarSeDesktop(): boolean {
     // Checa o userAgent para detectar desktops

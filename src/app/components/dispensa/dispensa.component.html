@@ -1,0 +1,24 @@
+<div class="component-header">
+    <button mat-icon-button (click)="navigatePerfil()">
+        <mat-icon>chevron_left</mat-icon>
+    </button>
+    {{ !inventoryList.length ? "Nada por arqui ainda" : "Itens na Dispensa (" + inventoryList.length +") "}}
+    <button mat-icon-button style="visibility: hidden;">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+</div>
+<mat-card class="mat-elevation-z0 component-container" style="display: flex; gap: 24px;">
+    <mat-card-content>
+
+        <div *ngFor="let unit of groupedInventory | keyvalue" class="itens-dispensa">
+            <h3>{{ unit.key | titlecase }}</h3>
+            <mat-chip-list>
+                <mat-chip *ngFor="let item of unit.value" color="primary"
+                (click)="openBottomSheet(item)">
+                    {{ item.name }} ({{ item.currentQuantity }})
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+
+    </mat-card-content>
+</mat-card>

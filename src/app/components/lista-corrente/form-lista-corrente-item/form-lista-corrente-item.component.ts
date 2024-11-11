@@ -26,7 +26,7 @@ export class FormListaCorrenteItemComponent {
   units = Object.values(ItemUnit);
 
   public get valorCalculado() {
-    return (this.editForm.controls.preco?.value ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
+    return (this.dbService.convertValueToDecimal(this.editForm.value.preco?.toString()) ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
   }
 
   public get item(): Items {
@@ -56,11 +56,12 @@ export class FormListaCorrenteItemComponent {
 
   private setValues() {
     const data: Items = this.item;
+    const preco = this.dbService.convertValueToDecimal(`${data.price}`);
     this.editForm = this.fb.group({
       nome: this.fb.nonNullable.control(data.name, Validators.required),
       quantidade: this.fb.nonNullable.control(data.quantity || 1, [Validators.required, Validators.min(1)]),
       unidade: [data.unit || 'un' as ItemUnit, Validators.required],
-      preco: [data.price || 0, [Validators.min(0)]],
+      preco: [Number(preco ?? 0), [Validators.min(0)]],
       anotacao: [data.notas || '']
     });
   }
@@ -72,7 +73,7 @@ export class FormListaCorrenteItemComponent {
         isPurchased: this.item.isPurchased,
         name: this.editForm.value.nome ?? '',
         quantity: this.editForm.value.quantidade ?? 1,
-        price: this.editForm.value.preco ?? undefined,
+        price: this.dbService.convertValueToDecimal(this.editForm.value.preco?.toString()),
         unit: this.editForm.value.unidade ?? ItemUnit.UNID,
         notas: this.editForm.value.anotacao ?? undefined,
         listId: this.item.listId,
@@ -82,10 +83,6 @@ export class FormListaCorrenteItemComponent {
       this.dbService.update(this.item.id!, updatedItem, 'atualizado..');
       this.itemsList[this.currentIndex] = updatedItem;
     }
-  }
-
-  save(): void {
-    this.saveCurrentItem();
   }
 
   close(): void {
@@ -122,7 +119,6 @@ export class FormListaCorrenteItemComponent {
 
   updateName(editingName: string) {
     if (editingName.trim() !== '') {
-      console.log('this.editingName', editingName)
       this.editForm.controls.nome.setValue(editingName);
     }
 

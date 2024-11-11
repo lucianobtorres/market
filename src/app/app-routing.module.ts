@@ -4,6 +4,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { ListaCorrenteDetalhadaComponent } from './components/lista-corrente/lista-corrente-detalhada/lista-corrente-detalhada.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
+import { DispensaComponent } from './components/dispensa/dispensa.component';
 
 export const ROTAS = {
   root: '/',
@@ -11,12 +12,14 @@ export const ROTAS = {
   perfil: 'perfil',
   config: 'configuracoes',
   lista: 'lista',
+  dispensa: 'dispensa',
 };
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: ROTAS.home, component: HomeComponent },
   { path: ROTAS.perfil, component: PerfilComponent },
+  { path: ROTAS.dispensa, component: DispensaComponent },
   { path: ROTAS.config, component: SettingsComponent },
   { path: `${ROTAS.lista}/:id`, component: ListaCorrenteDetalhadaComponent },
   {
