@@ -56,8 +56,8 @@ export class FormListaCorrenteItemComponent implements AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-    const inputElement = this.campoFoco.nativeElement;
     setTimeout(() => {
+      const inputElement = this.campoFoco.nativeElement;
       inputElement.select();
       inputElement.focus();
     }, 500);

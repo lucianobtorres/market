@@ -16,6 +16,7 @@ body.light-theme {
     white-space: nowrap;
     pointer-events: auto;
     cursor: default;
+    font-size: small;
   }
 
   background-color: $background-primary-light;
@@ -56,6 +57,7 @@ body.dark-theme {
     white-space: nowrap;
     pointer-events: auto;
     cursor: default;
+    font-size: small;
   }
 
   background-color: $background-primary-dark;
