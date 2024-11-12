@@ -9,7 +9,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 body.light-theme {
   .mat-chip.mat-standard-chip {
     background-color: $primary-color-light;
+    box-sizing: border-box;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    pointer-events: auto;
+    cursor: default;
   }
+
   background-color: $background-primary-light;
   color: #000;
 
@@ -41,6 +49,13 @@ body.light-theme {
 body.dark-theme {
   .mat-chip.mat-standard-chip {
     background-color: $primary-color-dark;
+    box-sizing: border-box;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    pointer-events: auto;
+    cursor: default;
   }
 
   background-color: $background-primary-dark;

@@ -1,4 +1,4 @@
-<div class="list-item-content" [attr.completed]="item.isPurchased" >
+<div class="list-item-content" [attr.completed]="item.isPurchased">
     <div class="item-container">
         <mat-icon class="icon-status" [ngClass]="{
             'icon-add': item.adding,
@@ -15,9 +15,16 @@
         <span class="item-name">{{item.name}}</span>
     </div>
     <div class="counter-container" *ngIf="!item.adding">
-        <div class="detalhe" (click)="editItem($event)">
+        <!-- <div class="detalhe" (click)="editItem($event)">
             <small>{{ item.quantity | number }} </small>
-        </div>
+        </div> -->
+
+
+        <mat-chip-list>
+            <mat-chip *ngIf="item.quantity" (click)="editItem($event)"> {{ item.quantity | number }} </mat-chip>
+            <mat-chip *ngIf="!item.quantity" (click)="editItem($event)"> {{ item.unit}} </mat-chip>
+        </mat-chip-list>
+
         <button class="counter-button" (click)="increase($event)">
             <mat-icon>add</mat-icon>
         </button>
