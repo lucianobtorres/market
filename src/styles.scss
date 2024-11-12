@@ -7,6 +7,9 @@
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 body.light-theme {
+  .mat-chip.mat-standard-chip {
+    background-color: $primary-color-light;
+  }
   background-color: $background-primary-light;
   color: #000;
 
@@ -36,6 +39,10 @@ body.light-theme {
 }
 
 body.dark-theme {
+  .mat-chip.mat-standard-chip {
+    background-color: $primary-color-dark;
+  }
+
   background-color: $background-primary-dark;
   color: #fff;
 
@@ -131,3 +138,8 @@ body.dark-theme mat-bottom-sheet-container {
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
+
+.rounded-container>.mat-dialog-container {
+  border-radius: $radius-default;
+}
+

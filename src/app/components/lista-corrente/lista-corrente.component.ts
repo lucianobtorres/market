@@ -9,6 +9,7 @@ import { SearchDialogComponent } from '../search-list/search-dialog/search-dialo
 import { Utils } from 'src/app/utils/util';
 import { ItemListService } from 'src/app/services/item-list.service';
 import { InventoryService } from 'src/app/services/db/inventory.service';
+import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-lista-corrente',
@@ -122,7 +123,46 @@ export class ListaCorrenteComponent implements OnInit {
     });
   }
 
-  async arquivarCompra() {
+  arquivarCompra() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: 'auto',
+      data: {
+        message: 'Quer transferir os itens comprados para dispensa?'
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.colocaComprasNaDispensa();
+      }
+    });
+  }
+
+  async comprarTudo() {
+    const listaId = this.list.id;
+
+    await db.items
+      .where('listId')
+      .equals(listaId!)
+      .and(item => !item.isPurchased)
+      .modify(item => {
+        item.isPurchased = true;
+      });
+  }
+
+  async devolverTudo() {
+    const listaId = this.list.id;
+
+    await db.items
+      .where('listId')
+      .equals(listaId!)
+      .and(item => item.isPurchased)
+      .modify(item => {
+        item.isPurchased = false;
+      });
+  }
+
+  async colocaComprasNaDispensa() {
     const listaId = this.list.id;
     const itensComprados = await db.items
       .where('listId')
@@ -130,7 +170,15 @@ export class ListaCorrenteComponent implements OnInit {
       .and(item => item.isPurchased)
       .toArray();
 
-    await db.lists.update(listaId!, { status: 'completed' });
+    const itensPendentes = await db.items
+      .where('listId')
+      .equals(listaId!)
+      .and(item => !item.isPurchased)
+      .toArray();
+
+    if (!itensPendentes.length) {
+      await db.lists.update(listaId!, { status: 'completed' });
+    }
 
     if (!itensComprados.length) {
       return;
@@ -154,6 +202,11 @@ export class ListaCorrenteComponent implements OnInit {
 
     if (items.length) {
       historico.items = items;
+      await db.items
+        .where('listId')
+        .equals(listaId!)
+        .and(item => item.isPurchased)
+        .delete();
     }
 
     await db.purchasesHistory.add(historico);

@@ -7,7 +7,8 @@
             <div class="title-header">
 
                 <mat-form-field *ngIf="isEditing">
-                    <input matInput [(ngModel)]="editingName" (blur)="updateName()" (keydown.enter)="updateName()" autofocus />
+                    <input matInput [(ngModel)]="editingName" (blur)="updateName()" (keydown.enter)="updateName()"
+                        autofocus />
                     <button matSuffix mat-icon-button (click)="updateName()">
                         <mat-icon matTooltip="Atualizar..">done</mat-icon>
                     </button>
@@ -29,7 +30,7 @@
                 letter-spacing: 1px;">Total: {{ totalValue | currency }}</small>
             </div>
         </div>
-        <button mat-button
+        <!-- <button mat-button
             style="
                 border: none;
                 border-radius: 50px;
@@ -47,7 +48,26 @@
                 <mat-icon>archive</mat-icon>
                 <small style="font-size: small;">Dispensa</small>
             </div>
+        </button> -->
+
+        <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
         </button>
+
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="arquivarCompra()">
+                <mat-icon>archive</mat-icon>
+                <span>Dispensa</span>
+            </button>
+            <button mat-menu-item (click)="comprarTudo()">
+                <mat-icon>check_circle</mat-icon>
+                <span>Comprar tudo</span>
+            </button>
+            <button mat-menu-item (click)="devolverTudo()">
+                <mat-icon>close</mat-icon>
+                <span>Devolver tudo</span>
+            </button>
+        </mat-menu>
 
     </div>
 

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { db } from 'src/app/db/model-db';
 import { ItemShoppingList } from 'src/app/models/interfaces';
 import { Utils } from 'src/app/utils/util';
-import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent, DialogArgs } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { ItemListService } from 'src/app/services/item-list.service';
 
 @Component({
@@ -40,7 +40,7 @@ export class ListItemComponent {
   constructor(
     private readonly router: Router,
     private readonly dialog: MatDialog,
-    private readonly itemShoppingListService: ItemListService
+    private readonly itemListService: ItemListService
   ) {
   }
 
@@ -54,9 +54,15 @@ export class ListItemComponent {
   }
 
   confirmRemove(event: Event) {
+    const data: DialogArgs = {
+      message: 'Tem certeza que deseja remover esta lista?',
+      action: 'Remover',
+      class: 'warn'
+    };
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: 'auto',
-      data: { message: 'Tem certeza que deseja remover esta lista?' }
+      data: data,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -88,20 +94,20 @@ export class ListItemComponent {
     const idList = this.item.lists.id;
     if (!idList) return;
 
-    if (this.item.lists.share) this.itemShoppingListService.removeShare(idList);
+    if (this.item.lists.share) this.itemListService.removeShare(idList);
   }
 
   onShareList() {
     const idList = this.item.lists.id;
     if (!idList) return;
 
-    this.itemShoppingListService.shareList(idList);
+    this.itemListService.shareList(idList);
   }
 
   onCopyList() {
     const idList = this.item.lists.id;
     if (!idList) return;
 
-    this.itemShoppingListService.duplicarLista(idList);
+    this.itemListService.duplicarLista(idList);
   }
 }

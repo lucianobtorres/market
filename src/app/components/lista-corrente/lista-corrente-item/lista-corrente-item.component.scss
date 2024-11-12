@@ -2,6 +2,7 @@
 
 :host {
   padding: 8px 0;
+  margin-block: 6px;
 }
 
 .flex-row {
@@ -107,6 +108,10 @@
     min-width: 450px;
     /* Define a largura mínima no PC */
   }
+}
+
+mat-chip {
+  cursor: pointer;
 }
 
 :host ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {

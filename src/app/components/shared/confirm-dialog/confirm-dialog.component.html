@@ -3,6 +3,6 @@
     <p>{{data.message}}</p>
 </mat-dialog-content>
 <mat-dialog-actions class="confirm-action">
-    <button mat-button color="warn" (click)="onConfirmClick()">Remover</button>
+    <button mat-button [color]="data.class" (click)="onConfirmClick()">{{ data.action }}</button>
     <button mat-button (click)="onNoClick()">Cancelar</button>
 </mat-dialog-actions>

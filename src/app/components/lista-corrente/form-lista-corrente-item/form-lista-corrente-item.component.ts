@@ -20,10 +20,12 @@ export interface FormEdicaoShopping {
   templateUrl: './form-lista-corrente-item.component.html',
   styleUrls: ['./form-lista-corrente-item.component.scss']
 })
-export class FormListaCorrenteItemComponent {
+export class FormListaCorrenteItemComponent implements AfterViewInit{
   editForm!: FormGroup<FormEdicaoShopping>;
   expanded = false;
   units = Object.values(ItemUnit);
+
+  @ViewChild("campoFoco") campoFoco!: ElementRef;
 
   public get valorCalculado() {
     return (this.dbService.convertValueToDecimal(this.editForm.value.preco?.toString()) ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
@@ -38,7 +40,6 @@ export class FormListaCorrenteItemComponent {
   public get currentIndex() {
     return this._currentIndex;
   }
-
   public set currentIndex(value) {
     this._currentIndex = value;
     this.setValues();
@@ -53,6 +54,15 @@ export class FormListaCorrenteItemComponent {
     this.itemsList = data.itemsList;
     this.currentIndex = data.currentIndex;
   }
+
+  ngAfterViewInit(): void {
+    const inputElement = this.campoFoco.nativeElement;
+    setTimeout(() => {
+      inputElement.select();
+      inputElement.focus();
+    }, 500);
+  }
+
 
   private setValues() {
     const data: Items = this.item;
