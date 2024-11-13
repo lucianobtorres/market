@@ -1,6 +1,5 @@
 @use 'theme-variables' as *;
 
-
 :host ::ng-deep .title-header>*>.mat-form-field-wrapper {
   padding-bottom: 0;
 }
@@ -9,6 +8,8 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin-bottom: 12px;
+
 
   .edit-form {
     display: flex;
@@ -38,14 +39,6 @@
       color: $primary-color-light;
       cursor: pointer
     }
-  }
-
-  .floating-btn {
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    box-sizing: content-box;
   }
 
   .valores {
@@ -96,6 +89,13 @@
   transition: background-color 0.3s, box-shadow 0.2s, opacity 0.2s;
   opacity: 0.8;
   padding: 0;
+}
+.floating-btn {
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-sizing: content-box;
 }
 .counter-button:hover {
   filter: brightness(0.9);

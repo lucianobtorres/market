@@ -37,6 +37,8 @@ import { MenuSideComponent } from './shared/menu-side/menu-side.component';
 import { PerfilComponent } from '../pages/perfil/perfil.component';
 import { DispensaComponent as DispensaComponent } from './dispensa/dispensa.component';
 import { DispensaItemDetalhesComponent } from './dispensa/dispensa-item-detalhe/dispensa-item-detalhes.component';
+import { PurchaseHistoryModalComponent } from './purchase-history-modal/purchase-history-modal.component';
+import { PurchaseHistoryModalDialogComponent } from './purchase-history-modal/purchase-history-modal-dialog/purchase-history-modal-dialog.component';
 
 export const components = [
   HomeComponent,
@@ -63,6 +65,8 @@ export const components = [
   PerfilComponent,
   DispensaComponent,
   DispensaItemDetalhesComponent,
+  PurchaseHistoryModalComponent,
+  PurchaseHistoryModalDialogComponent,
 ]
 
 const directives = [

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { db } from '../db/model-db';
 import { liveQuery } from 'dexie';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable } from 'rxjs';
 import { Items, ItemShoppingList as ItemListModel, Lists } from '../models/interfaces';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -11,6 +11,12 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class ItemListService {
   private listasSubject$ = new BehaviorSubject<ItemListModel[]>([]);
+  get listasCorrentes$(): Observable<ItemListModel[]> {
+    return this.listasSubject$.asObservable().pipe(
+      map((listas) => listas.filter((item) => item.lists.status !== 'completed'))
+    );
+  }
+
   get listas$(): Observable<ItemListModel[]> {
     return this.listasSubject$.asObservable();
   }
@@ -182,14 +188,14 @@ export class ItemListService {
   async duplicarLista(listaId: number): Promise<void> {
     try {
       console.info('Realizando duplicação')
-        const listaExistente = await db.lists
-          .where('id')
-          .equals(listaId)
-          .first();
+      const listaExistente = await db.lists
+        .where('id')
+        .equals(listaId)
+        .first();
 
-        if (!listaExistente) {
-          return;
-        }
+      if (!listaExistente) {
+        return;
+      }
 
       console.info('cria uma nova lista')
       delete listaExistente.id;
@@ -197,10 +203,10 @@ export class ItemListService {
       listaExistente.share = undefined;
       const novaListaId = await db.lists.add(listaExistente);
 
-        const itensExistente = await db.items
-          .where('listId')
-          .equals(listaId)
-          .toArray();
+      const itensExistente = await db.items
+        .where('listId')
+        .equals(listaId)
+        .toArray();
 
       if (!itensExistente?.length) {
         return;

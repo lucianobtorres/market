@@ -7,6 +7,14 @@ import { addDays } from 'date-fns';
 
 const PERIODO_PADRAO = 7;
 
+export interface PurchaseRecord {
+  id?: number;
+  date?: Date;
+  quantity?: number;
+  price?: number;
+  store?: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -30,6 +38,7 @@ export class InventoryService extends DBRepository<Inventory> {
       }
     }
   }
+
   addItemDispensa(element: PurchaseItem) {
     const hoje = new Date();
     const itemDispensa: Inventory = {
@@ -56,5 +65,31 @@ export class InventoryService extends DBRepository<Inventory> {
     itemDispensa.consumptionRate = (element.quantity ?? 1) / PERIODO_PADRAO;
 
     this.table.update(itemDispensa.id!, itemDispensa);
+  }
+
+  async getPurchaseHistoryForItem(itemName: string): Promise<PurchaseRecord[]> {
+    // Procura todas as compras no histórico que contenham o item especificado
+    const purchaseHistory = await db.purchasesHistory
+      .toArray()  // Pega todos os registros
+      .then((history) =>
+        history.filter((purchase) =>
+          purchase.items.some((item) => item.name.toLowerCase() === itemName.toLowerCase())
+        )
+      );
+
+    console.log('historico: ' + itemName, purchaseHistory)
+    // Extrai informações relevantes de cada compra que contém o item
+    const itemHistory: PurchaseRecord[] = purchaseHistory.map(purchase => {
+      const item = purchase.items.find(it => it.name.toLowerCase() === itemName.toLowerCase());
+      return {
+        id: purchase.id ?? 0,
+        date: purchase.dateCompleted,
+        quantity: item ? item.quantity : 0,
+        price: item ? item.price : 0,
+        store: purchase.store
+      };
+    });
+
+    return itemHistory;
   }
 }

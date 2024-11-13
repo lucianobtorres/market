@@ -30,25 +30,6 @@
                 letter-spacing: 1px;">Total: {{ totalValue | currency }}</small>
             </div>
         </div>
-        <!-- <button mat-button
-            style="
-                border: none;
-                border-radius: 50px;
-                cursor: pointer;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            "
-            (click)="arquivarCompra()">
-            <div style="
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                opacity: 0.6;
-                "
-            >
-                <mat-icon>archive</mat-icon>
-                <small style="font-size: small;">Dispensa</small>
-            </div>
-        </button> -->
 
         <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu">
             <mat-icon>more_vert</mat-icon>

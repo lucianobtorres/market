@@ -14,7 +14,7 @@ export class AppComponent implements AfterViewInit, OnInit {
   public iconeLogo = IconsRegisterService.LOGO;
   title = 'Market';
 
-  isMobile: boolean = false;
+  isMobile: boolean = window.innerWidth < 840;
 
   deferredPrompt: any;
   public showInstallButton = false;

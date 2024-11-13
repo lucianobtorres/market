@@ -1,0 +1,77 @@
+<div class="search-header">
+    <button mat-icon-button (click)="closeEmit.emit()">
+        <mat-icon>chevron_left</mat-icon>
+    </button>
+    <h2 mat-dialog-title>Histórico de Compras - {{ itemName }}</h2>
+    <button mat-raised-button class="floating-btn" color="primary" (click)="close()">
+        Salvar
+    </button>
+</div>
+<div class="search-content">
+    <mat-table mat-table [dataSource]="(purchases$ | async) ?? []" multiTemplateDataRows>
+        <!-- Coluna Data -->
+        <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef>Data</mat-header-cell>
+            <mat-cell *matCellDef="let purchase">
+                <mat-form-field>
+                    <input matInput [(ngModel)]="purchase.date" [matDatepicker]="picker" placeholder="Data" />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Coluna Quantidade -->
+        <ng-container matColumnDef="quantity">
+            <mat-header-cell *matHeaderCellDef>Quantidade</mat-header-cell>
+            <mat-cell *matCellDef="let purchase">
+                <mat-form-field>
+                    <input matInput [(ngModel)]="purchase.quantity" type="number" placeholder="Quantidade" />
+                </mat-form-field>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Coluna Preço -->
+        <ng-container matColumnDef="price">
+            <mat-header-cell *matHeaderCellDef>Preço</mat-header-cell>
+            <mat-cell *matCellDef="let purchase">
+                <mat-form-field>
+                    <input matInput [(ngModel)]="purchase.price" type="number" placeholder="Preço" />
+                </mat-form-field>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Coluna Loja -->
+        <ng-container matColumnDef="store">
+            <mat-header-cell *matHeaderCellDef>Loja</mat-header-cell>
+            <mat-cell *matCellDef="let purchase">
+                <mat-form-field>
+                    <input matInput [(ngModel)]="purchase.store" placeholder="Loja" />
+                </mat-form-field>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Coluna Remover -->
+        <ng-container matColumnDef="remove">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let purchase">
+                <button mat-icon-button (click)="removePurchase(purchase)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Coluna Remover -->
+        <ng-container matColumnDef="remove2">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let purchase">
+                <button mat-icon-button (click)="removePurchase(purchase)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+</div>

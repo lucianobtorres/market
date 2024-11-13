@@ -27,6 +27,11 @@
             <button mat-menu-item *ngFor="let list of lists" (click)="addToList(itemDispensa, list.id!)">
                 {{ list.name }}
             </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="addToNewList(itemDispensa)">
+                <mat-icon>add</mat-icon>
+                Nova Lista
+            </button>
         </mat-menu>
 
         <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
@@ -39,12 +44,12 @@
             <span style="margin-right: 16px;">
                 {{ itemDispensa.currentQuantity}}
             </span>
-            <!-- <button class="counter-button" (click)="increase($event)">
+            <button class="counter-button" (click)="increase($event)">
                 <mat-icon>add</mat-icon>
             </button>
             <button class="counter-button" (click)="decrease($event)">
                 <mat-icon>remove</mat-icon>
-            </button> -->
+            </button>
         </div>
     </div>
     <div class="propriedade" *ngIf="itemDispensa.lastRestockedDate">
@@ -55,4 +60,12 @@
         <small>Comprar novamente em</small>
         <span>{{ itemDispensa.estimatedDepletionDate | shortDate}}</span>
     </div>
+    <button *ngIf="!isHistOpen" mat-raised-button class="floating-btn" color="primary" (click)="openPurchaseHistoryModal(itemDispensa.name)">
+        <mat-icon>edit_calendar</mat-icon>
+        Histórico de Compras
+    </button>
+</div>
+
+<div *ngIf="isHistOpen" class="search-panel" [ngClass]="{'open': isHistOpen}">
+    <app-purchase-history-modal [itemName]="itemDispensa.name" (closeEmit)="closeHist()"></app-purchase-history-modal>
 </div>

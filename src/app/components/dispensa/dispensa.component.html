@@ -2,7 +2,9 @@
     <button mat-icon-button (click)="navigatePerfil()">
         <mat-icon>chevron_left</mat-icon>
     </button>
-    {{ !inventoryList.length ? "Nada por arqui ainda" : "Itens na Dispensa (" + inventoryList.length +") "}}
+    <ng-container *ngIf="inventoryList$ | async; let itemsDispensa">
+        {{ !itemsDispensa?.length ? "Nada por arqui ainda" : "Itens na Dispensa (" + itemsDispensa?.length +") "}}
+    </ng-container>
     <button mat-icon-button style="visibility: hidden;">
         <mat-icon>more_vert</mat-icon>
     </button>
@@ -10,15 +12,32 @@
 <mat-card class="mat-elevation-z0 component-container" style="display: flex; gap: 24px;">
     <mat-card-content>
 
-        <div *ngFor="let unit of groupedInventory | keyvalue" class="itens-dispensa">
-            <h3>{{ unit.key | titlecase }}</h3>
-            <mat-chip-list>
-                <mat-chip *ngFor="let item of unit.value" color="primary"
-                (click)="openBottomSheet(item)">
-                    {{ item.name }} ({{ item.currentQuantity }})
-                </mat-chip>
-            </mat-chip-list>
-        </div>
+        <!-- Seção Reposição -->
+        <ng-container *ngIf="(groupedInventory$ | async)?.['Reposição']; let itensReposicao">
+            <div *ngIf="itensReposicao.length" class="itens-dispensa">
+                <h3>Reposição</h3>
+                <mat-chip-list>
+                    <mat-chip *ngFor="let item of itensReposicao; trackBy: trackById" color="warn"
+                        (click)="openBottomSheet(item)">
+                        {{ item.name }} ({{ item.currentQuantity }})
+                        <mat-icon *ngIf="inCurrentList(item)">check_circle</mat-icon>
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+        </ng-container>
+
+        <!-- Demais Agrupamentos -->
+        <ng-container *ngFor="let unit of (groupedInventory$ | async | keyvalue)">
+            <div *ngIf="unit.key !== 'Reposição'" class="itens-dispensa">
+                <h3>{{ unit.key | titlecase }}</h3>
+                <mat-chip-list>
+                    <mat-chip *ngFor="let item of unit.value; trackBy: trackById" color="primary"
+                        (click)="openBottomSheet(item)">
+                        {{ item.name }} ({{ item.currentQuantity }})
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+        </ng-container>
 
     </mat-card-content>
 </mat-card>
