@@ -60,6 +60,10 @@
         <small>Comprar novamente em</small>
         <span>{{ itemDispensa.estimatedDepletionDate | shortDate}}</span>
     </div>
+    <div class="propriedade" *ngIf="itemDispensa.estimatedDepletionDate">
+        <small>Preço</small>
+        <span>{{ itemDispensa.estimatedDepletionDate | shortDate}}</span>
+    </div>
     <button *ngIf="!isHistOpen" mat-raised-button class="floating-btn" color="primary" (click)="openPurchaseHistoryModal(itemDispensa.name)">
         <mat-icon>edit_calendar</mat-icon>
         Histórico de Compras

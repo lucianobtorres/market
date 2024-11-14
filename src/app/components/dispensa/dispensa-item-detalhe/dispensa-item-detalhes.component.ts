@@ -33,7 +33,6 @@ export class DispensaItemDetalhesComponent {
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: Inventory,
     private readonly bottomSheetRef: MatBottomSheetRef<DispensaItemDetalhesComponent>,
     private readonly itemService: ItemsService,
-    private readonly inventoryService: InventoryService,
     private readonly listsService: ItemListService,
     private readonly dbService: InventoryService,
     private dialog: MatDialog
@@ -47,6 +46,7 @@ export class DispensaItemDetalhesComponent {
     this.listsService.listas$.subscribe((listas) => {
       this.lists = listas.filter(x => x.lists.status !== 'completed').map(x => x.lists);
     });
+
     this.setValues();
   }
 

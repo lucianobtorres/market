@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Optional, Output } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTable } from '@angular/material/table';
 import { BehaviorSubject } from 'rxjs';
 import { InventoryService, PurchaseRecord } from 'src/app/services/db/inventory.service';
+import { UtilArray } from 'src/app/utils/utils-array';
 
 
 @Component({
@@ -10,7 +12,9 @@ import { InventoryService, PurchaseRecord } from 'src/app/services/db/inventory.
   styleUrls: ['./purchase-history-modal.component.scss']
 })
 export class PurchaseHistoryModalComponent implements OnInit {
+  @ViewChild(MatTable) table!: MatTable<PurchaseRecord>;
   @Output() closeEmit = new EventEmitter<void>();
+  purchases: PurchaseRecord[] = [];
   purchases$ = new BehaviorSubject<PurchaseRecord[]>([]);
   @Input() itemName!: string;
   displayedColumns: string[] = ['date', 'quantity', 'price', 'store', 'remove'];
@@ -24,18 +28,24 @@ export class PurchaseHistoryModalComponent implements OnInit {
       this.itemName = this.data.itemName;
     }
 
-    const purchases = await this.inventoryService.getPurchaseHistoryForItem(this.itemName);
-    this.purchases$.next(purchases);
+    this.purchases = await this.inventoryService.getPurchaseHistoryForItem(this.itemName);
+    this.purchases$.next(this.purchases);
   }
 
-  close() {
-    // this.dialogRef.close(this.purchases$.value); // retorna o array atualizado
-  }
   removePurchase(purchase: PurchaseRecord) {
-    const index = this.purchases$.value.indexOf(purchase);
-    if (index >= 0) {
-      this.purchases$.next(this.purchases$.value.splice(index, 1));
-    }
+    purchase.deletar = true
+    const itens = this.purchases$.value.filter(x => !x.deletar);
+    this.purchases$.next(itens);
+
+    this.table.dataSource = this.purchases$;
   }
 
+  async salvar() {
+    console.log(this.purchases$, this.purchases)
+    for (const element of this.purchases) {
+      if (element.deletar) await this.inventoryService.removeItemFromHistory(element.id!, this.itemName);
+      else await this.inventoryService.updateItemInHistory(element.id!, this.itemName, element);
+    }
+    this.closeEmit.emit();
+  }
 }

@@ -7,11 +7,11 @@
   height: 100%;
 }
 
-body.light-theme :host{
+body.light-theme :host {
   background-color: $background-accent-light;
 }
 
-body.dark-theme :host{
+body.dark-theme :host {
   background-color: $background-accent-dark;
 }
 
@@ -68,17 +68,23 @@ h2 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-  .search-content {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    padding: 8px;
-  }
+.search-content {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 8px;
+}
 
-  .floating-btn {
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    box-sizing: content-box;
+.floating-btn {
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-sizing: content-box;
+}
+
+@media (min-width: 768px) {
+  .mat-table {
+    grid-template-columns: auto 2fr 2fr 2fr auto;
   }
+}

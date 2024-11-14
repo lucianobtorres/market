@@ -51,7 +51,7 @@ export class DispensaComponent {
       // Adiciona a propriedade 'inCurrentList' com base na presença do item em listas correntes
       const itemWithStatus = { ...item, inCurrentList: activeItemIds.has(item.name) };
 
-      if (item.currentQuantity === 0) {
+      if (item.currentQuantity === 0 || itemWithStatus.inCurrentList) {
         replenishmentItems.push(itemWithStatus);
       } else {
         const unitDescription = ItemUnitDescriptions.get(item.unit) || item.unit;
@@ -77,7 +77,7 @@ export class DispensaComponent {
     return (item as { inCurrentList: boolean })?.inCurrentList ?? false;
   }
 
-  trackById(index: number, item: Inventory): number {
+  trackById(_: number, item: Inventory): number {
     return item.id!;
   }
 

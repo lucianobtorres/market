@@ -21,11 +21,14 @@
     box-shadow: 0px 0px 10px $primary-color-light;
   }
 
-  mat-card-title.mat-card-title, .detalhe:hover, .active-menu-item {
+  mat-card-title.mat-card-title,
+  .detalhe:hover,
+  .active-menu-item {
     color: $primary-color-light;
   }
 
-  .swipeable-item, .list-wait {
+  .swipeable-item,
+  .list-wait {
     background-color: $background-accent-light;
     border-radius: $radius-default;
   }
@@ -39,6 +42,14 @@
   .component-container {
     background-color: $background-primary-light;
   }
+
+  @media (max-width: 768px) {
+    mat-list-item.menu {
+      cursor: pointer;
+      background-color: $color-hover-light;
+      border-radius: $radius-default;
+    }
+  }
 }
 
 @mixin setDark() {
@@ -47,7 +58,8 @@
     background-color: $accent-color-dark;
   }
 
-  .notification-list, .component-container {
+  .notification-list,
+  .component-container {
     background-color: $background-primary-dark;
   }
 
@@ -62,11 +74,14 @@
     box-shadow: 0px 0px 10px $primary-color-dark;
   }
 
-  mat-card-title.mat-card-title, .detalhe:hover, .active-menu-item {
+  mat-card-title.mat-card-title,
+  .detalhe:hover,
+  .active-menu-item {
     color: $primary-color-dark;
   }
 
-  .swipeable-item, .list-wait {
+  .swipeable-item,
+  .list-wait {
     background-color: $background-accent-dark;
     border-radius: $radius-default;
   }
@@ -75,5 +90,13 @@
     cursor: pointer;
     background-color: $color-hover-dark;
     border-radius: $radius-default;
+  }
+
+  @media (max-width: 768px) {
+    mat-list-item.menu {
+      cursor: pointer;
+      background-color: $color-hover-dark;
+      border-radius: $radius-default;
+    }
   }
 }

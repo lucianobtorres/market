@@ -1,6 +1,7 @@
 :host {
   height: 100%;
 }
+
 .component-container {
   height: inherit;
   gap: 32px;
@@ -9,4 +10,10 @@
   box-sizing: border-box;
   overflow: hidden;
   padding: 32px;
+}
+
+@media (min-width: 768px) {
+  .mat-table {
+    grid-template-columns: auto 2fr 2fr 2fr auto;
+  }
 }

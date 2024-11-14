@@ -17,10 +17,11 @@
             <div *ngIf="itensReposicao.length" class="itens-dispensa">
                 <h3>Reposição</h3>
                 <mat-chip-list>
-                    <mat-chip *ngFor="let item of itensReposicao; trackBy: trackById" color="warn"
-                        (click)="openBottomSheet(item)">
-                        {{ item.name }} ({{ item.currentQuantity }})
-                        <mat-icon *ngIf="inCurrentList(item)">check_circle</mat-icon>
+                    <mat-chip *ngFor="let item of itensReposicao; trackBy: trackById"
+                        [ngClass]="{ 'alread-listed': item | convertWithFn:inCurrentList}"
+                        (click)="openBottomSheet(item)"
+                    > {{ item.name }} ({{ item.currentQuantity }})
+                        <mat-icon style="margin-left: 2px;" *ngIf="inCurrentList(item)">check_circle</mat-icon>
                     </mat-chip>
                 </mat-chip-list>
             </div>

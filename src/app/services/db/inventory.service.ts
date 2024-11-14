@@ -13,6 +13,7 @@ export interface PurchaseRecord {
   quantity?: number;
   price?: number;
   store?: string;
+  deletar?: boolean;
 }
 
 @Injectable({
@@ -77,7 +78,7 @@ export class InventoryService extends DBRepository<Inventory> {
         )
       );
 
-    console.log('historico: ' + itemName, purchaseHistory)
+    console.info('historico: ' + itemName, purchaseHistory)
     // Extrai informações relevantes de cada compra que contém o item
     const itemHistory: PurchaseRecord[] = purchaseHistory.map(purchase => {
       const item = purchase.items.find(it => it.name.toLowerCase() === itemName.toLowerCase());
@@ -91,5 +92,32 @@ export class InventoryService extends DBRepository<Inventory> {
     });
 
     return itemHistory;
+  }
+
+  async updateItemInHistory(purchaseHistoryId: number, name: string, updatedItem: PurchaseRecord) {
+    console.info('Atualizando: ', updatedItem, 'Id: ', purchaseHistoryId)
+    const purchaseHistory = await db.purchasesHistory.get(purchaseHistoryId);
+
+    if (purchaseHistory) {
+      console.info(purchaseHistory)
+      const updatedItems = purchaseHistory.items.map(item =>
+        item.name === name ? { ...item, ...updatedItem } : item
+      );
+
+      console.info(purchaseHistory)
+      await db.purchasesHistory.update(purchaseHistoryId, { items: updatedItems });
+    }
+  }
+
+  async removeItemFromHistory(purchaseHistoryId: number, name: string) {
+    console.info('Removendo: ', name, 'Id: ', purchaseHistoryId)
+    const purchaseHistory = await db.purchasesHistory.get(purchaseHistoryId);
+
+    if (purchaseHistory) {
+      console.info(purchaseHistory)
+      const updatedItems = purchaseHistory.items.filter(item => item.name !== name);
+      console.info(updatedItems)
+      await db.purchasesHistory.update(purchaseHistoryId, { items: updatedItems });
+    }
   }
 }

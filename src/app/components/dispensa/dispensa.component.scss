@@ -87,6 +87,9 @@ body.dark-theme :host .itens-dispensa {
 
     mat-chip {
       cursor: pointer;
+      &.alread-listed{
+        opacity: 0.5;
+      }
     }
   }
 
