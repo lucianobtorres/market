@@ -4,7 +4,7 @@
     </button>
     <mat-form-field class="search-field">
         <mat-label>Pesquisar</mat-label>
-        <input matInput [formControl]="searchControl" placeholder="pesquisar" #campoSearch />
+        <input matInput [formControl]="searchControl" placeholder="pesquisar" #campoSearch (focus)="selectText(campoSearch)"/>
         <button mat-icon-button matSuffix (click)="toggleBarCode()">
             <mat-icon [ngClass]="{'show-barcode': showBarCode}"
             >photo_camera</mat-icon>

@@ -1,72 +1,98 @@
 @use "theme-variables" as *;
 
+  @media (max-width: 768px) {
+    body.light-theme :host>mat-card{
+      background-color: $background-accent-light;
+    }
+
+    body.dark-theme :host>mat-card{
+      // background-color: $background-accent-dark;
+      background-color: black;
+    }
+  }
+
 :host {
   overflow: hidden;
-}
-
-.notification-container {
-  // .mat-icon {
-  //   transition: transform 0.3s ease;
-  //   /* Suaviza a rotação */
-  // }
-  opacity: 0.8;
-  height: 100%;
-
-  .rotated {
-    transform: rotate(180deg);
-    /* Rotaciona o ícone quando marcado */
-  }
-
-  .notification-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    border-radius: 4px;
-    padding-inline: 24px;
-
-    &:hover {
-      background: rgba(0, 0, 0, 0.04);
-    }
-  }
-
-  .notification-list {
-    width: 100%;
-    max-width: 400px;
-    padding: 16px;
-
-    overflow: auto;
-
-    .notification-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px;
-      border-bottom: 1px solid #ccc;
-
-      .notification-content {
-        flex: 1;
-
-        span {
-          color: $font-primary;
-        }
-      }
-
-      .notification-time {
-        font-size: 0.75rem;
-        color: $color-low-emphasis;
-      }
-    }
-  }
 
   mat-card {
     display: flex;
     flex-direction: column;
     height: 100%;
+    padding: 0;
+    border-radius: $radius-default;
+    gap: 8px;
   }
 
-  mat-card-content {
-    display: flex;
-    overflow: hidden;
-    height: 100%;
+  .notification-container {
+    // .mat-icon {
+    //   transition: transform 0.3s ease;
+    //   /* Suaviza a rotação */
+    // }
+    opacity: 0.8;
+    // height: 100%;
+
+    .rotated {
+      transform: rotate(180deg);
+      /* Rotaciona o ícone quando marcado */
+    }
+
+    .notification-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      border-radius: 4px;
+      padding-inline: 16px;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.04);
+      }
+
+      span {
+        min-height: 48px;
+        align-content: center;
+      }
+    }
+
+    .notification-list {
+      max-width: 400px;
+      padding: 16px;
+      border-radius: 12px;
+      margin: 4px;
+
+      .notification-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .notification-content {
+          flex: 1;
+
+          span {
+            color: $font-primary;
+          }
+
+          h3 {
+            margin: 0;
+          }
+        }
+        .notification-time {
+          font-size: 0.75rem;
+          color: $color-low-emphasis;
+        }
+      }
+    }
+
+    mat-card-content {
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+      // height: 100%;
+    }
   }
 }

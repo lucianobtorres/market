@@ -4,7 +4,10 @@
 @use '@angular/material' as mat;
 @import '@angular/material/theming';
 
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 body.light-theme {
   .mat-chip.mat-standard-chip {
@@ -161,3 +164,12 @@ body.dark-theme mat-bottom-sheet-container {
   border-radius: $radius-default;
 }
 
+
+
+/* Estilos Responsivos */
+@media (max-width: 840px) {
+  .component-container {
+    gap: 16px;
+    padding: 16px;
+  }
+}

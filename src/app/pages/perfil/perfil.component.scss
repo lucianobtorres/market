@@ -2,15 +2,20 @@
   height: 100%;
 }
 
-.component-container {
-  height: inherit;
-  gap: 32px;
+mat-list {
+  gap: 8px;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
-  overflow: hidden;
-  padding: 32px;
+  padding-top: 0;
+
+  .menu div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
 }
+
 
 @media (min-width: 768px) {
   .mat-table {

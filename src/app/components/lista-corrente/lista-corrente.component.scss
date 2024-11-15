@@ -129,9 +129,7 @@ mat-list-item::after {
   content: "";
   position: absolute;
   left: 16px;
-  /* Ajusta onde a borda começa */
   right: 16px;
-  /* Ajusta onde a borda termina */
   bottom: 0;
   height: 1px;
   background-color: #ccc;
@@ -145,7 +143,7 @@ app-lista-corrente-item {
 
 .floating-btn {
   position: fixed;
-  bottom: 8vh;
+  bottom: 10vh;
   right: 8vw;
   z-index: 100;
   border: none;

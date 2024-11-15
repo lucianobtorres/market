@@ -267,4 +267,8 @@ export class SearchListComponent implements OnInit {
     // Converte para número e retorna o resultado
     return parseFloat(sanitizedPrice);
   }
+
+  selectText(input: HTMLInputElement) {
+    input.select();
+  }
 }

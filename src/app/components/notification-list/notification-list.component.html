@@ -1,6 +1,6 @@
 <mat-card class="mat-elevation-z0 notification-container component-container">
     <div class="notification-header" (click)="toggleNotifications()">
-        <p>Notificações</p>
+        <span>Notificações</span>
         <mat-icon [ngClass]="{'rotated': showNotifications}">expand_less</mat-icon>
     </div>
     <mat-card-content *ngIf="showNotifications">
@@ -16,7 +16,6 @@
                     <mat-icon>{{ notification.read ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
                 </button>
             </div>
-
         </div>
     </mat-card-content>
 </mat-card>

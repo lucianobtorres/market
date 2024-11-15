@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { liveQuery } from 'dexie';
 import { Inventory, ItemShoppingList } from 'src/app/models/interfaces';
 import { db } from 'src/app/db/model-db';
@@ -6,8 +6,9 @@ import { Router } from '@angular/router';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { DispensaItemDetalhesComponent } from './dispensa-item-detalhe/dispensa-item-detalhes.component';
 import { ItemUnitDescriptions } from 'src/app/models/item-unit';
-import { BehaviorSubject, combineLatest, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, debounceTime, map, Observable, tap } from 'rxjs';
 import { ItemListService } from 'src/app/services/item-list.service';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -16,11 +17,16 @@ import { ItemListService } from 'src/app/services/item-list.service';
   styleUrls: ['./dispensa.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DispensaComponent {
+export class DispensaComponent implements OnInit {
+  isSearchExpanded = false;
+  protected searchControl = new FormControl();
+  searchTerm$ = new BehaviorSubject<string>('');
+
   private inventoryListSubject = new BehaviorSubject<Inventory[]>([]);
   inventoryList$ = this.inventoryListSubject.asObservable();
   groupedInventory$ = new Observable<{ [unit: string]: Inventory[] }>();
 
+  @ViewChild('campoSearch') campoSearch!: HTMLInputElement;
   constructor(
     private readonly router: Router,
     private bottomSheet: MatBottomSheet,
@@ -28,10 +34,46 @@ export class DispensaComponent {
   ) {
     this.loadInventory();
 
-    this.groupedInventory$ = combineLatest([this.inventoryList$, this.itemListService.listasCorrentes$]).pipe(
-      map(([inventoryList, listasCorrentes]) => this.groupByUnit(inventoryList, listasCorrentes))
-    );
+    this.groupedInventory$ = combineLatest([
+      this.inventoryList$,
+      this.itemListService.listasCorrentes$,
+      this.searchTerm$]).pipe(
+        map(([inventoryList, listasCorrentes, searchTerm]) => {
+          if (!searchTerm.trim()) {
+            return this.groupByUnit(inventoryList, listasCorrentes);
+          }
+          const filteredInventory = inventoryList.filter(item =>
+            item.name.toLowerCase().includes(searchTerm.toLowerCase())
+          );
 
+          return this.groupByUnit(filteredInventory, listasCorrentes);
+        })
+      );
+  }
+  ngOnInit() {
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300))
+      .subscribe(value => {
+        this.searchTerm$.next(value);
+      });
+  }
+
+  toggleSearch() {
+    this.isSearchExpanded = !this.isSearchExpanded;
+    if (this.isSearchExpanded) {
+      setTimeout(() => {
+        this.campoSearch.select();
+        this.campoSearch.focus();
+      }, 500);
+    }
+  }
+
+  closeSearch() {
+    this.isSearchExpanded = false;
+  }
+
+  selectText(input: HTMLInputElement) {
+    input.select();
   }
 
   loadInventory() {

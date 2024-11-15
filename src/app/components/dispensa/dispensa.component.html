@@ -2,12 +2,26 @@
     <button mat-icon-button (click)="navigatePerfil()">
         <mat-icon>chevron_left</mat-icon>
     </button>
-    <ng-container *ngIf="inventoryList$ | async; let itemsDispensa">
-        {{ !itemsDispensa?.length ? "Nada por arqui ainda" : "Itens na Dispensa (" + itemsDispensa?.length +") "}}
+
+    <ng-container *ngIf="!isSearchExpanded">
+        <ng-container *ngIf="inventoryList$ | async as itemsDispensa">
+            {{ itemsDispensa?.length ? "Itens na Dispensa (" + itemsDispensa?.length + ")" : "Nada por aqui ainda" }}
+        </ng-container>
+
+        <!-- Botão para expandir a busca -->
+        <button mat-icon-button (click)="toggleSearch()">
+            <mat-icon>search</mat-icon>
+        </button>
     </ng-container>
-    <button mat-icon-button style="visibility: hidden;">
-        <mat-icon>more_vert</mat-icon>
-    </button>
+
+    <!-- Campo de busca expandido -->
+    <div class="search-container" *ngIf="isSearchExpanded">
+        <mat-form-field class="search-field">
+            <mat-label>Pesquisar</mat-label>
+            <input matInput [formControl]="searchControl" placeholder="pesquisar" #campoSearch (blur)="closeSearch()" />
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+    </div>
 </div>
 <mat-card class="mat-elevation-z0 component-container" style="display: flex; gap: 24px;">
     <mat-card-content>
@@ -19,8 +33,7 @@
                 <mat-chip-list>
                     <mat-chip *ngFor="let item of itensReposicao; trackBy: trackById"
                         [ngClass]="{ 'alread-listed': item | convertWithFn:inCurrentList}"
-                        (click)="openBottomSheet(item)"
-                    > {{ item.name }} ({{ item.currentQuantity }})
+                        (click)="openBottomSheet(item)"> {{ item.name }} ({{ item.currentQuantity }})
                         <mat-icon style="margin-left: 2px;" *ngIf="inCurrentList(item)">check_circle</mat-icon>
                     </mat-chip>
                 </mat-chip-list>

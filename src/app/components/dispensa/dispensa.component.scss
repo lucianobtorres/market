@@ -1,5 +1,9 @@
 @use "theme-variables" as *;
 
+:host ::ng-deep .component-header .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
 :host {
   overflow: hidden;
   height: 100%;
@@ -25,6 +29,11 @@ body.dark-theme :host .itens-dispensa {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 16px;
   justify-content: space-between;
+
+  .search-field {
+    width: 100%;
+    overflow: hidden;
+  }
 
   div {
     flex: 1;

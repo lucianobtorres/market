@@ -10,26 +10,4 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-
-  /* Previne que o conteúdo ultrapasse o limite do router-outlet */
-  mat-card {
-    height: inherit;
-    overflow: auto;
-  }
-
-  mat-card-content {
-    height: inherit;
-    gap: 32px;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    overflow: hidden;
-  }
-
-  /* Define a área rolável para o conteúdo */
-  .scrollable-content {
-    overflow-y: auto;
-    flex: 1;
-    padding: 16px;
-  }
 }
