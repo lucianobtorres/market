@@ -70,13 +70,7 @@ export class InventoryService extends DBRepository<Inventory> {
 
   async getPurchaseHistoryForItem(itemName: string): Promise<PurchaseRecord[]> {
     // Procura todas as compras no histórico que contenham o item especificado
-    const purchaseHistory = await db.purchasesHistory
-      .toArray()  // Pega todos os registros
-      .then((history) =>
-        history.filter((purchase) =>
-          purchase.items.some((item) => item.name.toLowerCase() === itemName.toLowerCase())
-        )
-      );
+    const purchaseHistory = await this.getHistoryFromName(itemName);
 
     console.info('historico: ' + itemName, purchaseHistory)
     // Extrai informações relevantes de cada compra que contém o item
@@ -92,6 +86,24 @@ export class InventoryService extends DBRepository<Inventory> {
     });
 
     return itemHistory;
+  }
+
+  private async getHistoryFromName(itemName: string): Promise<PurchaseHistory[]> {
+    return await db.purchasesHistory
+      .toArray()
+      .then((history) => history.filter((purchase) => purchase.items.some((item) => item.name.toLowerCase() === itemName.toLowerCase())
+      ).sort((a, b) => a.dateCompleted.getTime() - b.dateCompleted.getTime())
+      );
+  }
+
+  async getLastPrice(itemName: string): Promise<number | undefined> {
+    console.info('Obter último Preçp: ', itemName)
+    const purchasesHistory = await this.getHistoryFromName(itemName);
+
+    if (!purchasesHistory?.length) { return undefined; }
+
+    const purchaseHistory = purchasesHistory[purchasesHistory.length - 1];
+    return purchaseHistory?.items.find(item => item.name === itemName)?.price;
   }
 
   async updateItemInHistory(purchaseHistoryId: number, name: string, updatedItem: PurchaseRecord) {

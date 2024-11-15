@@ -5,6 +5,7 @@ import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { ItemUnit } from 'src/app/models/item-unit';
 import { Items } from 'src/app/models/interfaces';
 import { ItemsService } from 'src/app/services/db/items.service';
+import { UtilsNumber } from 'src/app/utils/utils-number';
 
 
 export interface FormEdicaoValor {
@@ -30,7 +31,7 @@ export class ValorEditComponent implements AfterViewInit {
   itemsList: Items[] = [];
   private _currentIndex = 0;
   public get valorCalculado() {
-    return (this.dbService.convertValueToDecimal(this.editForm.value.preco) ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
+    return (UtilsNumber.convertValueToDecimal(this.editForm.value.preco) ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
   }
 
   public get currentIndex() {
@@ -60,7 +61,7 @@ export class ValorEditComponent implements AfterViewInit {
       const inputElement = this.campoFoco.nativeElement;
       inputElement.select();
       inputElement.focus();
-    }, 500);
+    }, 200);
   }
 
   private setValues() {
@@ -79,7 +80,7 @@ export class ValorEditComponent implements AfterViewInit {
         isPurchased: this.item.isPurchased,
         name: this.item.name ?? '',
         quantity: this.editForm.value.quantidade ?? 1,
-        price: this.dbService.convertValueToDecimal(this.editForm.value.preco),
+        price: UtilsNumber.convertValueToDecimal(this.editForm.value.preco),
         unit: this.editForm.value.unidade ?? ItemUnit.UNID,
         notas: this.item.notas,
         listId: this.item.listId,

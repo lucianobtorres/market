@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { db } from 'src/app/db/model-db';
 import { ItemShoppingList } from 'src/app/models/interfaces';
-import { Utils } from 'src/app/utils/util';
+import { UtilsMobile } from 'src/app/utils/utils-mobile';
 import { ConfirmDialogComponent, DialogArgs } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { ItemListService } from 'src/app/services/item-list.service';
 
@@ -45,7 +45,7 @@ export class ListItemComponent {
   }
 
   isMobile(): boolean {
-    return Utils.isMobile();
+    return UtilsMobile.isMobile();
   }
 
   @HostListener('click')

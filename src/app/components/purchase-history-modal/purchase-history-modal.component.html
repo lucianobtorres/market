@@ -36,7 +36,8 @@
             <mat-header-cell *matHeaderCellDef>Preço</mat-header-cell>
             <mat-cell *matCellDef="let purchase">
                 <mat-form-field>
-                    <input matInput type="currency" inputmode="decimal" [(ngModel)]="purchase.price" placeholder="Preço" />
+                    <input matInput type="currency" inputmode="decimal" [(ngModel)]="purchase.price" placeholder="Preço"
+                    pattern="^\d+(\.\d{1,2})?$"  />
                 </mat-form-field>
             </mat-cell>
         </ng-container>

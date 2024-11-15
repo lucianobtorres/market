@@ -151,6 +151,7 @@ app-lista-corrente-item {
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   box-sizing: content-box;
+  min-width: fit-content;
 }
 
 @media (max-width: 600px) {

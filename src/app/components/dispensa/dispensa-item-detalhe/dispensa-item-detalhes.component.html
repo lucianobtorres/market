@@ -15,7 +15,7 @@
             <!-- <ng-container *ngIf="!isEditing">
                 <h2 (click)="enableEditing()"> {{ editForm.controls.nome.value | titlecase }} </h2>
             </ng-container> -->
-            <h2> {{ editForm.controls.nome.value | titlecase }} </h2>
+            <h2> {{ itemDispensa.name | titlecase }} </h2>
         </div>
 
         <button mat-raised-button class="floating-btn" color="primary" [matMenuTriggerFor]="menulists">
@@ -60,11 +60,14 @@
         <small>Comprar novamente em</small>
         <span>{{ itemDispensa.estimatedDepletionDate | shortDate}}</span>
     </div>
-    <div class="propriedade" *ngIf="itemDispensa.estimatedDepletionDate">
-        <small>Preço</small>
-        <span>{{ itemDispensa.estimatedDepletionDate | shortDate}}</span>
-    </div>
-    <button *ngIf="!isHistOpen" mat-raised-button class="floating-btn" color="primary" (click)="openPurchaseHistoryModal(itemDispensa.name)">
+    <ng-container *ngIf="(lastPrice$ | async); let lastPrice">
+        <div class="propriedade" *ngIf="lastPrice > 0" >
+            <small>Último preço</small>
+            <span>{{ lastPrice | currency}}</span>
+        </div>
+    </ng-container>
+    <button *ngIf="!isHistOpen" mat-raised-button class="floating-btn" color="primary"
+        (click)="openPurchaseHistoryModal(itemDispensa.name)">
         <mat-icon>edit_calendar</mat-icon>
         Histórico de Compras
     </button>

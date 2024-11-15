@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { Router, ActivatedRoute } from "@angular/router";
-import { Utils } from "src/app/utils/util";
+import { UtilsMobile } from "src/app/utils/utils-mobile";
 import { ListaCorrenteDialogComponent } from "../lista-corrente-dialog/lista-corrente-dialog.component";
 
 
@@ -18,7 +18,7 @@ export class ListaCorrenteDetalhadaComponent implements OnInit {
     private readonly route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.isMobile = Utils.isMobile();
+    this.isMobile = UtilsMobile.isMobile();
 
     this.route.paramMap.subscribe(params => {
       this.id = Number(params.get('id') ?? 0 + 0);

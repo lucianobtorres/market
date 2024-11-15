@@ -1,12 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
-import { liveQuery } from 'dexie';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Inventory, ItemShoppingList } from 'src/app/models/interfaces';
 import { db } from 'src/app/db/model-db';
 import { Router } from '@angular/router';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { DispensaItemDetalhesComponent } from './dispensa-item-detalhe/dispensa-item-detalhes.component';
 import { ItemUnitDescriptions } from 'src/app/models/item-unit';
-import { BehaviorSubject, combineLatest, debounceTime, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, debounceTime, map, Observable } from 'rxjs';
 import { ItemListService } from 'src/app/services/item-list.service';
 import { FormControl } from '@angular/forms';
 
@@ -26,7 +25,7 @@ export class DispensaComponent implements OnInit {
   inventoryList$ = this.inventoryListSubject.asObservable();
   groupedInventory$ = new Observable<{ [unit: string]: Inventory[] }>();
 
-  @ViewChild('campoSearch') campoSearch!: HTMLInputElement;
+  @ViewChild('campoSearch') campoSearch!: ElementRef;
   constructor(
     private readonly router: Router,
     private bottomSheet: MatBottomSheet,
@@ -62,14 +61,19 @@ export class DispensaComponent implements OnInit {
     this.isSearchExpanded = !this.isSearchExpanded;
     if (this.isSearchExpanded) {
       setTimeout(() => {
-        this.campoSearch.select();
-        this.campoSearch.focus();
-      }, 500);
+      const inputElement = this.campoSearch.nativeElement;
+      inputElement.select();
+      inputElement.focus();
+      }, 200);
     }
   }
 
   closeSearch() {
-    this.isSearchExpanded = false;
+    setTimeout(() => {
+      this.isSearchExpanded = false;
+      this.searchControl.setValue('');
+      this.searchTerm$.next("");
+    }, 200);
   }
 
   selectText(input: HTMLInputElement) {

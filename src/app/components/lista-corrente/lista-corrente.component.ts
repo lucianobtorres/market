@@ -6,7 +6,7 @@ import { Items, Lists, PurchaseHistory } from 'src/app/models/interfaces';
 import { db } from 'src/app/db/model-db';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { SearchDialogComponent } from '../search-list/search-dialog/search-dialog.component';
-import { Utils } from 'src/app/utils/util';
+import { UtilsMobile } from 'src/app/utils/utils-mobile';
 import { ItemListService } from 'src/app/services/item-list.service';
 import { InventoryService } from 'src/app/services/db/inventory.service';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
@@ -107,7 +107,7 @@ export class ListaCorrenteComponent implements OnInit {
   }
 
   isMobile(): boolean {
-    return Utils.isMobile();
+    return UtilsMobile.isMobile();
   }
 
   editItem(item: Items, items: Items[], index: number): void {

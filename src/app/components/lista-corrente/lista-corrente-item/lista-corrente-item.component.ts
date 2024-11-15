@@ -3,6 +3,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { Items } from 'src/app/models/interfaces';
 import { ItemsService } from 'src/app/services/db/items.service';
 import { ValorEditComponent } from '../../shared/valor-edit/valor-edit.component';
+import { UtilsNumber } from 'src/app/utils/utils-number';
 
 @Component({
   selector: 'app-lista-corrente-item',
@@ -49,6 +50,6 @@ export class ListaCorrenteItemComponent {
 
   public getPrice = (value: number | string | undefined) => {
     if (!value) return undefined;
-    return this.dbService.convertValueToDecimal(`${value}`);
+    return UtilsNumber.convertValueToDecimal(`${value}`);
   }
 }

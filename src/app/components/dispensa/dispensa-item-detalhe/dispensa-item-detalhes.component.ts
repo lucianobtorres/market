@@ -6,10 +6,11 @@ import { ItemListService } from 'src/app/services/item-list.service';
 import { db } from 'src/app/db/model-db';
 import { ItemsService } from 'src/app/services/db/items.service';
 import { MatDialog } from '@angular/material/dialog';
-import { PurchaseHistoryModalComponent } from '../../purchase-history-modal/purchase-history-modal.component';
 import { InventoryService } from 'src/app/services/db/inventory.service';
-import { Utils } from 'src/app/utils/util';
+import { UtilsMobile } from 'src/app/utils/utils-mobile';
 import { PurchaseHistoryModalDialogComponent } from '../../purchase-history-modal/purchase-history-modal-dialog/purchase-history-modal-dialog.component';
+import { BehaviorSubject } from 'rxjs';
+import { UtilsNumber } from 'src/app/utils/utils-number';
 
 export interface FormEdicaoInventory {
   nome: FormControl<string>;
@@ -23,6 +24,7 @@ export interface FormEdicaoInventory {
 export class DispensaItemDetalhesComponent {
   isHistOpen = false;
   editForm!: FormGroup<FormEdicaoInventory>;
+  lastPrice$ = new BehaviorSubject<number>(0);
   itemDispensa!: Inventory;
   lists: Lists[] = [];
 
@@ -42,12 +44,19 @@ export class DispensaItemDetalhesComponent {
 
   isEditing = false;
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.listsService.listas$.subscribe((listas) => {
       this.lists = listas.filter(x => x.lists.status !== 'completed').map(x => x.lists);
     });
 
+    await this.defineLastPrice();
     this.setValues();
+  }
+
+  private async defineLastPrice() {
+    const lastPrice = await this.dbService.getLastPrice(this.itemDispensa.name);
+    const priceConverted = UtilsNumber.convertValueToDecimal(lastPrice);
+    this.lastPrice$.next(priceConverted ?? 0);
   }
 
   private setValues() {
@@ -120,30 +129,30 @@ export class DispensaItemDetalhesComponent {
   }
 
   isMobile(): boolean {
-    return Utils.isMobile();
+    return UtilsMobile.isMobile();
   }
 
   async openPurchaseHistoryModal(itemName: string) {
     if (this.isMobile()) {
 
-    const dialogRef = this.dialog.open(PurchaseHistoryModalDialogComponent, {
-      data: { itemName },
-      width: '100vw',
-      height: '100vh',
-      maxWidth: '100vw',
-      panelClass: 'full-screen-dialog',
-    });
+      const dialogRef = this.dialog.open(PurchaseHistoryModalDialogComponent, {
+        data: { itemName },
+        width: '100vw',
+        height: '100vh',
+        maxWidth: '100vw',
+        panelClass: 'full-screen-dialog',
+      });
 
-    dialogRef.afterClosed().subscribe((updatedPurchases) => {
-      this.closeHist();
-    });
-  } else {
-    // Abre o painel lateral em telas grandes
-    this.isHistOpen = true;
-  }
+      dialogRef.afterClosed().subscribe(async (_) => {
+        this.closeHist();
+      });
+    } else {
+      this.isHistOpen = true;
+    }
   }
 
-  closeHist() {
+  async closeHist() {
+    await this.defineLastPrice();
     this.isHistOpen = false;
   }
 }

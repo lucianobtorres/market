@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { BehaviorSubject } from 'rxjs';
 import { InventoryService, PurchaseRecord } from 'src/app/services/db/inventory.service';
-import { UtilArray } from 'src/app/utils/utils-array';
+import { UtilsNumber } from 'src/app/utils/utils-number';
 
 
 @Component({
@@ -41,7 +41,16 @@ export class PurchaseHistoryModalComponent implements OnInit {
   }
 
   async salvar() {
-    console.log(this.purchases$, this.purchases)
+    this.purchases.forEach(purchase => {
+      const priceStr = UtilsNumber.convertDecimalToValue(purchase.price);
+      console.log('priceStr', priceStr)
+      const price = parseFloat(priceStr ?? "");
+      console.log('price', price)
+      if (isNaN(price) || price < 0) {
+        purchase.price = UtilsNumber.convertValueToDecimal(priceStr);
+      }
+    });
+
     for (const element of this.purchases) {
       if (element.deletar) await this.inventoryService.removeItemFromHistory(element.id!, this.itemName);
       else await this.inventoryService.updateItemInHistory(element.id!, this.itemName, element);

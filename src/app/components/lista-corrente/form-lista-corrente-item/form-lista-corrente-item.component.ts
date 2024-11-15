@@ -5,6 +5,7 @@ import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { ItemUnit } from 'src/app/models/item-unit';
 import { Items } from 'src/app/models/interfaces';
 import { ItemsService } from 'src/app/services/db/items.service';
+import { UtilsNumber } from 'src/app/utils/utils-number';
 
 
 export interface FormEdicaoShopping {
@@ -28,7 +29,7 @@ export class FormListaCorrenteItemComponent implements AfterViewInit{
   @ViewChild("campoFoco") campoFoco!: ElementRef;
 
   public get valorCalculado() {
-    return (this.dbService.convertValueToDecimal(this.editForm.value.preco?.toString()) ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
+    return (UtilsNumber.convertValueToDecimal(this.editForm.value.preco?.toString()) ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
   }
 
   public get item(): Items {
@@ -60,13 +61,13 @@ export class FormListaCorrenteItemComponent implements AfterViewInit{
       const inputElement = this.campoFoco.nativeElement;
       inputElement.select();
       inputElement.focus();
-    }, 500);
+    }, 200);
   }
 
 
   private setValues() {
     const data: Items = this.item;
-    const preco = this.dbService.convertValueToDecimal(`${data.price}`);
+    const preco = UtilsNumber.convertValueToDecimal(`${data.price}`);
     this.editForm = this.fb.group({
       nome: this.fb.nonNullable.control(data.name, Validators.required),
       quantidade: this.fb.nonNullable.control(data.quantity || 1, [Validators.required, Validators.min(1)]),
@@ -83,7 +84,7 @@ export class FormListaCorrenteItemComponent implements AfterViewInit{
         isPurchased: this.item.isPurchased,
         name: this.editForm.value.nome ?? '',
         quantity: this.editForm.value.quantidade ?? 1,
-        price: this.dbService.convertValueToDecimal(this.editForm.value.preco?.toString()),
+        price: UtilsNumber.convertValueToDecimal(this.editForm.value.preco?.toString()),
         unit: this.editForm.value.unidade ?? ItemUnit.UNID,
         notas: this.editForm.value.anotacao ?? undefined,
         listId: this.item.listId,
