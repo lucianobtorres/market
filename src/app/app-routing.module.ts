@@ -5,6 +5,7 @@ import { ListaCorrenteDetalhadaComponent } from './components/lista-corrente/lis
 import { SettingsComponent } from './pages/settings/settings.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { DispensaComponent } from './components/dispensa/dispensa.component';
+import { PurchaseMapComponent } from './components/purchase-map/purchase-map.component';
 
 export const ROTAS = {
   root: '/',
@@ -13,6 +14,7 @@ export const ROTAS = {
   config: 'configuracoes',
   lista: 'lista',
   dispensa: 'dispensa',
+  mapa: 'purchase-map',
 };
 
 const routes: Routes = [
@@ -20,6 +22,7 @@ const routes: Routes = [
   { path: ROTAS.home, component: HomeComponent },
   { path: ROTAS.perfil, component: PerfilComponent },
   { path: ROTAS.dispensa, component: DispensaComponent },
+  { path: ROTAS.mapa, component: PurchaseMapComponent },
   { path: ROTAS.config, component: SettingsComponent },
   { path: `${ROTAS.lista}/:id`, component: ListaCorrenteDetalhadaComponent },
   {

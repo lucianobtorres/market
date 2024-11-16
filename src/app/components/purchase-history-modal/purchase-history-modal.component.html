@@ -26,7 +26,7 @@
             <mat-header-cell *matHeaderCellDef>Quantidade</mat-header-cell>
             <mat-cell *matCellDef="let purchase">
                 <mat-form-field>
-                    <input matInput [(ngModel)]="purchase.quantity" type="number" placeholder="Quantidade"/>
+                    <input matInput [(ngModel)]="purchase.quantity" type="number" placeholder="Quantidade" />
                 </mat-form-field>
             </mat-cell>
         </ng-container>
@@ -37,7 +37,7 @@
             <mat-cell *matCellDef="let purchase">
                 <mat-form-field>
                     <input matInput type="currency" inputmode="decimal" [(ngModel)]="purchase.price" placeholder="Preço"
-                    pattern="^\d+(\.\d{1,2})?$"  />
+                        pattern="^\d+(\.\d{1,2})?$" />
                 </mat-form-field>
             </mat-cell>
         </ng-container>
@@ -46,11 +46,20 @@
         <ng-container matColumnDef="store">
             <mat-header-cell *matHeaderCellDef>Loja</mat-header-cell>
             <mat-cell *matCellDef="let purchase">
+                <button mat-icon-button (click)="openMapDialog(purchase)">
+                    <mat-icon>place</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="store">
+            <mat-header-cell *matHeaderCellDef>Loja</mat-header-cell>
+            <mat-cell *matCellDef="let purchase">
                 <mat-form-field>
                     <input matInput [(ngModel)]="purchase.store" placeholder="Loja" />
                 </mat-form-field>
             </mat-cell>
-        </ng-container>
+        </ng-container> -->
 
         <!-- Coluna Remover -->
         <ng-container matColumnDef="remove">

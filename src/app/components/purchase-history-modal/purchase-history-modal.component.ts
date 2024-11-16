@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { InventoryService, PurchaseRecord } from 'src/app/services/db/inventory.service';
 import { UtilsNumber } from 'src/app/utils/utils-number';
@@ -20,6 +21,7 @@ export class PurchaseHistoryModalComponent implements OnInit {
   displayedColumns: string[] = ['date', 'quantity', 'price', 'store', 'remove'];
   constructor(
     private inventoryService: InventoryService,
+    private router: Router,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: { itemName: string },
   ) { }
 
@@ -56,5 +58,10 @@ export class PurchaseHistoryModalComponent implements OnInit {
       else await this.inventoryService.updateItemInHistory(element.id!, this.itemName, element);
     }
     this.closeEmit.emit();
+  }
+
+
+  openMapDialog(_t84: any) {
+    this.router.navigate(['/purchase-map']);
   }
 }

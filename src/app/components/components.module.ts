@@ -39,6 +39,8 @@ import { DispensaComponent as DispensaComponent } from './dispensa/dispensa.comp
 import { DispensaItemDetalhesComponent } from './dispensa/dispensa-item-detalhe/dispensa-item-detalhes.component';
 import { PurchaseHistoryModalComponent } from './purchase-history-modal/purchase-history-modal.component';
 import { PurchaseHistoryModalDialogComponent } from './purchase-history-modal/purchase-history-modal-dialog/purchase-history-modal-dialog.component';
+import { PurchaseMapComponent } from './purchase-map/purchase-map.component';
+import { PurchaseMapDialogComponent } from './purchase-map/purchase-map-dialog/purchase-map-dialog.component';
 
 export const components = [
   HomeComponent,
@@ -67,6 +69,8 @@ export const components = [
   DispensaItemDetalhesComponent,
   PurchaseHistoryModalComponent,
   PurchaseHistoryModalDialogComponent,
+  PurchaseMapComponent,
+  PurchaseMapDialogComponent,
 ]
 
 const directives = [

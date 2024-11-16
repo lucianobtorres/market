@@ -53,6 +53,7 @@
             ],
             "styles": [
               "src/styles.scss",
+              "node_modules/leaflet/dist/leaflet.css",
               "src/theme/app-theme.scss",
               "src/assets/font/font-roboto.css",
               "src/assets/font/icon.css"
