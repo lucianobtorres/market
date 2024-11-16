@@ -1,7 +1,11 @@
 <div class="map-container">
     <div id="map" style="width: 70%; height: 100vh;"></div>
     <div class="sidebar">
-        <input type="text" [(ngModel)]="searchQuery" (input)="searchMarkets(searchQuery)" placeholder="Buscar mercado">
+        <mat-form-field class="search-field">
+            <mat-label>Pesquisar</mat-label>
+            <input matInput [formControl]="searchControl" placeholder="Pesquisar" #campoSearch/>
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
         <mat-list>
             <mat-list-item *ngFor="let marketData of mapToArray(marketMarkersMap)"
                 (mouseover)="highlightMarker(marketData.details.id)"

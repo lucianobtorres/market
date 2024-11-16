@@ -17,3 +17,7 @@
 :host ::ng-deep .leaflet-marker-icon {
   filter: hue-rotate(228deg) saturate(460%) brightness(120%);
 }
+
+mat-form-field {
+  width: 100%;
+}

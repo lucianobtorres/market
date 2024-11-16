@@ -1,18 +1,8 @@
-import { AfterContentInit, AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { debounceTime, map, Observable, of, switchMap, take } from 'rxjs';
+import { MapLocate, MapLocation, MapService } from 'src/app/services/map.service';
 import * as L from 'leaflet';
-import { MapService } from 'src/app/services/map.service';
-
-interface MapLocate {
-  id: string,
-  name: string,
-  address: string,
-  city: string,
-  postcode: string,
-  location: {
-    lat: number,
-    lon: number
-  }
-}
 
 const iconRetinaUrl = 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png';
 const iconUrl = 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png';
@@ -29,6 +19,7 @@ L.Marker.prototype.options.icon = L.icon({
   shadowSize: [41, 41],
 });
 
+const ZOON_DEFAULT = 17;
 @Component({
   selector: 'app-purchase-map',
   templateUrl: './purchase-map.component.html',
@@ -36,15 +27,12 @@ L.Marker.prototype.options.icon = L.icon({
 })
 export class PurchaseMapComponent implements OnInit {
   private map!: L.Map;
-  markets2 = new Map<string, MapLocate>();
-  private existingMarkets: Set<string> = new Set(); // Para armazenar as coordenadas já mapeadas como string
-  searchQuery: any;
-  private marketMarkersGroup2: L.LayerGroup = L.layerGroup(); // Cria o grupo de marcadores
-
+  private existingMarkets: Set<string> = new Set();
+  protected searchControl = new FormControl();
   marketMarkersGroup: L.LayerGroup = L.layerGroup();
   marketMarkersMap = new Map<string, { marker: L.Marker, details: MapLocate }>();
 
-
+  userMarker?: L.Marker<any>;
   constructor(
     private readonly mapService: MapService
   ) { }
@@ -53,45 +41,94 @@ export class PurchaseMapComponent implements OnInit {
     if (!this.map) {
       this.initializeMap();
     }
+
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300))
+      .subscribe(value => {
+        this.searchMarkets(value)
+      });
   }
 
-  private initializeMap(): void {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
+  private async initializeMap(): Promise<void> {
+    await this.mapService.setUserCoordinates();
 
-          // Inicializa o mapa na localização do usuário
-          this.map = L.map('map').setView([userLat, userLng], 17);
-          this.marketMarkersGroup.addTo(this.map);
+    const lat = this.mapService?.userCoordinates?.lat ?? 0;
+    const lon = this.mapService?.userCoordinates?.lon ?? 0;
 
-          this.map.on('moveend', () => this.searchMarkets(this.searchQuery));
+    // Inicializa o mapa na localização do usuário
+    this.map = L.map('map').setView([lat, lon], ZOON_DEFAULT);
+    this.marketMarkersGroup.addTo(this.map);
 
-          this.map.on('click', (event: L.LeafletMouseEvent) => {
-            this.handleMapClick(event);
-          });
+    L.control.scale({
+      position: 'topright', // Altere para 'topleft' se necessário
+      metric: true,         // Exibe a escala em metros
+      imperial: false,      // Não exibe a escala imperial (pés e milhas)
+    }).addTo(this.map);
 
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 20,
-            attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-          }).addTo(this.map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+    }).addTo(this.map);
 
-          // Adiciona um marcador na localização do usuário
-          L.marker([userLat, userLng]).addTo(this.map)
-            .bindPopup('Você está aqui!')
-            .openPopup();
-          this.getMarketsCallback();
-        },
-        (error) => {
-          console.error('Erro ao obter localização:', error);
-          this.fallbackMap(); // Chama um fallback em caso de erro
-        }
-      );
-    } else {
-      console.error('Geolocalização não é suportada pelo navegador.');
-      this.fallbackMap();
-    }
+    // Adiciona um marcador na localização do usuário
+    this.userMarker = L.marker([lat, lon])
+      .addTo(this.map)
+      .bindPopup('Você está aqui!')
+      .openPopup();
+
+    this.getMarketsCallback();
+    this.createUserLocationButton();
+
+    this.map.on('click', (event: L.LeafletMouseEvent) => {
+      this.handleMapClick(event);
+    });
+
+    this.map.on('moveend', () => this.searchMarkets(this.searchControl.value));
+  }
+
+  private createUserLocationButton = () => {
+    const userMarker = this.userMarker;
+    const map = this.map;
+
+    const CenterControl = L.Control.extend({
+      options: {
+        position: 'topleft', // mesma posição dos botões de zoom
+      },
+
+      onAdd: function () {
+        // Cria o container para o botão
+        const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+
+        // Adiciona estilo ao botão
+        container.style.backgroundColor = '#fff';
+        container.style.width = '30px';
+        container.style.height = '30px';
+        container.style.cursor = 'pointer';
+        container.style.display = 'flex';
+        container.style.alignItems = 'center';
+        container.style.justifyContent = 'center';
+        container.style.border = '2px solid rgba(0, 0, 0, 0.2)';
+        container.style.backgroundClip = 'padding-box';
+
+        // Adiciona o ícone ao botão (usando um Unicode de ícone, ou você pode adicionar uma imagem/SVG)
+        container.innerHTML = '<span style="font-size: 18px;">📍</span>';
+
+        // Adiciona evento de clique para centralizar o mapa
+        container.onclick = (event) => {
+          event.stopPropagation();
+
+          if (userMarker) {
+            userMarker.openPopup();
+            map.setView(userMarker.getLatLng(), ZOON_DEFAULT);
+          }
+        };
+
+        return container;
+      },
+    });
+
+    // Adiciona o controle ao mapa
+    map.addControl(new CenterControl());
   }
 
   private handleMapClick(event: L.LeafletMouseEvent): void {
@@ -106,17 +143,12 @@ export class PurchaseMapComponent implements OnInit {
 
   // Método para anexar o popup inicial
   private attachInitialPopup(marker: L.Marker, lat: number, lng: number): void {
-    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1`;
-
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        const address = data.address;
-        const displayAddress = address
-          ? `${address.road || ''}, ${address.suburb || ''}, ${address.city || ''}, ${address.state || ''}, ${address.country || ''}`
-          : 'Endereço não encontrado';
-
-        marker.bindPopup(`
+    this.mapService.getAddress({ lat: lat, lon: lng })
+      .pipe(take(1))
+      .subscribe((displayAddress) => {
+        if (displayAddress === 'Erro ao buscar endereço.') marker.setPopupContent('Erro ao buscar endereço.');
+        else {
+          marker.bindPopup(`
         <div id="popup-content">
           <strong>Novo mercado</strong><br/>
           Endereço: ${displayAddress}<br/>
@@ -125,45 +157,39 @@ export class PurchaseMapComponent implements OnInit {
         </div>
         `);
 
-        // Evento disparado quando o popup é aberto
-        marker.on('popupopen', () => {
-          // Vincula eventos aos botões somente após o popup estar completamente aberto
-          const saveButton = document.getElementById('save-marker');
-          const cancelButton = document.getElementById('cancel-marker');
+          // Evento disparado quando o popup é aberto
+          marker.on('popupopen', () => {
+            // Vincula eventos aos botões somente após o popup estar completamente aberto
+            const saveButton = document.getElementById('save-marker');
+            const cancelButton = document.getElementById('cancel-marker');
 
-          if (saveButton) {
-            saveButton.onclick = () => this.saveMarker(marker, lat, lng);
-          }
+            if (saveButton) {
+              saveButton.onclick = () => this.saveMarker(marker, lat, lng);
+            }
 
-          if (cancelButton) {
-            cancelButton.onclick = () => {
-              this.map.removeLayer(marker); // Remove o marcador
-            };
-          }
-        });
+            if (cancelButton) {
+              cancelButton.onclick = () => {
+                this.map.removeLayer(marker);
+              };
+            }
+          });
+        }
 
-        marker.openPopup(); // Abre o popup imediatamente após criar
-      })
-      .catch(error => {
-        console.error('Erro ao buscar endereço:', error);
-        marker.setPopupContent('Erro ao buscar endereço.').openPopup();
+        setTimeout(() => {
+          marker.openPopup();
+        }, 0);
       });
   }
 
-  // Método para salvar o marcador
   private saveMarker(marker: L.Marker, lat: number, lng: number): void {
-    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1`;
+    marker.closePopup();
 
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        const address = data.address;
-        const displayAddress = address
-          ? `${address.road || ''}, ${address.suburb || ''}, ${address.city || ''}, ${address.state || ''}, ${address.country || ''}`
-          : 'Endereço não encontrado';
-
-        // Atualiza o popup do marcador com o endereço e a opção de remover
-        marker.bindPopup(`
+    this.mapService.getAddress({ lat: lat, lon: lng })
+      .pipe(take(1))
+      .subscribe((displayAddress) => {
+        if (displayAddress === 'Erro ao buscar endereço.') marker.setPopupContent('Erro ao buscar endereço.');
+        else {
+          marker.bindPopup(`
           <div>
             <strong>Mercado salvo</strong><br/>
             Endereço: ${displayAddress}<br/>
@@ -171,34 +197,29 @@ export class PurchaseMapComponent implements OnInit {
           </div>
         `);
 
-        // Fecha o popup e força a reabertura para associar o evento corretamente
-        marker.closePopup();
+          marker.on('popupopen', () => {
+            const removeButton = document.getElementById('remove-marker');
+
+            if (removeButton) {
+              removeButton.onclick = () => {
+                this.map.removeLayer(marker);
+              };
+            }
+          });
+        }
+
         setTimeout(() => {
           marker.openPopup();
-
-          // Listener para o botão "Remover" no popup reaberto
-          const removeButton = document.getElementById('remove-marker');
-          if (removeButton) {
-            removeButton.onclick = () => {
-              this.map.removeLayer(marker); // Remove o marcador do mapa
-            };
-          }
-        }, 0); // Aguarda o DOM ser atualizado antes de reabrir o popup
-      })
-      .catch(error => {
-        console.error('Erro ao buscar endereço:', error);
-        marker.setPopupContent('Erro ao buscar endereço.').openPopup();
+        }, 0);
       });
   }
 
-
   private getMarketsCallback() {
-    // this.markets.clear();
     this.marketMarkersMap.clear();
     const bounds = this.map.getBounds();
     const bbox = `${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()}`;
 
-    if (this.searchQuery) this.searchMarkets(this.searchQuery)
+    if (this.searchControl.value) this.searchMarkets(this.searchControl.value)
     else {
       this.mapService.getMarkets(bbox).subscribe((markets: any[]) => {
         console.log('Mercados recebidos:', markets); // Inspecione os dados recebidos
@@ -218,7 +239,7 @@ export class PurchaseMapComponent implements OnInit {
       this.removeAllMarkers();
     }
 
-    markets.forEach((market) => {
+    markets.forEach(async (market) => {
       let lat: number | undefined;
       let lon: number | undefined;
 
@@ -235,7 +256,7 @@ export class PurchaseMapComponent implements OnInit {
       }
 
       if (lat !== undefined && lon !== undefined) {
-        const marketItem = {
+        const marketItem: MapLocate = {
           id: market.id,
           name: market.tags.name || 'Mercado sem nome',
           address: `${market.tags['addr:street'] || ''},
@@ -254,15 +275,15 @@ export class PurchaseMapComponent implements OnInit {
         console.log(this.existingMarkets)
 
         if (!this.existingMarkets.has(marketKey)) {
-          console.log('nao tem', marketKey)
           // Adicione a coordenada ao conjunto para evitar duplicatas
           this.existingMarkets.add(marketKey);
 
-          const marker = L.marker([lat, lon], {
-            // icon: this.marketIcon,
-          }).bindPopup(this.getDataMarket(marketItem));
-
-          marker.addTo(this.marketMarkersGroup);
+          this.getDataMarket(marketItem).subscribe((dataMaker) => {
+            const marker = L.marker([lat ?? 0, lon ?? 0], {
+              // icon: this.marketIcon,
+            }).bindPopup(dataMaker);
+            marker.addTo(this.marketMarkersGroup);
+          });
         }
 
         this.marketMarkersGroup.getLayers().find(layer => {
@@ -273,6 +294,7 @@ export class PurchaseMapComponent implements OnInit {
       }
     });
   }
+
   highlightMarker(marketId: string): void {
     const marketData = this.marketMarkersMap.get(marketId); // Recupera o marcador pelo ID
     if (marketData) {
@@ -286,16 +308,19 @@ export class PurchaseMapComponent implements OnInit {
       marketData.marker.closePopup(); // Fecha o popup do marcador
     }
   }
+
   private removeAllMarkers(): void {
     this.marketMarkersGroup.clearLayers(); // Remove todos os marcadores
   }
+
   mapToArray(map: Map<string, { marker: L.Marker, details: MapLocate }>) {
     return Array.from(map.values());
   }
-  private getDataMarket(market: any): ((layer: L.Layer) => L.Content) | L.Content | L.Popup {
+
+  private getDataMarket(market: MapLocate): Observable<((layer: L.Layer) => L.Content) | L.Content | L.Popup> {
+    console.log(market)
     const addressParts = [
       (market.address || '').trim(),
-      (market.housenumber || '').trim(),
       (market.city || '').trim(),
       (market.postcode || '').trim()
     ];
@@ -303,25 +328,29 @@ export class PurchaseMapComponent implements OnInit {
     // Filtra as partes vazias e junta as restantes com vírgulas
     let address = addressParts.filter(part => part !== '').join(', ').trim();
 
-    if (address.trim().length === 1) address = '';
+    if (address.trim().length === 1) {
+      return this.mapService.getAddress(market.location)
+        .pipe(take(1), switchMap(
+          (displayAddress) => {
+            address = displayAddress;
+            // Conteúdo do popup
+            const popupContent = `
+            <b>${market.name || 'Mercado sem nome'}</b>
+            ${address.trim().length !== 1 ? '<br>' + address.trim() : ''}
+            `.trim();
+
+            return of(popupContent);
+          }
+        ));
+    }
+
     // Conteúdo do popup
     const popupContent = `
         <b>${market.name || 'Mercado sem nome'}</b>
         ${address.trim().length !== 1 ? '<br>' + address.trim() : ''}
         `.trim();
 
-    return popupContent;
-  }
-
-
-  // Fallback para iniciar o mapa em uma localização padrão
-  private fallbackMap(): void {
-    this.map = L.map('map').setView([-15.7942, -47.8822], 13); // Brasília como localização padrão
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 20,
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(this.map);
+    return of(popupContent);
   }
 
   focusOnMarket(market: MapLocate) {
@@ -332,16 +361,25 @@ export class PurchaseMapComponent implements OnInit {
     this.map.setView([lat, lon]);
 
     // Exibe um pop-up com o nome do mercado
+    this.getDataMarket(market).subscribe((dataMaker) => {
     L.marker([lat, lon])
       .addTo(this.map)
-      .bindPopup(this.getDataMarket(market))
+      .bindPopup(dataMaker)
       .openPopup();
+    });
   }
 
   searchMarkets(query: string) {
-    // this.markets.clear();
-
+    console.log('marketMarkersMap', this.marketMarkersMap)
+    console.log('marketMarkersGroup', this.marketMarkersGroup)
     this.marketMarkersMap.clear();
+
+    const currentZoom = this.map.getZoom();
+    if (currentZoom < 15) {
+      this.removeAllMarkers();
+      this.existingMarkets = new Set();
+      return;
+    }
 
     const bounds = this.map.getBounds(); // Pega os limites visíveis do mapa
     const bbox = `${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()}`;
@@ -354,7 +392,7 @@ export class PurchaseMapComponent implements OnInit {
         return;
       }
 
-      if (!this.searchQuery) {
+      if (!this.searchControl.value) {
         this.updateMarketsOnMap(markets);
         // console.log('Mercados na barra lateral:', this.markets);
       } else {
@@ -372,57 +410,7 @@ export class PurchaseMapComponent implements OnInit {
         });
 
         this.updateMarketsOnMap(filteredMarkets, true);
-        // console.log('Mercados na barra lateral:', this.markets);
       }
     });
   }
-
-  private updateMarketsOnMap2(filteredMarkets: any[]) {/**
-    // Limpa os marcadores existentes
-    this.marketMarkers.forEach(marker => marker.remove());
-    this.marketMarkers = [];
-
-    filteredMarkets.forEach((market) => {
-      let lat: number | undefined;
-      let lon: number | undefined;
-
-      if (market.type === 'node') {
-        lat = market.lat;
-        lon = market.lon;
-      } else if (market.type === 'way' || market.type === 'relation') {
-        if (market.center) {
-          lat = market.center.lat;
-          lon = market.center.lon;
-        }
-      }
-
-      if (lat !== undefined && lon !== undefined) {
-        const marketItem = {
-          name: market.tags.name || 'Mercado sem nome',
-          address: `${market.tags['addr:street'] || ''}, ${market.tags['addr:housenumber'] || ''}`,
-          city: market.tags['addr:city'] || '',
-          postcode: market.tags['addr:postcode'] || '',
-          location: { lat, lon },
-        };
-
-        // Crie uma chave única para cada mercado com base nas coordenadas
-        const marketKey = `${lat},${lon}`;
-
-        // Adicione o marcador ao mapa se não houver duplicata
-        if (!this.existingMarkets.has(marketKey)) {
-          this.existingMarkets.add(marketKey);
-
-          const marker = L.marker([lat, lon], {
-            // icon: this.marketIcon,
-          }).addTo(this.map)
-            .bindPopup(this.getDataMarket(marketItem));
-
-          this.marketMarkers.push(marker);
-        }
-      }
-    });/**/
-  }
-
-
-
 }

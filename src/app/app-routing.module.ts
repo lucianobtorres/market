@@ -14,7 +14,7 @@ export const ROTAS = {
   config: 'configuracoes',
   lista: 'lista',
   dispensa: 'dispensa',
-  mapa: 'purchase-map',
+  mapa: 'map',
 };
 
 const routes: Routes = [
