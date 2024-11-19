@@ -72,7 +72,7 @@ export class InventoryService extends DBRepository<Inventory> {
     // Procura todas as compras no histórico que contenham o item especificado
     const purchaseHistory = await this.getHistoryFromName(itemName);
 
-    console.info('historico: ' + itemName, purchaseHistory)
+    console.debug('historico: ' + itemName, purchaseHistory)
     // Extrai informações relevantes de cada compra que contém o item
     const itemHistory: PurchaseRecord[] = purchaseHistory.map(purchase => {
       const item = purchase.items.find(it => it.name.toLowerCase() === itemName.toLowerCase());
@@ -97,7 +97,7 @@ export class InventoryService extends DBRepository<Inventory> {
   }
 
   async getLastPrice(itemName: string): Promise<number | undefined> {
-    console.info('Obter último Preçp: ', itemName)
+    console.debug('Obter último Preço: ', itemName)
     const purchasesHistory = await this.getHistoryFromName(itemName);
 
     if (!purchasesHistory?.length) { return undefined; }
@@ -107,28 +107,28 @@ export class InventoryService extends DBRepository<Inventory> {
   }
 
   async updateItemInHistory(purchaseHistoryId: number, name: string, updatedItem: PurchaseRecord) {
-    console.info('Atualizando: ', updatedItem, 'Id: ', purchaseHistoryId)
+    console.debug('Atualizando: ', updatedItem, 'Id: ', purchaseHistoryId)
     const purchaseHistory = await db.purchasesHistory.get(purchaseHistoryId);
 
     if (purchaseHistory) {
-      console.info(purchaseHistory)
+      console.debug(purchaseHistory)
       const updatedItems = purchaseHistory.items.map(item =>
         item.name === name ? { ...item, ...updatedItem } : item
       );
 
-      console.info(purchaseHistory)
+      console.debug(purchaseHistory)
       await db.purchasesHistory.update(purchaseHistoryId, { items: updatedItems });
     }
   }
 
   async removeItemFromHistory(purchaseHistoryId: number, name: string) {
-    console.info('Removendo: ', name, 'Id: ', purchaseHistoryId)
+    console.debug('Removendo: ', name, 'Id: ', purchaseHistoryId)
     const purchaseHistory = await db.purchasesHistory.get(purchaseHistoryId);
 
     if (purchaseHistory) {
-      console.info(purchaseHistory)
+      console.debug(purchaseHistory)
       const updatedItems = purchaseHistory.items.filter(item => item.name !== name);
-      console.info(updatedItems)
+      console.debug(updatedItems)
       await db.purchasesHistory.update(purchaseHistoryId, { items: updatedItems });
     }
   }

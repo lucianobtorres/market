@@ -1,7 +1,7 @@
 import { ModelDB } from '../model-db';
 
 export async function migrate(db: ModelDB): Promise<void> {
-  console.info('Ajuste da estrutura dos dados.');
+  console.debug('Ajuste da estrutura dos dados.');
 
   await db.transaction('rw', db.tables, async () => {
     // Passo 1: Migrar dados de `shoppingLists` para `lists`
@@ -43,5 +43,5 @@ export async function migrate(db: ModelDB): Promise<void> {
     }
   });
 
-  console.info('Migração para a versão 2 concluída com sucesso.');
+  console.debug('Migração para a versão 2 concluída com sucesso.');
 }

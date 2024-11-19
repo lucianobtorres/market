@@ -22,7 +22,7 @@ export class ModelDB extends Dexie {
   constructor() {
     super('Model-DB');
 
-    console.info('Versão 1 do banco')
+    console.debug('Versão 1 do banco')
     this.version(1).stores({
       versionDB: '++id, version',
 
@@ -34,7 +34,7 @@ export class ModelDB extends Dexie {
       shoppingLists: '++id, nome',
     })
 
-    console.info('Versão 2 do banco')
+    console.debug('Versão 2 do banco')
     this.version(2).stores({
       versionDB: '++id, version',
 
@@ -53,12 +53,12 @@ export class ModelDB extends Dexie {
       // Adiciona um controle inicial de versão se não existir
       const existingVersion = await tx.table('versionDB').get(1);
       if (!existingVersion) {
-        console.info('adicionando controle de versão na versão 2')
+        console.debug('adicionando controle de versão na versão 2')
         await tx.table('versionDB').add({ id: 1, version: 1 });
       }
     });
 
-    console.info('Versão 3 do banco')
+    console.debug('Versão 3 do banco')
     this.version(3).stores({
       versionDB: '++id, version',
 
@@ -70,7 +70,7 @@ export class ModelDB extends Dexie {
       purchasesHistory: '++id, listId, dateCompleted, items',
     });
 
-    console.info('Versão 4 do banco')
+    console.debug('Versão 4 do banco')
     this.version(4).stores({
       versionDB: '++id, version',
 
@@ -82,7 +82,7 @@ export class ModelDB extends Dexie {
       purchasesHistory: '++id, listId, dateCompleted, items',
     });
 
-    console.info('Versão 5 do banco')
+    console.debug('Versão 5 do banco')
     this.version(5).stores({
       versionDB: '++id, version',
 

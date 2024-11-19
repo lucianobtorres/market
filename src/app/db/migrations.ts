@@ -20,25 +20,25 @@ export abstract class Migrations {
   public static async createMigrations(db: ModelDB) {
     if (await Migrations.needsMigration(db)) {
 
-      console.info('Executando migrations..')
+      console.debug('Executando migrations..')
       await db.transaction('rw', db.tables, async () => {
         const currentVersion = await Migrations.getDatabaseVersion(db) ?? 0;
 
         for (let version: number = currentVersion + 1; version <= CURRENT_DATABASE_VERSION; version++) {
-          console.info(`executando migration: ${version}`)
+          console.debug(`executando migration: ${version}`)
 
           if (migrations[version]) {
             await migrations[version](db);
           }
         }
 
-        console.info(`ajustando database: ${CURRENT_DATABASE_VERSION}`)
+        console.debug(`ajustando database: ${CURRENT_DATABASE_VERSION}`)
         await Migrations.setDatabaseVersion(CURRENT_DATABASE_VERSION, db);
       });
 
-      console.info('Migrações concluídas.');
+      console.debug('Migrações concluídas.');
     } else {
-      console.info('Base está atualizada.');
+      console.debug('Base está atualizada.');
     }
   }
 

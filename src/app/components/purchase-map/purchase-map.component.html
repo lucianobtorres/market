@@ -1,17 +1,46 @@
-<div class="map-container">
-    <div id="map" style="width: 70%; height: 100vh;"></div>
-    <div class="sidebar">
-        <mat-form-field class="search-field">
-            <mat-label>Pesquisar</mat-label>
-            <input matInput [formControl]="searchControl" placeholder="Pesquisar" #campoSearch/>
-            <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-        <mat-list>
-            <mat-list-item *ngFor="let marketData of mapToArray(marketMarkersMap)"
-                (mouseover)="highlightMarker(marketData.details.id)"
-                (mouseout)="unhighlightMarker(marketData.details.id)"
-            >{{ marketData.details.name }}
-            </mat-list-item>
-        </mat-list>
+<div class="component-header">
+    <button mat-icon-button (click)="closeEmit.emit()">
+        <mat-icon>chevron_left</mat-icon>
+    </button>
+    <h2 mat-dialog-title>Selecione o Mercado</h2>
+    <button mat-raised-button [ngStyle]="{'visibility: hidden;': detailBar}" class="floating-btn-salvar" color="primary" (click)="salvar()">
+        Salvar
+    </button>
+</div>
+<div class="map-container component-content">
+    <!-- Mapa -->
+    <div id="map" class="map" [ngClass]="{ 'mini-map': circleBar }"></div>
+    <div *ngIf="loading | async" class="loading-container">
+        <mat-progress-bar mode="determinate" [value]="loadingProgress | async" class="progress-bar"></mat-progress-bar>
+    </div>
+    <!-- Painel lateral para lista de mercados -->
+    <div class="bottom-bar" [ngClass]="{ 'displayed': !isMobile || circleBar || detailBar }">
+        <div *ngIf="circleBar" class="search-bar">
+            <div class="radius-buttons">
+                <button mat-button #btn1 (click)="updateSearchRadius(500, btn1)">500 m</button>
+                <button mat-button #btn2 (click)="updateSearchRadius(1000,btn2)">1 km</button>
+                <button mat-button #btn3 (click)="updateSearchRadius(3000,btn3)">3 km</button>
+                <button mat-button #btn4 (click)="updateSearchRadius(5000,btn4)">5 km</button>
+                <button mat-button #btn5 (click)="updateSearchRadius(10000, btn5)">10 km</button>
+            </div>
+            <mat-list>
+                <mat-list-item *ngFor="let marketData of marketList" (click)="selectMarket(marketData)">
+                    <div class="item-address" [ngClass]="{'item-address-selected': marketData === selectedMarket}">
+                        <span>{{ marketData.name }} </span>
+                        <small> {{ marketData.address }} {{ !!marketData.house_number ? ', ' + marketData.house_number :
+                            ''}} </small>
+                        <small *ngIf="marketData.suburb && marketData.city"> {{ marketData.suburb }}, {{
+                            marketData.city}} </small>
+                    </div>
+                </mat-list-item>
+            </mat-list>
+        </div>
+        <app-market-details-sheet *ngIf="detailBar" class="details-bar" [data]="selectedMarket"
+            (closeEmit)="selectMarket($event)"></app-market-details-sheet>
     </div>
 </div>
+
+<!-- Botão flutuante para abrir a lista (mobile) -->
+<button mat-fab class="floating-btn" *ngIf="isMobile" (click)="toggleSidebar()">
+    <mat-icon>{{circleBar ? 'map' : 'menu'}} </mat-icon>
+</button>

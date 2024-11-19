@@ -41,6 +41,7 @@ import { PurchaseHistoryModalComponent } from './purchase-history-modal/purchase
 import { PurchaseHistoryModalDialogComponent } from './purchase-history-modal/purchase-history-modal-dialog/purchase-history-modal-dialog.component';
 import { PurchaseMapComponent } from './purchase-map/purchase-map.component';
 import { PurchaseMapDialogComponent } from './purchase-map/purchase-map-dialog/purchase-map-dialog.component';
+import { MarketDetailsSheetComponent } from './purchase-map/market-details-sheet/market-details-sheet.component';
 
 export const components = [
   HomeComponent,
@@ -71,6 +72,8 @@ export const components = [
   PurchaseHistoryModalDialogComponent,
   PurchaseMapComponent,
   PurchaseMapDialogComponent,
+  MarketDetailsSheetComponent,
+
 ]
 
 const directives = [

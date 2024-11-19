@@ -51,7 +51,7 @@ export class ItemListService {
       return;
     }
 
-    console.info("Dados carregados:", this.currentLists, this.currentItems);
+    console.debug("Dados carregados:", this.currentLists, this.currentItems);
 
     if (this.currentLists.length || this.currentItems.length) {
       const combinedLists = this.currentLists.map(list => ({
@@ -107,13 +107,13 @@ export class ItemListService {
 
   async importListJSON(jsonData: string): Promise<void> {
     try {
-      console.info('Realizando importação')
+      console.debug('Realizando importação')
       const dadosImportados = JSON.parse(jsonData);
       if (!dadosImportados.id || !dadosImportados.name || !dadosImportados.share) {
         return;
       }
 
-      console.info('lista pode ser importada')
+      console.debug('lista pode ser importada')
       if (dadosImportados.share) {
         const listaExistente = await db.lists
           .where('share')
@@ -121,7 +121,7 @@ export class ItemListService {
           .first();
 
         if (listaExistente) {
-          console.info('atualiza lista existente')
+          console.debug('atualiza lista existente')
           await db.items
             .where("id")
             .equals(listaExistente.id!)
@@ -130,7 +130,7 @@ export class ItemListService {
           dadosImportados.id = listaExistente.id;
           await db.lists.put(dadosImportados);
 
-          console.info('atualiza itens da lista existente')
+          console.debug('atualiza itens da lista existente')
           dadosImportados.itens
             .forEach((item: Items) => item.listId = listaExistente.id!);
 
@@ -139,11 +139,11 @@ export class ItemListService {
         }
       }
 
-      console.info('cria uma nova lista')
+      console.debug('cria uma nova lista')
       delete dadosImportados.id;
       const novaListaId = await db.lists.add(dadosImportados);
 
-      console.info('inclui itens na nova lista')
+      console.debug('inclui itens na nova lista')
       dadosImportados.itens
         .forEach((item: Items) => {
           delete item.id;
@@ -187,7 +187,7 @@ export class ItemListService {
 
   async duplicarLista(listaId: number): Promise<void> {
     try {
-      console.info('Realizando duplicação')
+      console.debug('Realizando duplicação')
       const listaExistente = await db.lists
         .where('id')
         .equals(listaId)
@@ -197,7 +197,7 @@ export class ItemListService {
         return;
       }
 
-      console.info('cria uma nova lista')
+      console.debug('cria uma nova lista')
       delete listaExistente.id;
       listaExistente.name = `${listaExistente.name} - Cópia`
       listaExistente.share = undefined;
@@ -212,7 +212,7 @@ export class ItemListService {
         return;
       }
 
-      console.info('inclui itens na nova lista')
+      console.debug('inclui itens na nova lista')
       itensExistente
         .forEach((item: Items) => {
           delete item.id;

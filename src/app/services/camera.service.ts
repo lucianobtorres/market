@@ -32,14 +32,14 @@ export class CameraService {
   }
 
   private extractPriceFromText(text: string): string[] {
-    console.info('extraindo preço...', text);
+    console.debug('extraindo preço...', text);
 
     // Regex para capturar todos os preços
     const priceMatches = text.match(/R?\$\s?\d+,\d{2}|(?<!R\$)\d+,\d{2}/g);
 
     if (priceMatches && priceMatches.length > 0) {
       const uniquePrices = Array.from(new Set(priceMatches.map(price => price.trim())));
-      console.info('Preços encontrados:', uniquePrices);
+      console.debug('Preços encontrados:', uniquePrices);
       return uniquePrices;
     }
 
@@ -60,7 +60,7 @@ export class CameraService {
       }
 
       this.isProcessingOcr = true;
-      console.info('processando video...', video);
+      console.debug('processando video...', video);
 
       // Ajustar dimensões do canvas
       canvas.width = video.videoWidth;
@@ -68,28 +68,28 @@ export class CameraService {
 
       const ctx = canvas.getContext('2d');
       if (ctx) {
-        console.info('desenhando a imagem no canvas...');
+        console.debug('desenhando a imagem no canvas...');
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         // Processa o frame com OCR
         const worker = await createWorker({
-          logger: m => console.info(m),
+          logger: m => console.debug(m),
         });
 
-        console.info('carregando worker para leitura...');
+        console.debug('carregando worker para leitura...');
         await worker.load();
         await worker.loadLanguage('por');
         await worker.initialize('por');
 
         // Realiza o reconhecimento de texto
         const { data: { text } } = await worker.recognize(canvas);
-        console.info('imagem reconhecida...');
+        console.debug('imagem reconhecida...');
 
         // Melhora o texto extraído
         const cleanedText = this.cleanExtractedText(text);
         const preco = this.extractPriceFromText(cleanedText);
 
-        console.info('finalizando worker...');
+        console.debug('finalizando worker...');
         await worker.terminate();
 
         this.isProcessingOcr = false;
@@ -114,7 +114,7 @@ export class CameraService {
       }
 
       this.isProcessingOcr = true;
-      console.info('processando video...', video);
+      console.debug('processando video...', video);
 
       const cropWidth = video.videoWidth * 0.5;
       const cropHeight = video.videoHeight * 0.5;
@@ -126,29 +126,29 @@ export class CameraService {
 
       const ctx = canvas.getContext('2d');
       if (ctx) {
-        console.info('desenhando a imagem no canvas...');
+        console.debug('desenhando a imagem no canvas...');
         ctx.filter = 'contrast(1.5) brightness(1.2)'; // Filtro de contraste e brilho
         ctx.drawImage(video, offsetX, offsetY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
 
         // Processa o frame com OCR
         const worker = await createWorker({
-          logger: m => console.info(m),
+          logger: m => console.debug(m),
         });
 
-        console.info('carregando worker para leitura...');
+        console.debug('carregando worker para leitura...');
         await worker.load();
         await worker.loadLanguage('por');
         await worker.initialize('por');
 
         // Realiza o reconhecimento de texto
         const { data: { text } } = await worker.recognize(canvas);
-        console.info('imagem reconhecida...');
+        console.debug('imagem reconhecida...');
 
         // Melhora o texto extraído
         const cleanedText = this.cleanExtractedText(text);
         const preco = this.extractPriceFromText(cleanedText);
 
-        console.info('finalizando worker...');
+        console.debug('finalizando worker...');
         await worker.terminate();
 
         this.isProcessingOcr = false;
@@ -173,7 +173,7 @@ export class CameraService {
       }
 
       this.isProcessingOcr = true;
-      console.info('processando video...', video);
+      console.debug('processando video...', video);
 
       const cropWidth = video.videoWidth * 0.5;
       const cropHeight = video.videoHeight * 0.5;
@@ -185,27 +185,27 @@ export class CameraService {
 
       const ctx = canvas.getContext('2d');
       if (ctx) {
-        console.info('desenhando a imagem no canvas...');
+        console.debug('desenhando a imagem no canvas...');
         ctx.filter = 'contrast(1.5) brightness(1.2)'; // Filtro de contraste e brilho
         ctx.drawImage(video, offsetX, offsetY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
 
         // Processa o frame com OCR
         const worker = await createWorker({
-          logger: m => console.info(m),
+          logger: m => console.debug(m),
         });
 
-        console.info('carregando worker para leitura...');
+        console.debug('carregando worker para leitura...');
         await worker.load();
         await worker.loadLanguage('por');
         await worker.initialize('por');
 
         // Realiza o reconhecimento de texto
         const { data: { text } } = await worker.recognize(canvas);
-        console.info('imagem reconhecida...');
+        console.debug('imagem reconhecida...');
 
         const productName = this.extractProductNameFromText(text);
 
-        console.info('finalizando worker...');
+        console.debug('finalizando worker...');
         await worker.terminate();
 
         this.isProcessingOcr = false;

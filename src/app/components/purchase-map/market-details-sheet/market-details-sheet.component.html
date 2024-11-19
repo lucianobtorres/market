@@ -1,0 +1,13 @@
+<div class="component-header">
+    <h2 mat-dialog-title>{{data?.name}}</h2>
+    <button mat-icon-button (click)="closeEmit.emit()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<mat-divider></mat-divider>
+<div class="item-address">
+    <small> {{ data?.address }} {{ !!data?.house_number ? ', ' + data?.house_number :
+        ''}} </small>
+    <small *ngIf="data?.suburb && data?.city"> {{ data?.suburb }}, {{
+        data?.city}} </small>
+</div>

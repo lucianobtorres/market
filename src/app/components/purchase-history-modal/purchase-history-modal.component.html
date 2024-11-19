@@ -44,9 +44,9 @@
 
         <!-- Coluna Loja -->
         <ng-container matColumnDef="store">
-            <mat-header-cell *matHeaderCellDef>Loja</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef style="margin: auto;">Loja</mat-header-cell>
             <mat-cell *matCellDef="let purchase">
-                <button mat-icon-button (click)="openMapDialog(purchase)">
+                <button mat-icon-button class="place" [ngClass]="{'store-purchase': !!purchase.store}" (click)="openMapDialog(purchase)">
                     <mat-icon>place</mat-icon>
                 </button>
             </mat-cell>
@@ -65,8 +65,8 @@
         <ng-container matColumnDef="remove">
             <mat-header-cell *matHeaderCellDef></mat-header-cell>
             <mat-cell *matCellDef="let purchase">
-                <button mat-icon-button (click)="removePurchase(purchase)">
-                    <mat-icon>delete</mat-icon>
+                <button mat-icon-button color="warn" (click)="removePurchase(purchase)">
+                    <mat-icon>close</mat-icon>
                 </button>
             </mat-cell>
         </ng-container>

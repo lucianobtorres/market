@@ -1,10 +1,14 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { InventoryService, PurchaseRecord } from 'src/app/services/db/inventory.service';
+import { MapLocation } from 'src/app/services/map.service';
+import { UtilsMobile } from 'src/app/utils/utils-mobile';
 import { UtilsNumber } from 'src/app/utils/utils-number';
+import { PurchaseMapDialogComponent } from '../purchase-map/purchase-map-dialog/purchase-map-dialog.component';
+import { PurchaseItem } from 'src/app/models/interfaces';
 
 
 @Component({
@@ -22,6 +26,8 @@ export class PurchaseHistoryModalComponent implements OnInit {
   constructor(
     private inventoryService: InventoryService,
     private router: Router,
+
+    private dialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: { itemName: string },
   ) { }
 
@@ -61,7 +67,20 @@ export class PurchaseHistoryModalComponent implements OnInit {
   }
 
 
-  openMapDialog(_t84: any) {
-    this.router.navigate(['/purchase-map']);
+  openMapDialog(purchase: PurchaseRecord) {
+    const dialogRef = this.dialog.open(PurchaseMapDialogComponent, {
+      data: { purchase },
+      width: '100vw',
+      height: '100vh',
+      maxWidth: '100vw',
+      panelClass: 'full-screen-dialog',
+    });
+
+    dialogRef.afterClosed().subscribe(async (_) => {
+      this.closeDiag();
+    });
+  }
+  async closeDiag() {
+//
   }
 }

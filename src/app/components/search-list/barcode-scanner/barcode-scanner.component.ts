@@ -108,9 +108,9 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
   async processPreco(): Promise<void> {
     // this.preco = ['12.99','12.99','12.99','12.99','12.99', ]
     // return ;
-    console.info('scaneando preço')
+    console.debug('scaneando preço')
     if (this.cameraService.isProcessingOcr) {
-      console.info('aguardando processamento anterior')
+      console.debug('aguardando processamento anterior')
       return;
     }
 
@@ -136,12 +136,12 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
   private getVideoElement(retryCount: number = 5, delay: number = 200): Promise<HTMLVideoElement> {
     return new Promise((resolve, reject) => {
 
-      console.info('tentando obter worker do elemento de video...')
+      console.debug('tentando obter worker do elemento de video...')
       const video = this.targetElement.nativeElement.querySelector('video');
 
       if (video) {
 
-        console.info('elemento de video encontrado...')
+        console.debug('elemento de video encontrado...')
         resolve(video);
       } else if (retryCount === 0) {
         console.error('Não foi possível encontrar o elemento de vídeo...')
@@ -149,7 +149,7 @@ export class BarcodeScannerComponent implements OnInit, OnDestroy {
       } else {
         // Tentar novamente após um pequeno delay
         setTimeout(() => {
-          console.info('nova tentativa...')
+          console.debug('nova tentativa...')
           this.getVideoElement(retryCount - 1, delay).then(resolve).catch(reject);
         }, delay);
       }

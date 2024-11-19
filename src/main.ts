@@ -10,3 +10,10 @@ if (environment.production) {
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
+
+// const originalDebug = console.debug.bind(console);
+// console.debug = (...args: any[]) => {
+//   if ((window as any).enableDebug) {
+//     originalDebug(...args);
+//   }
+// };

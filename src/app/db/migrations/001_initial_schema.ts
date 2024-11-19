@@ -2,7 +2,7 @@ import { ItemUnit } from "src/app/models/item-unit";
 import { ModelDB } from "../model-db";
 
 export async function migrate(db: ModelDB) {
-  console.info('Criando a estrutura inicial do banco de dados.');
+  console.debug('Criando a estrutura inicial do banco de dados.');
 
   await db.transaction('rw', db.tables, async () => {
 
@@ -56,7 +56,7 @@ export async function migrate(db: ModelDB) {
 
     const existingversionDB = await db.table('versionDB').get(1);
     if (!existingversionDB) {
-      console.info('adicionando controle de versão na versão 1')
+      console.debug('adicionando controle de versão na versão 1')
       await db.table('versionDB').add({ version: 1 });
     }
   });
