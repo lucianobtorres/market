@@ -3,6 +3,7 @@ import { MapLocate } from 'src/app/services/map.service';
 
 @Component({
   selector: 'app-market-details-sheet',
+  styleUrls: ['./market-details-sheet.component.scss'],
   templateUrl: './market-details-sheet.component.html',
 })
 export class MarketDetailsSheetComponent {

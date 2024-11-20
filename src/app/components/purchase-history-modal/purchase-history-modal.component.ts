@@ -1,14 +1,10 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { InventoryService, PurchaseRecord } from 'src/app/services/db/inventory.service';
-import { MapLocation } from 'src/app/services/map.service';
-import { UtilsMobile } from 'src/app/utils/utils-mobile';
 import { UtilsNumber } from 'src/app/utils/utils-number';
 import { PurchaseMapDialogComponent } from '../purchase-map/purchase-map-dialog/purchase-map-dialog.component';
-import { PurchaseItem } from 'src/app/models/interfaces';
 
 
 @Component({
@@ -25,7 +21,6 @@ export class PurchaseHistoryModalComponent implements OnInit {
   displayedColumns: string[] = ['date', 'quantity', 'price', 'store', 'remove'];
   constructor(
     private inventoryService: InventoryService,
-    private router: Router,
 
     private dialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: { itemName: string },

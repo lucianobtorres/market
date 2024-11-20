@@ -46,7 +46,8 @@
         <ng-container matColumnDef="store">
             <mat-header-cell *matHeaderCellDef style="margin: auto;">Loja</mat-header-cell>
             <mat-cell *matCellDef="let purchase">
-                <button mat-icon-button class="place" [ngClass]="{'store-purchase': !!purchase.store}" (click)="openMapDialog(purchase)">
+                <button mat-icon-button class="place" [ngClass]="{'store-purchase': !!purchase.store}"
+                (click)="openMapDialog(purchase)">
                     <mat-icon>place</mat-icon>
                 </button>
             </mat-cell>

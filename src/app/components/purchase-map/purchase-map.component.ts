@@ -44,6 +44,7 @@ const MAX_ZOOM_SEARCH = 14;
   styleUrls: ['./purchase-map.component.scss']
 })
 export class PurchaseMapComponent implements OnInit {
+  @ViewChild('btn3', { static: false }) btnCircleDefault!: MatButton;
   @Input() purchase: PurchaseRecord;
   @Output() closeEmit = new EventEmitter<void>();
   marketList: MapLocate[] = [];
@@ -54,8 +55,6 @@ export class PurchaseMapComponent implements OnInit {
   circleBar = false;
   isMobile = false;
   selectedMarket: MapLocate | null = null;
-  marketMarkersGroup: L.LayerGroup = L.layerGroup();
-  marketMarkersMap = new Map<MapLocation, { marker: L.Marker, details: MapLocate }>();
   userMarker?: L.Marker<any>;
   searchCircle?: L.Circle<any>;
   private map!: L.Map;
@@ -65,20 +64,21 @@ export class PurchaseMapComponent implements OnInit {
     private dialogRef: MatDialogRef<PurchaseMapComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: { purchase: PurchaseRecord },
   ) {
+    this.mapService.marketMarkersMap.clear();
+    this.mapService.onMarkerClick = this.selectMarket;
     this.purchase = data?.purchase;
+    console.log('purchase', this.purchase.store)
     if (this.purchase?.store) {
       const mapLocate: MapLocate = JSON.parse(this.purchase.store);
       if (mapLocate) {
         this.selectedMarket = mapLocate;
         this.marketList.push(mapLocate);
-        this.updateMarketsOnMap(this.marketList);
       }
     }
 
     this.mapService.list.subscribe((item: MapLocate) => {
       if (!this.marketList.some(x => x.id === item.id)) {
         this.marketList.push(item);
-        this.updateMarketsOnMap(this.marketList);
       }
     });
   }
@@ -91,24 +91,27 @@ export class PurchaseMapComponent implements OnInit {
     }
   }
 
-  selectMarket2(market: MapLocate) {
-    this.selectedMarket = market;
-    this.mapService.centerMap(market.location, this.map);
-    this.detailBar = true;
+  removerMarket() {
+    if (this.selectedMarket) {
+      const markerItem = this.mapService.marketMarkersMap.get(this.selectedMarket.id);
+      markerItem?.marker.closePopup();
+    }
+
+    this.selectMarket(undefined);
+    this.detailBar = false;
   }
 
-  selectMarket(market: MapLocate | null | undefined) {
+  selectMarket = (market: MapLocate | null | undefined) => {
     this.selectedMarket = market ?? null;
 
-    if (market) {
+    if (market && market.location) {
       const location = market.location;
 
-      this.marketMarkersGroup.getLayers().find(layer => {
-        if (layer instanceof L.Marker && layer.getLatLng().equals([location.lat, location.lon])) {
-          layer.openPopup();
-          this.mapService.centerMap(location, this.map);
-        }
-      });
+      const markerItem = this.mapService.marketMarkersMap.get(market.id);
+      if (markerItem?.marker) {
+        markerItem?.marker.openPopup();
+        this.mapService.centerMap(location, this.map);
+      }
 
       this.detailBar = true;
     }
@@ -116,7 +119,7 @@ export class PurchaseMapComponent implements OnInit {
 
   createSearchCircle(center: L.LatLng, radius: number): void {
     if (this.searchCircle) {
-      this.map.removeLayer(this.searchCircle); // Remove o círculo anterior, se existir
+      this.map.removeLayer(this.searchCircle);
     }
 
     this.searchCircle = L.circle(center, {
@@ -126,14 +129,11 @@ export class PurchaseMapComponent implements OnInit {
       radius: radius
     }).addTo(this.map);
 
-    // Ajustar os bounds do mapa para caber o círculo
     this.map.fitBounds(this.searchCircle.getBounds());
   }
 
   async salvar() {
-    if (this.selectedMarket) this.dialogRef.close();
-
-    this.purchase.store = JSON.stringify(this.selectedMarket);
+    this.purchase.store = this.selectedMarket ? JSON.stringify(this.selectedMarket) : undefined;
     await db.purchasesHistory.update(this.purchase.id!, this.purchase);
     this.circleBar = false;
     this.dialogRef.close();
@@ -148,8 +148,6 @@ export class PurchaseMapComponent implements OnInit {
     fromEvent(window, 'resize').subscribe(() => checkScreenSize());
   }
 
-  @ViewChild('btn3', { static: false }) btnCircleDefault!: MatButton;
-
   toggleDetailbar() {
     this.detailBar = !this.detailBar;
     this.map.invalidateSize(); // Força o Leaflet a recalcular o tamanho
@@ -157,12 +155,12 @@ export class PurchaseMapComponent implements OnInit {
 
   toggleSidebar() {
     this.circleBar = !this.circleBar;
-    this.removeAllMarkers();
+    this.mapService.removeAllMarkers();
 
     const updateRadius = () => {
       setTimeout(() => {
         if (this.circleBar && this.btnCircleDefault) {
-          this.updateSearchRadius(1000, this.btnCircleDefault);
+          this.btnCircleDefault._elementRef.nativeElement.click();
         }
       }, 200);
     }
@@ -190,7 +188,7 @@ export class PurchaseMapComponent implements OnInit {
 
     // Inicializa o mapa na localização do usuário
     this.map = L.map('map').setView([lat, lon], ZOON_DEFAULT);
-    this.marketMarkersGroup.addTo(this.map);
+    this.mapService.marketMarkersGroup.addTo(this.map);
 
     L.control.scale({
       position: 'topright', // Altere para 'topleft' se necessário
@@ -208,18 +206,21 @@ export class PurchaseMapComponent implements OnInit {
       .addTo(this.map)
       .bindPopup('Você está aqui!');
 
-    this.searchMarketsNearby();
     this.createUserLocationButton();
 
-    this.map.on('click', (event: L.LeafletMouseEvent) => {
-      this.handleMapClick(event);
-    });
+    // this.map.on('click', (event: L.LeafletMouseEvent) => {
+    //   this.handleMapClick(event);
+    // });
 
-    this.map.on('moveend', () => this.searchMarketsNearby());
 
     if (this.selectedMarket) {
+      this.mapService.addMarkersToMap(this.selectedMarket);
       this.selectMarket(this.selectedMarket)
+    } else {
+      this.searchMarketsNearby();
     }
+
+    this.map.on('moveend', () => this.searchMarketsNearby());
   }
 
   private createUserLocationButton = () => {
@@ -361,33 +362,37 @@ export class PurchaseMapComponent implements OnInit {
   }
 
   private updateMarketsOnMap(markets: MapLocate[]) {
+    return;
     markets.forEach(async (mapLocate: MapLocate) => {
-      this.persistCoordinates(mapLocate, mapLocate.location.lat, mapLocate.location.lon);
+      this.persistCoordinates(mapLocate);
     });
   }
 
-  private persistCoordinates(mapLocate: MapLocate, lat: number, lon: number) {
-    const mapped = this.marketMarkersMap.get({ lat, lon })
+  private persistCoordinates(mapLocate: MapLocate) {
+    return;
+    const mapped = this.mapService.marketMarkersMap.get(mapLocate.id)
     if (mapped) { return; }
 
-    this.getDataMarket(mapLocate).subscribe((dataMaker) => {
-      const marker = L.marker([lat ?? 0, lon ?? 0])
-        .bindPopup(dataMaker)
-        .on('click', () => this.selectMarket(mapLocate));
+    const marker = L.marker([mapLocate.location.lat, mapLocate.location.lon]);
+    marker
+      .bindPopup(this.createPopup(mapLocate))
+      .on('click', () => this.selectMarket(mapLocate))
+    // .addTo(this.marketMarkersGroup);
 
-      marker.addTo(this.marketMarkersGroup);
-      this.marketMarkersMap.set(mapLocate.location, { marker: marker, details: mapLocate });
-    });
+    this.mapService.marketMarkersMap.set(mapLocate.id, { marker: marker, details: mapLocate });
   }
 
-  private removeAllMarkers(): void {
-    console.log('removeAllMarkers')
-    this.marketMarkersGroup.clearLayers(); // Remove todos os marcadores
-    this.marketMarkersMap.clear();
-  }
 
   mapToArray(map: Map<string, { marker: L.Marker, details: MapLocate }>) {
     return Array.from(map.values());
+  }
+
+  private createPopup(market: MapLocate): string {
+    return `
+        <b>${market.name}</b>
+        <br>${market.address} ${!!market.house_number ? ', ' + market.house_number : ''}
+        ${market.suburb && market.city ? '<br>' + market.suburb + ', ' + market.city : ''}
+        `.trim();
   }
 
   private getDataMarket(market: MapLocate): Observable<((layer: L.Layer) => L.Content) | L.Content | L.Popup> {
@@ -417,7 +422,9 @@ export class PurchaseMapComponent implements OnInit {
   }
 
   searchMarketsNearby() {
+    console.log('searchMarketsNearby')
     if (this.podeBuscarMarkets()) {
+      console.log('podeBuscarMarkets')
       this.searchByUserLocalization();
     } else {
       console.log('não pode buscar', this.circleBar, this.map.getZoom())
@@ -429,7 +436,7 @@ export class PurchaseMapComponent implements OnInit {
 
     const currentZoom = this.map.getZoom();
     if (currentZoom < MAX_ZOOM_SEARCH) {
-      this.removeAllMarkers();
+      this.mapService.removeAllMarkers();
       return false;
     }
     return true;
@@ -457,10 +464,11 @@ export class PurchaseMapComponent implements OnInit {
     const bounds = this.map.getBounds(); // Pega os limites visíveis do mapa
     const bbox = `${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()}`;
 
+    console.log('searchByUserLocalization', bbox, this.mapService.marketMarkersMap)
     this.mapService.getMarkets(bbox);
 
     // this.marketList$.subscribe((itens => {
-    //   this.updateMarketsOnMap(itens);
+    // this.updateMarketsOnMap(itens);
     // }))
   }
 }

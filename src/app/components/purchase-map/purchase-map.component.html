@@ -36,7 +36,7 @@
             </mat-list>
         </div>
         <app-market-details-sheet *ngIf="detailBar" class="details-bar" [data]="selectedMarket"
-            (closeEmit)="selectMarket($event)"></app-market-details-sheet>
+            (closeEmit)="removerMarket()"></app-market-details-sheet>
     </div>
 </div>
 

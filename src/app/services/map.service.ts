@@ -1,6 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, concatMap, finalize, from, map, Observable, of, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, catchError, concatMap, distinctUntilChanged, finalize, from, map, Observable, of, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
+
+
+import * as L from 'leaflet';
+
+export function instanceOfMapLocate(obj: unknown): obj is MapLocate {
+  return (<MapLocate>obj).location !== undefined;
+}
 
 export interface MapLocation {
   lat: number,
@@ -35,6 +42,10 @@ export class MapService {
 
   list = new EventEmitter<MapLocate>();
   loading = new BehaviorSubject<boolean>(false); // Gerenciar estado de carregamento
+
+  marketMarkersMap = new Map<string, { marker: L.Marker, details: MapLocate }>();
+  marketMarkersGroup: L.LayerGroup = L.layerGroup();
+  onMarkerClick!: (market: MapLocate) => void;
 
   async setUserCoordinates(): Promise<MapLocation> {
     if (this.userCoordinates) return this.userCoordinates;
@@ -85,6 +96,7 @@ export class MapService {
     );
   }
 
+  private cancelSubject = new Subject<void>(); // Usado para cancelar o Observable
   getMarkets(bbox: string) {
     const query = `
       [out:json];
@@ -100,6 +112,7 @@ export class MapService {
       headers: { 'Content-Type': 'text/plain' }, // A API espera 'text/plain'
       responseType: 'json', // Certifique-se de que está retornando JSON
     }).pipe(
+      distinctUntilChanged(),
       take(1),
       switchMap((infoOverpass: any) => {
         const market: any[] = infoOverpass?.elements || [];
@@ -109,8 +122,12 @@ export class MapService {
           return of([]);
         }
 
-        console.debug(`Processando ${market.length} mercados`);
+        console.log(`Processando ${market.length} mercados`);
         return this.processOverpassData(market); // Retorna o processamento do chunk
+      }),
+      tap((processedMarkets: never[] | MapLocate) => {
+        // Reutilizar existentes + adicionar novos
+        if (instanceOfMapLocate(processedMarkets)) this.addMarkersToMap(processedMarkets);
       }),
       finalize(() => {
         this.loading.next(false); // Finaliza o estado de carregamento
@@ -124,6 +141,37 @@ export class MapService {
       error: (err) => console.error('Erro no carregamento:', err),
       complete: () => console.debug('Carregamento concluído'),
     });
+  }
+
+  addMarkersToMap(market: MapLocate) {
+    if (this.marketMarkersMap.has(market.id)) {
+      // Marcador já existe, reutilizar
+      const existingMarker = this.marketMarkersMap.get(market.id)?.marker;
+      if (existingMarker) {
+        // existingMarker.addTo(this.marketMarkersGroup)
+        this.marketMarkersGroup.addLayer(existingMarker); // Adiciona de volta ao mapa
+      }
+    } else {
+      // Criar novo marcador
+      const newMarker = L.marker([market.location.lat, market.location.lon])
+        .bindPopup(this.createPopup(market))
+        .on('click', () => this.onMarkerClick(market)); // Ação no clique
+
+      this.marketMarkersGroup.addLayer(newMarker); // Adiciona ao grupo
+      this.marketMarkersMap.set(market.id, { marker: newMarker, details: market }); // Armazena no Map
+    }
+  }
+
+  removeAllMarkers(): void {
+    this.marketMarkersGroup.clearLayers();
+  }
+
+  private createPopup(market: MapLocate): string {
+    return `
+        <b>${market.name}</b>
+        <br>${market.address} ${!!market.house_number ? ', ' + market.house_number : ''}
+        ${market.suburb && market.city ? '<br>' + market.suburb + ', ' + market.city : ''}
+        `.trim();
   }
 
   getNearbyMarkets(bbox: string) {
@@ -180,6 +228,7 @@ export class MapService {
         return this.processOverpassData(market); // Retorna o processamento do chunk
       }),
       finalize(() => {
+        console.log('finalize')
         this.loading.next(false); // Finaliza o estado de carregamento
         this.loadingProgress.next(0); // Reseta o progresso
       })
@@ -211,6 +260,11 @@ export class MapService {
       console.debug('Sem dados válidos de localização', element);
       return of(element); // Retorna como Observable
     }
+
+    const marketMarker = this.marketMarkersMap.get(mapLocate.id);
+    if (marketMarker) { return of(marketMarker.details); }
+
+    console.log('getMapLocate corrigiu', marketMarker)
 
     // Verifica campos necessários e busca endereço adicional se incompletos
     if (!mapLocate.name || !mapLocate.address || !mapLocate.postcode) {
@@ -260,11 +314,14 @@ export class MapService {
     const chunks = this.chunkArray(elements, 10); // Divide em chunks de 10 elementos
     this.totalElements = elements.length; // Define o total de elementos para calcular o progresso
     let processedCount = 0;
+    this.cancelSubject.next();
 
     return from(chunks).pipe(
       concatMap((chunk, index) => {
         console.debug(`Processando chunk ${index + 1}/${chunks.length}`, chunk);
         return from(chunk).pipe(
+          takeUntil(this.cancelSubject.pipe(tap(() => console.log('Cancelamento disparado!')))),
+          // take(1),
           concatMap((element) => this.getMapLocateFromOverpass(element).pipe(
             tap(() => {
               processedCount++; // Incrementa o contador a cada elemento processado
