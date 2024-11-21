@@ -207,6 +207,7 @@ export class PurchaseMapComponent implements OnInit {
       .bindPopup('Você está aqui!');
 
     this.createUserLocationButton();
+    this.createNavigationButton();
 
     // this.map.on('click', (event: L.LeafletMouseEvent) => {
     //   this.handleMapClick(event);
@@ -287,6 +288,50 @@ export class PurchaseMapComponent implements OnInit {
     // Exibe o popup inicial com opções de salvar ou cancelar
     this.attachCreateMarket(newMarker, lat, lng);
   }
+
+  createNavigationButton() {
+    const navigationControl = L.Control.extend({
+      options: {
+        position: 'topright', // Posiciona abaixo da régua de distância
+      },
+      onAdd: () => {
+        const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+
+        container.style.backgroundColor = '#fff';
+        container.style.width = '30px';
+        container.style.height = '30px';
+        container.style.cursor = 'pointer';
+        container.style.display = 'flex';
+        container.style.alignItems = 'center';
+        container.style.justifyContent = 'center';
+        container.style.border = '2px solid rgba(0, 0, 0, 0.2)';
+        container.style.backgroundClip = 'padding-box';
+
+        container.innerHTML = '<span style="font-size: 18px;">🚘</span>';
+
+        container.onclick = () => {
+          this.openNavigation();
+        };
+
+        return container;
+      },
+    });
+
+    this.map.addControl(new navigationControl());
+  }
+
+  openNavigation() {
+    if (!this.selectedMarket) return;
+    const location = this.selectedMarket.location;
+    const geoUrl = `geo:${location.lat},${location.lon}?q=${location.lat},${location.lon}`;
+    const fallbackUrl = `https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lon}`;
+
+    try {
+      window.open(geoUrl, '_blank');
+    } catch {
+      window.open(fallbackUrl, '_blank');
+    }
+  };
 
   // Método para anexar o popup inicial
   private attachCreateMarket(marker: L.Marker, lat: number, lng: number): void {

@@ -8,7 +8,7 @@ import { ItemsService } from 'src/app/services/db/items.service';
 import { UtilsNumber } from 'src/app/utils/utils-number';
 
 
-export interface FormEdicaoShopping {
+interface FormAddShopping {
   nome: FormControl<string>;
   quantidade: FormControl<number>;
   unidade: FormControl<ItemUnit | null>;
@@ -17,43 +17,31 @@ export interface FormEdicaoShopping {
 }
 
 @Component({
-  selector: 'app-form-lista-corrente-item',
-  templateUrl: './form-lista-corrente-item.component.html',
-  styleUrls: ['./form-lista-corrente-item.component.scss']
+  selector: 'app-form-add-item',
+  templateUrl: './form-add-item.component.html',
+  styleUrls: ['./form-add-item.component.scss']
 })
-export class FormListaCorrenteItemComponent implements AfterViewInit{
-  editForm!: FormGroup<FormEdicaoShopping>;
+export class FormAddItemComponent implements AfterViewInit {
+  editForm!: FormGroup<FormAddShopping>;
   expanded = false;
+  idLista = 0;
   units = Object.values(ItemUnit);
-
+  protected showBarCode = false;
+  protected searchControl = new FormControl();
   @ViewChild("campoFoco") campoFoco!: ElementRef;
 
   public get valorCalculado() {
     return (UtilsNumber.convertValueToDecimal(this.editForm.value.preco?.toString()) ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
   }
 
-  public get item(): Items {
-    return this.itemsList[this.currentIndex];
-  }
-
-  itemsList: Items[] = [];
-  private _currentIndex = 0;
-  public get currentIndex() {
-    return this._currentIndex;
-  }
-  public set currentIndex(value) {
-    this._currentIndex = value;
-    this.setValues();
-  }
-
   constructor(
     private readonly fb: FormBuilder,
     private readonly dbService: ItemsService,
-    private readonly bottomSheetRef: MatBottomSheetRef<FormListaCorrenteItemComponent>,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: { itemsList: Items[], currentIndex: number }
+    private readonly bottomSheetRef: MatBottomSheetRef<FormAddItemComponent>,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: { idLista: number }
   ) {
-    this.itemsList = data.itemsList;
-    this.currentIndex = data.currentIndex;
+    this.idLista = data.idLista;
+    this.setValues();
   }
 
   ngAfterViewInit(): void {
@@ -64,35 +52,30 @@ export class FormListaCorrenteItemComponent implements AfterViewInit{
     }, 200);
   }
 
-
   private setValues() {
-    const data: Items = this.item;
-    const preco = UtilsNumber.convertValueToDecimal(`${data.price}`);
     this.editForm = this.fb.group({
-      nome: this.fb.nonNullable.control(data.name, Validators.required),
-      quantidade: this.fb.nonNullable.control(data.quantity || 1, [Validators.required, Validators.min(1)]),
-      unidade: [data.unit || 'un' as ItemUnit, Validators.required],
-      preco: [Number(preco ?? 0), [Validators.min(0)]],
-      anotacao: [data.notas || '']
+      nome: this.fb.nonNullable.control('', Validators.required),
+      quantidade: this.fb.nonNullable.control(1, [Validators.required, Validators.min(1)]),
+      unidade: [ItemUnit.UNID, Validators.required],
+      preco: [Number(0), [Validators.min(0)]],
+      anotacao: ['']
     });
   }
 
   saveCurrentItem() {
     if (this.editForm.valid) {
       const updatedItem: Items = {
-        id: this.item.id,
-        isPurchased: this.item.isPurchased,
+        isPurchased: false,
         name: this.editForm.value.nome ?? '',
         quantity: this.editForm.value.quantidade ?? 1,
         price: UtilsNumber.convertValueToDecimal(this.editForm.value.preco?.toString()),
         unit: this.editForm.value.unidade ?? ItemUnit.UNID,
         notas: this.editForm.value.anotacao ?? undefined,
-        listId: this.item.listId,
-        addedDate: this.item.addedDate,
+        listId: this.idLista,
+        addedDate: new Date(),
       };
 
-      this.dbService.update(this.item.id!, updatedItem, 'atualizado..');
-      this.itemsList[this.currentIndex] = updatedItem;
+      this.dbService.add(updatedItem, 'atualizado..');
     }
   }
 
@@ -100,40 +83,9 @@ export class FormListaCorrenteItemComponent implements AfterViewInit{
     this.bottomSheetRef.dismiss();
   }
 
-  goToPreviousItem() {
-    this.saveCurrentItem();
-    if (this.hasPreviousItem()) {
-      this.currentIndex--;
-    }
-  }
-
   goToNextItem() {
     this.saveCurrentItem();
-    if (this.hasNextItem()) {
-      this.currentIndex++;
-    }
-  }
-
-  hasPreviousItem() {
-    return this.currentIndex > 0;
-  }
-
-  hasNextItem() {
-    return this.currentIndex < this.itemsList.length - 1;
-  }
-
-  isEditing = false;
-
-  enableEditing() {
-    this.isEditing = true;
-  }
-
-  updateName(editingName: string) {
-    if (editingName.trim() !== '') {
-      this.editForm.controls.nome.setValue(editingName);
-    }
-
-    this.isEditing = false;
+    this.setValues();
   }
 
   increase(event: Event) {
@@ -147,5 +99,28 @@ export class FormListaCorrenteItemComponent implements AfterViewInit{
     if (this.editForm.value.quantidade === 1) return;
 
     this.editForm.controls.quantidade.setValue((this.editForm.value.quantidade ?? 0) - 1);
+  }
+
+  toggleBarCode() {
+    this.showBarCode = !this.showBarCode;
+  }
+
+  onProdutoEncontrado(code: string) {
+    this.searchControl.setValue(code);
+    this.searchControl.markAsDirty();
+    this.searchControl.markAsTouched();
+  }
+
+  onInformarPreco(price: string) {
+    const preco = this.parsePrice(price);
+    this.editForm.controls.preco.setValue(preco);
+  }
+
+  private parsePrice(price: string): number {
+    // Remove o símbolo "R$", espaços extras e substitui "," por "."
+    const sanitizedPrice = price.replace(/R\$\s?/, '').replace(',', '.').trim();
+
+    // Converte para número e retorna o resultado
+    return parseFloat(sanitizedPrice);
   }
 }

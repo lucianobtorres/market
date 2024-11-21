@@ -10,6 +10,7 @@ import { UtilsMobile } from 'src/app/utils/utils-mobile';
 import { ItemListService } from 'src/app/services/item-list.service';
 import { InventoryService } from 'src/app/services/db/inventory.service';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
+import { FormAddItemComponent } from './form-add-item/form-add-item.component';
 
 @Component({
   selector: 'app-lista-corrente',
@@ -98,8 +99,12 @@ export class ListaCorrenteComponent implements OnInit {
   }
 
   addItem() {
-    this.openSearch();
+    // this.openSearch();
+    this.bottomSheet.open(FormAddItemComponent, {
+      data: { idLista: this.idLista }
+    });
   }
+
   isSearchOpen = false; // Controle para saber se o painel de busca está aberto
 
   closeSearch() {

@@ -4,23 +4,22 @@
     </button>
     <mat-form-field class="search-field">
         <mat-label>Pesquisar</mat-label>
-        <input matInput [formControl]="searchControl" placeholder="pesquisar" #campoSearch (focus)="selectText(campoSearch)"/>
+        <input matInput [formControl]="searchControl" placeholder="pesquisar" #campoSearch
+            (focus)="selectText(campoSearch)" />
         <button mat-icon-button matSuffix (click)="toggleBarCode()">
-            <mat-icon [ngClass]="{'show-barcode': showBarCode}"
-            >photo_camera</mat-icon>
+            <mat-icon [ngClass]="{'show-barcode': showBarCode}">photo_camera</mat-icon>
         </button>
     </mat-form-field>
 </div>
 
-<app-barcode-scanner *ngIf="showBarCode"
-    (produtoEncontrado)="onProdutoEncontrado($event)"
-    (informarPreco)="onInformarPreco($event)"
-></app-barcode-scanner>
+<app-barcode-scanner *ngIf="showBarCode" (produtoEncontrado)="onProdutoEncontrado($event)"
+    (informarPreco)="onInformarPreco($event)"></app-barcode-scanner>
 
 <div class="search-content">
     <mat-list class="itens-search">
         <mat-list-item *ngFor="let item of filteredItems" (click)="toggleItem(item)">
-            <app-search-list-item [item]="item" (qtdChanged)="qtdChanged($event, item)" (itemChanged)="itemChanged($event)"></app-search-list-item>
+            <app-search-list-item [item]="item" (qtdChanged)="qtdChanged($event, item)"
+                (itemChanged)="itemChanged($event)"></app-search-list-item>
         </mat-list-item>
     </mat-list>
 </div>
