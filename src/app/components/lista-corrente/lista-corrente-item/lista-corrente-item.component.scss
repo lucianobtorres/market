@@ -114,6 +114,29 @@ mat-chip {
   cursor: pointer;
 }
 
-:host ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+:host ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content,
+.mat-list-base .mat-list-option .mat-list-item-content {
   padding: 0 4px;
+}
+
+.chip-price {
+  flex-direction: column;
+  justify-content: center;
+}
+
+.last-price {
+  text-decoration: line-through;
+  filter: drop-shadow(2px 2px 2px black);
+  // top: 20px;
+  // position: absolute;
+  // font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.last-price[grow='true'] {
+  color: orange;
+}
+
+.last-price[grow='false'] {
+  color: greenyellow;
 }

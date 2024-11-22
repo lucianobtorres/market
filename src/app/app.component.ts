@@ -4,6 +4,7 @@ import { IconsRegisterService } from './services/icons-register.service';
 import { ROTAS } from './app-routing.module';
 import { ThemeService } from './services/theme.service';
 import { ItemListService } from './services/item-list.service';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,7 @@ export class AppComponent implements AfterViewInit, OnInit {
     private router: Router,
     private themeService: ThemeService,
     private itemShoppingListService: ItemListService,
+    private swUpdate: SwUpdate,
   ) {
     router.canceledNavigationResolution = 'computed';
 
@@ -43,6 +45,15 @@ export class AppComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
+    this.checkForUpdates();
+
+    const splash = document.getElementById('splash-screen');
+    if (splash) {
+      setTimeout(() => {
+        splash.classList.add('hidden'); // Adiciona a classe para esconder a splash screen
+      }, 2000);
+    }
+
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
@@ -112,6 +123,16 @@ export class AppComponent implements AfterViewInit, OnInit {
       }
       this.toggleTheme();
     });
+  }
+
+  checkForUpdates() {
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.available.subscribe(() => {
+        if (confirm('Uma nova versão está disponível. Deseja atualizar?')) {
+          window.location.reload();
+        }
+      });
+    }
   }
 
   ngAfterViewInit(): void {

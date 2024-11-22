@@ -3,9 +3,11 @@ import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { ItemUnit } from 'src/app/models/item-unit';
-import { Items } from 'src/app/models/interfaces';
+import { Items, nameof } from 'src/app/models/interfaces';
 import { ItemsService } from 'src/app/services/db/items.service';
 import { UtilsNumber } from 'src/app/utils/utils-number';
+import { BarcodeScannerAddComponent } from '../barcode-scanner-add/barcode-scanner-add.component';
+import { db } from 'src/app/db/model-db';
 
 
 interface FormAddShopping {
@@ -27,8 +29,8 @@ export class FormAddItemComponent implements AfterViewInit {
   idLista = 0;
   units = Object.values(ItemUnit);
   protected showBarCode = false;
-  protected searchControl = new FormControl();
   @ViewChild("campoFoco") campoFoco!: ElementRef;
+  @ViewChild("scanner") scanner!: BarcodeScannerAddComponent;
 
   public get valorCalculado() {
     return (UtilsNumber.convertValueToDecimal(this.editForm.value.preco?.toString()) ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
@@ -60,9 +62,13 @@ export class FormAddItemComponent implements AfterViewInit {
       preco: [Number(0), [Validators.min(0)]],
       anotacao: ['']
     });
+
+    if (this.scanner) {
+      this.scanner.limparImage();
+    }
   }
 
-  saveCurrentItem() {
+  async saveCurrentItem() {
     if (this.editForm.valid) {
       const updatedItem: Items = {
         isPurchased: false,
@@ -75,7 +81,16 @@ export class FormAddItemComponent implements AfterViewInit {
         addedDate: new Date(),
       };
 
-      this.dbService.add(updatedItem, 'atualizado..');
+      const existingItem = await db.items
+        .where(nameof<Items>('listId'))
+        .equals(this.idLista)
+        .and(item => item.name === updatedItem.name).first();
+
+      if (!existingItem) this.dbService.add(updatedItem);
+      else {
+        updatedItem.quantity = updatedItem.quantity! + existingItem.quantity!;
+        this.dbService.update(existingItem.id!, updatedItem);
+      }
     }
   }
 
@@ -106,9 +121,9 @@ export class FormAddItemComponent implements AfterViewInit {
   }
 
   onProdutoEncontrado(code: string) {
-    this.searchControl.setValue(code);
-    this.searchControl.markAsDirty();
-    this.searchControl.markAsTouched();
+    this.editForm.controls.nome.setValue(code);
+    this.editForm.controls.nome.markAsDirty();
+    this.editForm.controls.nome.markAsTouched();
   }
 
   onInformarPreco(price: string) {

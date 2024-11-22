@@ -43,6 +43,7 @@ import { PurchaseMapComponent } from './purchase-map/purchase-map.component';
 import { PurchaseMapDialogComponent } from './purchase-map/purchase-map-dialog/purchase-map-dialog.component';
 import { MarketDetailsSheetComponent } from './purchase-map/market-details-sheet/market-details-sheet.component';
 import { FormAddItemComponent } from './lista-corrente/form-add-item/form-add-item.component';
+import { BarcodeScannerAddComponent } from './lista-corrente/barcode-scanner-add/barcode-scanner-add.component';
 
 export const components = [
   HomeComponent,
@@ -75,6 +76,7 @@ export const components = [
   PurchaseMapDialogComponent,
   MarketDetailsSheetComponent,
   FormAddItemComponent,
+  BarcodeScannerAddComponent,
 ]
 
 const directives = [

@@ -1,22 +1,32 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { Items } from 'src/app/models/interfaces';
 import { ItemsService } from 'src/app/services/db/items.service';
 import { ValorEditComponent } from '../../shared/valor-edit/valor-edit.component';
 import { UtilsNumber } from 'src/app/utils/utils-number';
+import { InventoryService } from 'src/app/services/db/inventory.service';
 
 @Component({
   selector: 'app-lista-corrente-item',
   templateUrl: './lista-corrente-item.component.html',
   styleUrls: ['./lista-corrente-item.component.scss'],
 })
-export class ListaCorrenteItemComponent {
+export class ListaCorrenteItemComponent implements OnInit {
   @Input() item!: Items;
+  lastPrice: number | undefined;
+  get grow() {
+    return Number(UtilsNumber.convertValueToDecimal(this.item.price)) > Number(UtilsNumber.convertValueToDecimal(this.lastPrice));
+  }
 
   constructor(
     private readonly dbService: ItemsService,
     private readonly bottomSheet: MatBottomSheet,
+    private readonly inventoryService: InventoryService,
   ) { }
+
+  async ngOnInit(): Promise<void> {
+    this.lastPrice = await this.inventoryService.getLastPrice(this.item.name);
+  }
 
   toggleItemComprado(event: Event) {
     event.stopPropagation();

@@ -110,6 +110,38 @@
             transform: rotate(450deg);
         }
     }
+
+    #splash-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: slategray;
+        /* Altere para a cor desejada */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    #splash-screen.hidden {
+        animation: fadeOut 0.5s forwards;
+    }
+
+    @keyframes fadeOut {
+        to {
+            opacity: 0;
+            visibility: hidden;
+            display: none;
+        }
+    }
+
+    #splash-screen img {
+        max-width: 90%; /* A largura máxima será 90% da largura da tela */
+        max-height: 90%; /* A altura máxima será 90% da altura da tela */
+        object-fit: contain; /* Ajusta a proporção para que a imagem não fique distorcida */
+    }
 </style>
 <noscript>
     <h3 style="color:#EC7D10; font-family: Helvetica; margin: 2rem;">
@@ -136,11 +168,17 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" />
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols|Material+Symbols+Outlined" /> -->
 
-    <link rel="apple-touch-icon" href="assets/icons/icon-512x512.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="assets/icons/icon-96x96.png?v=0.1">
+    <link rel="apple-touch-icon" sizes="192x192" href="assets/icons/icon-192x192.png?v=0.1">
+    <link rel="apple-touch-icon" sizes="512x512" href="assets/icons/icon-512x512.png?v=0.1">
 
     <!-- Pequenos e médios dispositivos -->
     <link rel="apple-touch-startup-image" href="assets/splash/logo-640x1136.png"
         media="(max-device-width: 375px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="assets/splash/logo-640x1136.png" media="(device-width: 320px)">
+    <link rel="apple-touch-startup-image" href="assets/splash/logo-1242x2208.png" media="(device-width: 414px)">
+    <link rel="apple-touch-startup-image" href="assets/splash/logo-1668x2388.png" media="(device-width: 834px)">
+
 
     <!-- Dispositivos médios a grandes -->
     <link rel="apple-touch-startup-image" href="assets/splash/logo-1242x2208.png"
@@ -155,6 +193,9 @@
 </head>
 
 <body class="app-body">
+    <div id="splash-screen">
+        <img src="assets/splash/logo-640x1136.png" alt="Logo" />
+    </div>
     <app-root>
         <div class="contentChart">
             <svg class="spinner" width="64px" height="64px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">

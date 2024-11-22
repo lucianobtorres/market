@@ -1,5 +1,7 @@
 import { ItemUnit } from "./item-unit";
 
+export const nameof = <T>(name: Extract<keyof T, string>): string => name;
+
 export type CombinedItem = (Purchases & Partial<Items>) | (Items & Partial<Purchases>);
 
 export interface NotificationModel {

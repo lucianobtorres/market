@@ -10,10 +10,12 @@
 
     </div>
     <div class="preco">
-
         <mat-chip-list>
-            <mat-chip *ngIf="item.price" (click)="editItem($event)"> {{ item.price | convertWithFn:getPrice | currency}}
-                ({{ item.quantity | number }} {{ item.unit }})
+            <mat-chip *ngIf="item.price" (click)="editItem($event)" class="chip-price">
+                <span>
+                    {{ item.price | convertWithFn:getPrice | currency}} ({{ item.quantity | number }} {{ item.unit }})
+                </span>
+                <small *ngIf="lastPrice" class="last-price" [attr.grow]="grow">{{ lastPrice | convertWithFn:getPrice | currency}}</small>
             </mat-chip>
             <mat-chip *ngIf="!item.price" (click)="editItem($event)">{{ item.quantity | number }} {{ item.unit
                 }}</mat-chip>

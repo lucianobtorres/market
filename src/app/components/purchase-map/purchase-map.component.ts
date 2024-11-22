@@ -7,6 +7,7 @@ import { MatButton } from '@angular/material/button';
 import { PurchaseRecord } from 'src/app/services/db/inventory.service';
 import * as L from 'leaflet';
 import { db } from 'src/app/db/model-db';
+import { UtilsMobile } from 'src/app/utils/utils-mobile';
 
 const iconRetinaUrl = 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png';
 const iconUrl = 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png';
@@ -322,14 +323,15 @@ export class PurchaseMapComponent implements OnInit {
 
   openNavigation() {
     if (!this.selectedMarket) return;
-    const location = this.selectedMarket.location;
-    const geoUrl = `geo:${location.lat},${location.lon}?q=${location.lat},${location.lon}`;
-    const fallbackUrl = `https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lon}`;
 
-    try {
-      window.open(geoUrl, '_blank');
-    } catch {
-      window.open(fallbackUrl, '_blank');
+    const location = this.selectedMarket.location;
+    const mapsUrl = `http://maps.apple.com/?q=${location.lat},${location.lon}`;
+
+    if (UtilsMobile.isMobile()) {
+      window.location.href = mapsUrl;
+    } else {
+      // const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lon}`;
+      window.open(mapsUrl, '_blank');
     }
   };
 
