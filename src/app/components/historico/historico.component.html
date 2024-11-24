@@ -55,7 +55,7 @@
 </div>
 <ng-template let-item #tmplHeaderHist>
     <ng-container *ngIf="itemIsRecord(item)">
-        <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr;">
+        <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; align-items: center;">
             <div style="display: flex; flex-direction: column; gap: 4px;">
                 <div>
                     <small> {{ item.listName }} </small>
@@ -65,7 +65,7 @@
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">
                 <small>{{ item.dateCompleted | shortDate:true }} </small>
-                <small *ngIf="item.store"> {{item.store | convertWithFn:getNomeMercado }} </small>
+                <small style="text-align: center;" *ngIf="item.store"> {{item.store | convertWithFn:getNomeMercado }} </small>
             </div>
         </div>
     </ng-container>

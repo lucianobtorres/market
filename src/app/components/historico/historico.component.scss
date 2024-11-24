@@ -36,7 +36,7 @@ body.dark-theme :host mat-card {
   }
 
   .component-container {
-    overflow: auto;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -71,8 +71,7 @@ body.dark-theme :host mat-card {
 
     .itens-historico {
 
-      overflow-y: auto;
-      overflow-x: hidden;
+      overflow: hidden;
 
       max-width: 400px;
       padding: 16px;
