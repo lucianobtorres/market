@@ -1,0 +1,77 @@
+<div class="bottom-sheet">
+    <div class="actions">
+        <div class="title-header">
+
+            <mat-form-field *ngIf="isEditing">
+                <mat-label>Nome do Item</mat-label>
+                <input matInput [formControl]="editForm.controls.nome"
+                    (blur)="updateName(campoFoco.value)"
+                    (keydown.enter)="updateName(campoFoco.value)"
+                    placeholder="Ex: Leite" autofocus #campoFoco>
+                    <button matSuffix mat-icon-button (click)="updateName(campoFoco.value)">
+                        <mat-icon matTooltip="Atualizar..">done</mat-icon>
+                    </button>
+            </mat-form-field>
+
+            <ng-container *ngIf="!isEditing">
+                <h2 (click)="enableEditing()"> {{ editForm.controls.nome.value }} </h2>
+            </ng-container>
+
+        </div>
+
+        <button mat-raised-button class="floating-btn" color="primary" (click)="saveCurrentItem(); close()">Finalizar</button>
+        <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+    </div>
+
+    <!-- Edição Simples -->
+    <form [formGroup]="editForm" class="edit-form">
+
+        <div class="valores">
+            <mat-form-field >
+                <mat-label>Preço</mat-label>
+                <input matInput type="currency" inputmode="decimal" [formControl]="editForm.controls.preco"
+                    placeholder="Ex: 12.50" #campoFoco>
+            </mat-form-field>
+
+            <div class="value-update">
+                <small style="font-size: x-small;">Quantidade</small>
+                <span style="margin-right: 16px;">
+                    {{ editForm.controls.quantidade.value }}
+                </span>
+                <button class="counter-button" (click)="increase($event)">
+                    <mat-icon>add</mat-icon>
+                </button>
+                <button class="counter-button" (click)="decrease($event)">
+                    <mat-icon>remove</mat-icon>
+                </button>
+            </div>
+
+            <mat-form-field>
+                <mat-label>Unidade</mat-label>
+                <mat-select [formControl]="editForm.controls.unidade">
+                    <mat-option *ngFor="let unit of units" [value]="unit">{{ unit }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="total-value">
+                <small>Total</small>
+                <span> {{valorCalculado | currency}} </span>
+            </div>
+        </div>
+
+        <mat-form-field class="full-field">
+            <mat-label>Anotações</mat-label>
+            <input matInput [formControl]="editForm.controls.anotacao">
+        </mat-form-field>
+
+        <div class="actions" style="justify-content: space-around;">
+            <button mat-icon-button (click)="goToPreviousItem()" [disabled]="!hasPreviousItem()">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+
+            <button mat-icon-button (click)="goToNextItem()" [disabled]="!hasNextItem()">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+        </div>
+    </form>
+</div>

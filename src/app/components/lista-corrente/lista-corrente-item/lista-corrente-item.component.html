@@ -20,13 +20,6 @@
             <mat-chip *ngIf="!item.price" (click)="editItem($event)">{{ item.quantity | number }} {{ item.unit
                 }}</mat-chip>
         </mat-chip-list>
-
-        <!-- <div class="detalhe" (click)="editItem($event)">
-
-            <small>{{ item.quantity | number }} {{ item.unit }}</small>
-            <small *ngIf="item.price">{{ item.price | convertWithFn:getPrice | currency}}</small>
-
-        </div> -->
         <button class="item-actions remove-btn" (click)="removeItem($event)">×</button>
     </div>
 </div>

@@ -6,6 +6,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { DispensaComponent } from './components/dispensa/dispensa.component';
 import { PurchaseMapComponent } from './components/purchase-map/purchase-map.component';
+import { HistoricoComponent } from './components/historico/historico.component';
 
 export const ROTAS = {
   root: '/',
@@ -14,6 +15,7 @@ export const ROTAS = {
   config: 'configuracoes',
   lista: 'lista',
   dispensa: 'dispensa',
+  historico: 'historico',
   mapa: 'map',
 };
 
@@ -22,6 +24,7 @@ const routes: Routes = [
   { path: ROTAS.home, component: HomeComponent },
   { path: ROTAS.perfil, component: PerfilComponent },
   { path: ROTAS.dispensa, component: DispensaComponent },
+  { path: ROTAS.historico, component: HistoricoComponent },
   { path: ROTAS.mapa, component: PurchaseMapComponent },
   { path: ROTAS.config, component: SettingsComponent },
   { path: `${ROTAS.lista}/:id`, component: ListaCorrenteDetalhadaComponent },
@@ -35,7 +38,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    useHash: false, // Sem hash na URL
+    scrollPositionRestoration: 'enabled', // Restaura posição do scroll
+    anchorScrolling: 'enabled', // Permite rolar até âncoras
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -3,6 +3,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UtilsMobile } from "src/app/utils/utils-mobile";
 import { ListaCorrenteDialogComponent } from "../lista-corrente-dialog/lista-corrente-dialog.component";
+import { ROTAS } from "src/app/app-routing.module";
 
 
 @Component({
@@ -14,8 +15,11 @@ export class ListaCorrenteDetalhadaComponent implements OnInit {
   isMobile: boolean = true;
   id: number = 0;
 
-  constructor(private dialog: MatDialog, private router: Router,
-    private readonly route: ActivatedRoute) { }
+  constructor(
+    private dialog: MatDialog,
+    private router: Router,
+    private readonly route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
     this.isMobile = UtilsMobile.isMobile();
@@ -25,7 +29,7 @@ export class ListaCorrenteDetalhadaComponent implements OnInit {
 
       if (this.isMobile) {
         const dialogRef = this.dialog.open(ListaCorrenteDialogComponent, {
-          data: { idLista: this.id},
+          data: { idLista: this.id },
           width: '100vw',
           height: '100vh',
           maxWidth: '100vw',
@@ -40,6 +44,6 @@ export class ListaCorrenteDetalhadaComponent implements OnInit {
   }
 
   Close() {
-    this.router.navigate(['/']);
+    this.router.navigate([ROTAS.root]);
   }
 }

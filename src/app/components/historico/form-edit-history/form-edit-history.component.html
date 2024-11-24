@@ -1,0 +1,25 @@
+<div class="bottom-sheet">
+    <div class="actions">
+        <div class="title-header">
+
+            <mat-form-field style="max-width: 132px;">
+                <mat-label> Data </mat-label>
+                <input matInput [matDatepicker]="picker" [formControl]="editForm.controls.data" />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field style="max-width: 64px;">
+                <mat-label> Hora </mat-label>
+                <app-time-picker  class="input-element" [formControl]="editForm.controls.hora"></app-time-picker>
+            </mat-form-field>
+            <button mat-icon-button class="place"
+                [ngClass]="{'store-purchase': true}"
+                (click)="openMapDialog(item)">
+                <mat-icon>place</mat-icon>
+            </button>
+        </div>
+
+        <button mat-raised-button class="floating-btn" color="primary" (click)="saveCurrentItem(); close()">Finalizar</button>
+        <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="input-container"
+    [formGroup]="internalForm"
+    (focusin)="onFocusIn()"
+    (focusout)="onFocusOut($event)"
+    >
+    <input class="input-element"
+        formControlName="hora"
+        size="2"
+        maxLength="2"
+        (input)="handleInput(internalForm.controls.hora, minuto)"
+        #hora
+    >
+    <span class="input-spacer"> : </span>
+    <input class="input-element"
+        formControlName="minuto"
+        size="2"
+        maxLength="2"
+        (input)="handleInput(internalForm.controls.minuto)"
+        (keydown.backspace)="autoFocusPrev(internalForm.controls.minuto, hora)"
+        #minuto
+    >
+</div>

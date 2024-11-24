@@ -1,0 +1,116 @@
+@use "theme-variables" as *;
+
+:host ::ng-deep .component-header .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+body.light-theme :host mat-card {
+  background-color: $background-accent-light;
+
+  .itens-historico {
+    background-color: $background-primary-light;
+  }
+}
+
+body.dark-theme :host mat-card {
+  background-color: $background-accent-dark;
+
+  .itens-historico {
+    background-color: $background-primary-dark;
+  }
+}
+
+:host {
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+
+  .component-header {
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    justify-content: space-between;
+  }
+
+  .component-container {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: transparent;
+  }
+
+  .item-container {
+    opacity: 0.8;
+    border-radius: $radius-default;
+    padding: 0;
+    flex-direction: column;
+    display: flex;
+    min-height: fit-content;
+
+    .rotated {
+      transform: rotate(180deg);
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 16px;
+
+      span {
+        padding-block: 16px;
+        align-content: center;
+      }
+    }
+
+    .itens-historico {
+
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      max-width: 400px;
+      padding: 16px;
+      border-radius: 12px;
+      margin: 4px;
+
+      display: flex;
+      gap: 16px;
+      flex-direction: column;
+
+      mat-chip {
+        cursor: pointer;
+        max-width: 45%;
+        padding: 4px;
+        height: auto;
+
+        div {
+          border-radius: 4px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          padding: 4px;
+        }
+
+        small{
+          font-size: x-small;
+        }
+      }
+    }
+
+    .itens-historico>h3 {
+      margin: 0;
+    }
+  }
+}
+
+.red-option, .red-option mat-icon {
+  color: #e74c3c;
+}

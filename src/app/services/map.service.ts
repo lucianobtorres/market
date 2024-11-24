@@ -6,6 +6,9 @@ import { BehaviorSubject, catchError, concatMap, distinctUntilChanged, finalize,
 import * as L from 'leaflet';
 
 export function instanceOfMapLocate(obj: unknown): obj is MapLocate {
+  if (typeof obj === 'string') {
+    obj = JSON.parse(obj);
+  }
   return (<MapLocate>obj).location !== undefined;
 }
 

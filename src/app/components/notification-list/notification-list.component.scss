@@ -6,8 +6,7 @@
     }
 
     body.dark-theme :host>mat-card{
-      // background-color: $background-accent-dark;
-      background-color: black;
+      background-color: $background-accent-dark;
     }
   }
 
@@ -23,7 +22,7 @@
     gap: 8px;
   }
 
-  .notification-container {
+  .component-container {
     // .mat-icon {
     //   transition: transform 0.3s ease;
     //   /* Suaviza a rotação */
@@ -43,10 +42,6 @@
       cursor: pointer;
       border-radius: 4px;
       padding-inline: 16px;
-
-      &:hover {
-        background: rgba(0, 0, 0, 0.04);
-      }
 
       span {
         min-height: 48px;

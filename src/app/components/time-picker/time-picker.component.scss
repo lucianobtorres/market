@@ -1,0 +1,28 @@
+.input-container {
+  display: flex;
+  justify-content: center;
+  min-width: 42px;
+}
+
+.input-element {
+  border: none;
+  background: none;
+  padding: 0;
+  outline: none;
+  font: inherit;
+  text-align: center;
+  width: 20px;
+}
+
+.input-spacer {
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+:host.floating .input-spacer {
+  opacity: 1;
+}
+
+input:disabled{
+  color: rgba(0, 0, 0, 0.38);
+}

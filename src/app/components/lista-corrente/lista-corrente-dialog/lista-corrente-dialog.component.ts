@@ -6,7 +6,9 @@ import { MatDialogRef } from '@angular/material/dialog';
   template: '<app-lista-corrente (closeEmit)="close()"></app-lista-corrente>'
 })
 export class ListaCorrenteDialogComponent {
-  constructor(private readonly dialogRef: MatDialogRef<ListaCorrenteDialogComponent>) { }
+  constructor(
+    private readonly dialogRef: MatDialogRef<ListaCorrenteDialogComponent>
+  ) { }
 
   close() {
     this.dialogRef.close();

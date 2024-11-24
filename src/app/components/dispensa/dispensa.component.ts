@@ -8,6 +8,7 @@ import { ItemUnitDescriptions } from 'src/app/models/item-unit';
 import { BehaviorSubject, combineLatest, debounceTime, map, Observable } from 'rxjs';
 import { ItemListService } from 'src/app/services/item-list.service';
 import { FormControl } from '@angular/forms';
+import { ROTAS } from 'src/app/app-routing.module';
 
 
 @Component({
@@ -128,7 +129,7 @@ export class DispensaComponent implements OnInit {
   }
 
   navigatePerfil() {
-    this.router.navigate(['perfil']);
+    this.router.navigate([ROTAS.perfil]);
   }
 
   openBottomSheet(item: Inventory): void {

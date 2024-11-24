@@ -4,6 +4,13 @@
 @use '@angular/material' as mat;
 @import '@angular/material/theming';
 
+html, body {
+  overflow: hidden; /* Remove o scroll global */
+  touch-action: none; /* Desativa gestos de rolagem no corpo */
+  // overscroll-behavior: auto; /* Permite o comportamento de swipe */
+}
+
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -172,4 +179,9 @@ body.dark-theme mat-bottom-sheet-container {
     gap: 16px;
     padding: 16px;
   }
+}
+
+
+input.input-element {
+  color: $primary-color-dark;
 }

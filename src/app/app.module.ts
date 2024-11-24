@@ -16,6 +16,8 @@ import { IconsRegisterService } from './services/icons-register.service';
 import { ComponentsModule } from './components/components.module';
 
 import localePt from '@angular/common/locales/pt';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 registerLocaleData(localePt);
 
@@ -46,7 +48,8 @@ registerLocaleData(localePt);
       provide: LOCALE_ID,
       useValue: 'pt-BR',
     },
-    { provide: DEFAULT_CURRENCY_CODE, useValue: 'BRL' }
+    { provide: DEFAULT_CURRENCY_CODE, useValue: 'BRL' },
+    MatDatepickerModule, MatNativeDateModule,
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,72 @@
+<div class="component-header">
+    <button mat-icon-button (click)="navigatePerfil()">
+        <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <h3>Históricos de compras</h3>
+    <pre></pre>
+</div>
+<div class="component-container">
+    <mat-card class="mat-elevation-z0 item-container" *ngFor="let item of arrayItems$ | async; trackBy: trackByFnHistory">
+        <div class="item-header" (click)="togglePurchaseItems(subItens, iconSubItem)">
+            <ng-container *ngTemplateOutlet="tmplHeaderHist; context: { $implicit: item }"></ng-container>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="editar(item)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Editar</span>
+                    </button>
+                    <button mat-menu-item (click)="confirmRemove(item)" class="red-option">
+                        <mat-icon>delete</mat-icon>
+                        <span>Remover</span>
+                    </button>
+                </mat-menu>
+                <mat-icon #iconSubItem>expand_less</mat-icon>
+            </div>
+        </div>
+
+        <mat-card-content class="itens-historico" #subItens style="display: none;">
+            <mat-chip-list>
+                <mat-chip *ngFor="let itemPurchased of item.items; index as indice; trackBy: trackByFnItem"
+                    color="primary"
+                    (click)="editItem(item, item.items, indice)"
+                    appTextEllipsis matTooltip>
+                    <div appTextEllipsis matTooltip>
+                        <span appTextEllipsis matTooltip style="max-width: 100%;">
+                            {{ itemPurchased.name }}
+                        </span>
+                        <small *ngIf="itemPurchased.price || itemPurchased.quantity">
+                            (
+                            <small *ngIf="itemPurchased.price">{{ itemPurchased | convertWithFn:getPrice | currency}} - </small>
+                            <small *ngIf="itemPurchased.quantity">{{ itemPurchased.quantity| number }} {{
+                                itemPurchased.unit }}</small>
+                            )
+                        </small>
+                    </div>
+                </mat-chip>
+
+            </mat-chip-list>
+
+        </mat-card-content>
+    </mat-card>
+</div>
+<ng-template let-item #tmplHeaderHist>
+    <ng-container *ngIf="itemIsRecord(item)">
+        <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr;">
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <div>
+                    <small> {{ item.listName }} </small>
+                    <small *ngIf="item.qtdItens > 0"> ({{ item.qtdItens }} itens) </small>
+                </div>
+                <small *ngIf="item.totalPrice > 0"> {{ item.totalPrice | currency }} </small>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">
+                <small>{{ item.dateCompleted | shortDate:true }} </small>
+                <small *ngIf="item.store"> {{item.store | convertWithFn:getNomeMercado }} </small>
+            </div>
+        </div>
+    </ng-container>
+</ng-template>

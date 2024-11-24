@@ -6,6 +6,7 @@ import { ItemShoppingList } from 'src/app/models/interfaces';
 import { UtilsMobile } from 'src/app/utils/utils-mobile';
 import { ConfirmDialogComponent, DialogArgs } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { ItemListService } from 'src/app/services/item-list.service';
+import { ROTAS } from 'src/app/app-routing.module';
 
 @Component({
   selector: 'app-listas-item',
@@ -50,10 +51,10 @@ export class ListItemComponent {
 
   @HostListener('click')
   abrirLista(): void {
-    this.router.navigate(['/lista', `${this.item.lists.id}`]);
+    this.router.navigate([ROTAS.lista, `${this.item.lists.id}`]);
   }
 
-  confirmRemove(event: Event) {
+  confirmRemove(_: Event) {
     const data: DialogArgs = {
       message: 'Tem certeza que deseja remover esta lista?',
       action: 'Remover',
@@ -72,6 +73,7 @@ export class ListItemComponent {
     });
 
   }
+
   delete(idLista: number) {
     db.items.where('listId').equals(idLista).toArray()
       .then(itens => {

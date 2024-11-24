@@ -141,7 +141,6 @@ export class AppComponent implements AfterViewInit, OnInit {
   }
 
   goHome() {
-    // this.router.navigate(["/home"])
     this.router.navigate([ROTAS.home])
   }
 

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ROTAS } from 'src/app/app-routing.module';
 
 @Component({
   templateUrl: './perfil.component.html',
@@ -10,8 +11,11 @@ export class PerfilComponent {
     private readonly router: Router
   ) { }
 
-
   navigateDispensa() {
-    this.router.navigate(['dispensa']);
+    this.router.navigate([ROTAS.dispensa]);
+  }
+
+  navigateHistorico() {
+    this.router.navigate([ROTAS.historico]);
   }
 }

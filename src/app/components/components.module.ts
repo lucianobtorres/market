@@ -44,6 +44,11 @@ import { PurchaseMapDialogComponent } from './purchase-map/purchase-map-dialog/p
 import { MarketDetailsSheetComponent } from './purchase-map/market-details-sheet/market-details-sheet.component';
 import { FormAddItemComponent } from './lista-corrente/form-add-item/form-add-item.component';
 import { BarcodeScannerAddComponent } from './lista-corrente/barcode-scanner-add/barcode-scanner-add.component';
+import { HistoricoComponent } from './historico/historico.component';
+import { HistoricoItemDetalhesComponent } from './historico/historico-detalhe/historico-item-detalhes.component';
+import { FormLEditHistoricoComponent } from './historico/form-edit-history/form-edit-history.component';
+import { FormLEditItemHistoricoComponent } from './historico/form-edit-item copy/form-edit-item.component';
+import { TimePickerComponent } from './time-picker/time-picker.component';
 
 export const components = [
   HomeComponent,
@@ -77,6 +82,11 @@ export const components = [
   MarketDetailsSheetComponent,
   FormAddItemComponent,
   BarcodeScannerAddComponent,
+  HistoricoComponent,
+  HistoricoItemDetalhesComponent,
+  FormLEditItemHistoricoComponent,
+  FormLEditHistoricoComponent,
+  TimePickerComponent
 ]
 
 const directives = [
