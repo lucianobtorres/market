@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1732512474447,
+  "timestamp": 1732512925457,
   "index": "/market/index.html",
   "assetGroups": [
     {
@@ -11,7 +11,7 @@
         "ignoreVary": true
       },
       "urls": [
-        "/market/784.f3609d3a1583fb65.js",
+        "/market/784.ead013eb63b0c989.js",
         "/market/assets/font/Roboto-Black.woff",
         "/market/assets/font/Roboto-Black.woff2",
         "/market/assets/font/Roboto-BlackItalic.woff",
@@ -73,10 +73,10 @@
         "/market/assets/version.json",
         "/market/favicon.ico",
         "/market/index.html",
-        "/market/main.282c2b670082e8f9.js",
+        "/market/main.d16da16f5a127035.js",
         "/market/manifest.webmanifest",
         "/market/polyfills.5842fed68fd9c9c8.js",
-        "/market/runtime.de70b5e663bb4551.js"
+        "/market/runtime.86e4451d95063265.js"
       ],
       "patterns": []
     },
@@ -105,7 +105,7 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/market/784.f3609d3a1583fb65.js": "c04c2d9b364eb44621b613a3567692ede073aafc",
+    "/market/784.ead013eb63b0c989.js": "ba45f95dd4f7fe464389e28a3785da60050ddb73",
     "/market/Roboto-Light.3d1bbede3dff569a.woff": "42eb5fdef68306d937a8fba20dd8da1b0de2bafa",
     "/market/Roboto-Light.86fc2559ff73eac5.woff2": "8237523ff588300ff5d2da67a20bce60701a14b8",
     "/market/Roboto-Medium.4fa4b1c02a877115.woff": "3e38dce596d2b9ab706d7371a28613d618b32220",
@@ -174,14 +174,14 @@
     "/market/favicon.ico": "4c9b988c7cc9017dc463089f350fdddfeb3284b1",
     "/market/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.3a4cb006b229e5d7.woff2": "a80466bc637c657f0dc739e0924b025034a92ea9",
     "/market/gok-H7zzDkdnRel8-DQ6KAXJ69wP1tGnf4ZGhUce.8fdb895cfe88be90.woff2": "b83aec9cceb453c24574d43f1ef4fde2a40eea65",
-    "/market/index.html": "0b66b8294caa4b9f79d47eef06bfe8d48261e647",
+    "/market/index.html": "1742925c62008457135ef7f289cc4e6ce0e0b279",
     "/market/layers-2x.9859cd1231006a4a.png": "152a162333e46d24f9d89f566312fc0c64011dee",
     "/market/layers.ef6db8722c2c3f9a.png": "c9e7528e491a39232ba24a2706c6c739d6fb0f06",
-    "/market/main.282c2b670082e8f9.js": "1b01a7f291369745b3514dcd045ff1463ed3cf6e",
+    "/market/main.d16da16f5a127035.js": "cdfe08ae4da8ea1225ebfc15666d20d39cca3272",
     "/market/manifest.webmanifest": "7e91b6f83ccfb3f0451058cd6d7dbc0a4ead711f",
     "/market/marker-icon.d577052aa271e13f.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
     "/market/polyfills.5842fed68fd9c9c8.js": "da785fc66aafa79749437577573ab53c3f55f9e9",
-    "/market/runtime.de70b5e663bb4551.js": "43fb85fecfea3308e080b0461b24494fd8deacb2"
+    "/market/runtime.86e4451d95063265.js": "0a3ee2e4eea9d8e94e28c656aaa5d081812e9b96"
   },
   "navigationUrls": [
     {
