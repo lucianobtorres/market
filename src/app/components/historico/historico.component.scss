@@ -1,29 +1,31 @@
 @use "theme-variables" as *;
-:host ::ng-deep .mat-expansion-panel-content {
-  overflow: auto;
+.mat-expansion-panel-body {
+  padding: 0;
 }
 
-:host ::ng-deep .item-container .item-header {
-  position: sticky;
-  top: 0;
-}
 :host ::ng-deep .component-header .mat-form-field-wrapper {
   padding-bottom: 0;
 }
 
-body.light-theme :host mat-card {
-  background-color: $background-accent-light;
+body.light-theme :host {
+  .scroll-container>mat-expansion-panel {
+    background-color: $background-accent-light;
+    border-radius: $radius-default;
 
-  .itens-historico {
-    background-color: $background-primary-light;
+    .itens-historico {
+      background-color: $background-primary-light;
+    }
   }
 }
 
-body.dark-theme :host mat-card {
-  background-color: $background-accent-dark;
+body.dark-theme :host {
+  .scroll-container>mat-expansion-panel {
+    background-color: $background-accent-dark;
+    border-radius: $radius-default;
 
-  .itens-historico {
-    background-color: $background-primary-dark;
+    .itens-historico {
+      background-color: $background-primary-dark;
+    }
   }
 }
 
@@ -57,18 +59,16 @@ body.dark-theme :host mat-card {
     display: flex;
     gap: 8px;
     flex: 1;
-    // overflow-y: auto;
-    // overflow-x: clip;
     box-sizing: border-box;
     flex-direction: column;
-    // height: 100%;
-    position: relative
   }
 
   .item-container .item-header {
     position: sticky;
-    top: 0; /* Fica no topo do contêiner de rolagem */
-    z-index: 2; /* Garante que o header fique acima dos outros elementos */
+    top: 0;
+    /* Fica no topo do contêiner de rolagem */
+    z-index: 2;
+    /* Garante que o header fique acima dos outros elementos */
     transition: background 0.3s ease;
   }
 
@@ -112,7 +112,8 @@ body.dark-theme :host mat-card {
       mat-chip {
         cursor: pointer;
         max-width: 45%;
-        padding: 4px;
+        padding: 8px;
+        flex-direction: column;
         height: auto;
 
         div {
@@ -125,7 +126,7 @@ body.dark-theme :host mat-card {
           padding: 4px;
         }
 
-        small{
+        small {
           font-size: x-small;
         }
       }
@@ -137,6 +138,7 @@ body.dark-theme :host mat-card {
   }
 }
 
-.red-option, .red-option mat-icon {
+.red-option,
+.red-option mat-icon {
   color: #e74c3c;
 }
