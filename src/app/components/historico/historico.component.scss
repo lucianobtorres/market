@@ -1,4 +1,5 @@
 @use "theme-variables" as *;
+
 .mat-expansion-panel-body {
   padding: 0;
 }
@@ -16,6 +17,11 @@ body.light-theme :host {
       background-color: $background-primary-light;
     }
   }
+
+  .item-container .item-header {
+    background-color: $background-accent-light !important;
+    border-radius: $radius-default;
+  }
 }
 
 body.dark-theme :host {
@@ -27,6 +33,11 @@ body.dark-theme :host {
       background-color: $background-primary-dark;
     }
   }
+
+  .item-container .item-header {
+    background-color: $background-accent-dark !important;
+    border-radius: $radius-default;
+  }
 }
 
 :host {
@@ -34,8 +45,6 @@ body.dark-theme :host {
   display: flex;
   flex-direction: column;
   padding: 0;
-  overflow-y: auto;
-  overflow-x: clip;
 
   .component-header {
     display: flex;
@@ -46,13 +55,12 @@ body.dark-theme :host {
   }
 
   .component-container {
-    overflow-y: auto;
-    overflow-x: clip;
     height: 100%;
     display: flex;
     flex-direction: column;
     gap: 8px;
     background-color: transparent;
+    overflow: auto;
   }
 
   .scroll-container {
@@ -61,15 +69,7 @@ body.dark-theme :host {
     flex: 1;
     box-sizing: border-box;
     flex-direction: column;
-  }
-
-  .item-container .item-header {
-    position: sticky;
-    top: 0;
-    /* Fica no topo do contêiner de rolagem */
-    z-index: 2;
-    /* Garante que o header fique acima dos outros elementos */
-    transition: background 0.3s ease;
+    // overflow: clip;
   }
 
   .item-container {
@@ -78,7 +78,6 @@ body.dark-theme :host {
     padding: 0;
     flex-direction: column;
     display: flex;
-    // min-height: fit-content;
 
     .rotated {
       transform: rotate(180deg);
@@ -141,4 +140,22 @@ body.dark-theme :host {
 .red-option,
 .red-option mat-icon {
   color: #e74c3c;
+}
+
+.mat-expansion-panel {
+  overflow: inherit !important;
+}
+
+.mat-expansion-panel-body {
+  overflow: hidden;
+}
+
+.mat-expansion-panel-header {
+  &.mat-expanded {
+
+    position: sticky;
+    top: -24px;
+    z-index: 2;
+    transition: background 0.3s ease;
+  }
 }

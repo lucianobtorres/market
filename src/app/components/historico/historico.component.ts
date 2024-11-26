@@ -58,9 +58,14 @@ export class HistoricoComponent implements OnInit {
     this.itens$.subscribe(async (itens: PurchaseHistory[]) => {
       const allRecords: PurchaseHistoryRecord[] = await Promise.all(
         itens.map(async (item) => {
+          const sortedItems = item.items.sort((a, b) =>
+            a.name.localeCompare(b.name)
+          );
+
           const lista = await this.getLista(item);
           return {
             ...item,
+            itens: sortedItems,
             mercado: item.store ? JSON.parse(item.store) : undefined,
             listName: lista?.name ?? 'Lista sem nome',
             totalPrice: this.getTotal(item),
@@ -69,8 +74,7 @@ export class HistoricoComponent implements OnInit {
 
         })
       );
-      allRecords.push(...allRecords);
-      allRecords.push(...allRecords);
+
       this.arrayItems$.next(allRecords.sort((a, b) => b.dateCompleted.getTime() - a.dateCompleted.getTime()));
     });
   }
