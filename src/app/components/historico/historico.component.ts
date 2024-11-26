@@ -69,7 +69,8 @@ export class HistoricoComponent implements OnInit {
 
         })
       );
-
+      // allRecords.push(...allRecords);
+      // allRecords.push(...allRecords);
       this.arrayItems$.next(allRecords.sort((a, b) => b.dateCompleted.getTime() - a.dateCompleted.getTime()));
     });
   }

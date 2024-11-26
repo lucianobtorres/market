@@ -1,5 +1,12 @@
 @use "theme-variables" as *;
+:host ::ng-deep .mat-expansion-panel-content {
+  overflow: auto;
+}
 
+:host ::ng-deep .item-container .item-header {
+  position: sticky;
+  top: 0;
+}
 :host ::ng-deep .component-header .mat-form-field-wrapper {
   padding-bottom: 0;
 }
@@ -21,11 +28,12 @@ body.dark-theme :host mat-card {
 }
 
 :host {
-  overflow: hidden;
   height: 100%;
   display: flex;
   flex-direction: column;
   padding: 0;
+  overflow-y: auto;
+  overflow-x: clip;
 
   .component-header {
     display: flex;
@@ -37,10 +45,31 @@ body.dark-theme :host mat-card {
 
   .component-container {
     overflow-y: auto;
+    overflow-x: clip;
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: 8px;
     background-color: transparent;
+  }
+
+  .scroll-container {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+    // overflow-y: auto;
+    // overflow-x: clip;
+    box-sizing: border-box;
+    flex-direction: column;
+    // height: 100%;
+    position: relative
+  }
+
+  .item-container .item-header {
+    position: sticky;
+    top: 0; /* Fica no topo do contêiner de rolagem */
+    z-index: 2; /* Garante que o header fique acima dos outros elementos */
+    transition: background 0.3s ease;
   }
 
   .item-container {
@@ -49,7 +78,7 @@ body.dark-theme :host mat-card {
     padding: 0;
     flex-direction: column;
     display: flex;
-    min-height: fit-content;
+    // min-height: fit-content;
 
     .rotated {
       transform: rotate(180deg);
@@ -70,8 +99,6 @@ body.dark-theme :host mat-card {
     }
 
     .itens-historico {
-
-      overflow: hidden;
 
       max-width: 400px;
       padding: 16px;
