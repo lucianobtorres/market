@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { Inventory, Lists } from 'src/app/models/interfaces';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -11,6 +11,8 @@ import { UtilsMobile } from 'src/app/utils/utils-mobile';
 import { PurchaseHistoryModalDialogComponent } from '../../purchase-history-modal/purchase-history-modal-dialog/purchase-history-modal-dialog.component';
 import { BehaviorSubject } from 'rxjs';
 import { UtilsNumber } from 'src/app/utils/utils-number';
+import { VariacoesModalDialogComponent } from '../../variacoes-modal/variacoes-modal-dialog/variacoes-modal-dialog.component';
+import { groupInventory } from '../group-inventory';
 
 export interface FormEdicaoInventory {
   nome: FormControl<string>;
@@ -22,24 +24,29 @@ export interface FormEdicaoInventory {
   styleUrls: ['./dispensa-item-detalhes.component.scss']
 })
 export class DispensaItemDetalhesComponent {
+  @Output() closeVars = new EventEmitter<void>();
+  @Output() desagrupar = new EventEmitter<string>();
   isHistOpen = false;
   editForm!: FormGroup<FormEdicaoInventory>;
   lastPrice$ = new BehaviorSubject<number>(0);
   itemDispensa!: Inventory;
+  qtdVariacoes = 0;
   lists: Lists[] = [];
-
+  isGrouped: boolean = false;
   groupedInventory: { [unit: string]: any[] } = {};
 
   constructor(
     private readonly fb: FormBuilder,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: Inventory,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: {item: Inventory, qtdVars: number, grouped: boolean},
     private readonly bottomSheetRef: MatBottomSheetRef<DispensaItemDetalhesComponent>,
     private readonly itemService: ItemsService,
     private readonly listsService: ItemListService,
     private readonly dbService: InventoryService,
     private dialog: MatDialog
   ) {
-    this.itemDispensa = data;
+    this.itemDispensa = data.item;
+    this.qtdVariacoes = data.qtdVars;
+    this.isGrouped = data.grouped || false;
   }
 
   isEditing = false;
@@ -50,6 +57,7 @@ export class DispensaItemDetalhesComponent {
     });
 
     await this.defineLastPrice();
+    // await this.loadBaseProducts();
     this.setValues();
   }
 
@@ -151,8 +159,75 @@ export class DispensaItemDetalhesComponent {
     }
   }
 
+  async openVariacoesModal(itemName: string) {
+    if (this.isMobile()) {
+
+      const dialogRef = this.dialog.open(VariacoesModalDialogComponent, {
+        data: { itemName },
+        width: '100vw',
+        height: '100vh',
+        maxWidth: '100vw',
+        panelClass: 'full-screen-dialog',
+      });
+
+      dialogRef.afterClosed().subscribe(async (_) => {
+        this.closeHist();
+      });
+    } else {
+      this.isHistOpen = true;
+    }
+  }
+
   async closeHist() {
     await this.defineLastPrice();
     this.isHistOpen = false;
+    this.closeVars.emit();
   }
+
+  // allBaseProducts: string[] = []; // Carregado do banco
+  // filteredProducts: string[] = [];
+  // selectedBaseProduct: string = '';
+
+  // loadBaseProducts() {
+  //   // Carrega produtos base (ex.: "Leite", "Cereal")
+  //   db.productMappings.toArray().then((mappings) => {
+  //     this.allBaseProducts = mappings.map((m) => m.baseProduct);
+  //   });
+  // }
+  // filterProducts(value: string) {
+  //   const filterValue = value.toLowerCase();
+  //   this.filteredProducts = this.allBaseProducts.filter((product) =>
+  //     product.toLowerCase().includes(filterValue)
+  //   );
+  // }
+  // handleBlur() {
+  //   if (!this.allBaseProducts.includes(this.selectedBaseProduct)) {
+  //     // Cria nova classificação
+  //     this.createNewMapping(this.selectedBaseProduct);
+  //   }
+  // }
+  // createNewMapping(baseProduct: string) {
+  //   db.productMappings.put({
+  //     userDefined: true,
+  //     baseProduct,
+  //     synonyms: [],
+  //     exclusions: [],
+  //   });
+  // }
+  // approveClassification(product) {
+  //   const mapping = this.getMappingByCategory(product.suggestedCategory);
+  //   if (mapping) {
+  //     mapping.synonyms.push(product.name);
+  //     db.productMappings.put(mapping);
+  //   }
+  // }
+
+  // rejectClassification(product) {
+  //   const mapping = this.getMappingByCategory(product.suggestedCategory);
+  //   if (mapping) {
+  //     mapping.exclusions.push(product.name);
+  //     db.productMappings.put(mapping);
+  //   }
+  // }
+
 }

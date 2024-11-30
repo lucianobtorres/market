@@ -61,18 +61,56 @@
         <span>{{ itemDispensa.estimatedDepletionDate | shortDate}}</span>
     </div>
     <ng-container *ngIf="(lastPrice$ | async); let lastPrice">
-        <div class="propriedade" *ngIf="lastPrice > 0" >
+        <div class="propriedade" *ngIf="lastPrice > 0">
             <small>Último preço</small>
             <span>{{ lastPrice | currency}}</span>
         </div>
     </ng-container>
-    <button *ngIf="!isHistOpen" mat-raised-button class="floating-btn" color="primary"
+
+</div>
+<div *ngIf="!isHistOpen" style="display: flex; justify-content: space-around;">
+    <button mat-raised-button class="floating-btn" color="accent"
         (click)="openPurchaseHistoryModal(itemDispensa.name)">
         <mat-icon>edit_calendar</mat-icon>
         Histórico de Compras
     </button>
+    <button *ngIf="!isGrouped" mat-raised-button class="floating-btn" color="accent"
+        (click)="openVariacoesModal(itemDispensa.name)">
+        <mat-icon>alt_route</mat-icon>
+        Ver Variações {{qtdVariacoes ? '(' + qtdVariacoes + ')' : ''}}
+    </button>
+    <button *ngIf="isGrouped" mat-raised-button class="floating-btn" color="warn"
+        (click)="desagrupar.emit(itemDispensa.name); close()">
+        <mat-icon>device_hub</mat-icon>
+        Desagrupar
+    </button>
+
+</div>
+
+<div *ngIf="isHistOpen" class="search-panel" [ngClass]="{'open': isHistOpen}">
+    <app-variacoes-modal [itemName]="itemDispensa.name" (closeEmit)="closeHist()"></app-variacoes-modal>
 </div>
 
 <div *ngIf="isHistOpen" class="search-panel" [ngClass]="{'open': isHistOpen}">
     <app-purchase-history-modal [itemName]="itemDispensa.name" (closeEmit)="closeHist()"></app-purchase-history-modal>
 </div>
+
+<!-- <ng-template #tmplClassification>
+    <mat-form-field>
+        <mat-label>Similar:</mat-label>
+        <input matInput [matAutocomplete]="auto" [(ngModel)]="selectedBaseProduct" (blur)="handleBlur()" />
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setBaseProduct($event.option.value)">
+            <mat-option *ngFor="let product of filteredProducts" [value]="product">
+                {{ product }}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <div *ngFor="let product of products">
+        <span>{{ product.name }}</span>
+        <span *ngIf="product.suggestedCategory">
+            Classificado como: {{ product.suggestedCategory }}
+            <button (click)="approveClassification(product)">👍</button>
+            <button (click)="rejectClassification(product)">👎</button>
+        </span>
+    </div>
+</ng-template> -->

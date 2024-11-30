@@ -4,6 +4,11 @@ export const nameof = <T>(name: Extract<keyof T, string>): string => name;
 
 export type CombinedItem = (Purchases & Partial<Items>) | (Items & Partial<Purchases>);
 
+export interface VersionDB {
+  id?: number;
+  version: number | undefined;
+}
+
 export interface NotificationModel {
   id?: number;
   title?: string;
@@ -69,7 +74,10 @@ export interface Inventory {
   consumptionRate: number | null;
 }
 
-export interface VersionDB {
-  id?: number;
-  version: number | undefined;
+export interface ProductMapping {
+  id?: number,
+  userDefined: boolean,
+  baseProduct: string,
+  synonyms: string[],
+  exclusions: string[],
 }

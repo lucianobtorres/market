@@ -4,12 +4,16 @@
   padding-bottom: 0;
 }
 
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .bottom-sheet {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-bottom: 12px;
-
 
   .edit-form {
     display: flex;
@@ -29,7 +33,6 @@
   .actions {
     display: flex;
     justify-content: flex-end;
-    margin-top: 8px;
     align-items: center;
 
     .title-header {
@@ -63,8 +66,8 @@
 }
 
 .notification-content {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
@@ -99,6 +102,7 @@
   box-sizing: content-box;
   min-width: fit-content;
 }
+
 .counter-button:hover {
   filter: brightness(0.9);
   opacity: 1;

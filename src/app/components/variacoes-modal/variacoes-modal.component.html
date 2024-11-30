@@ -1,0 +1,40 @@
+<div class="search-header">
+    <button mat-icon-button (click)="closeEmit.emit()">
+        <mat-icon>chevron_left</mat-icon>
+    </button>
+    <h2 mat-dialog-title>Variações - {{ itemName }}</h2>
+    <pre></pre>
+</div>
+<div style="display: flex; margin-right: 16px;">
+
+    <mat-form-field style="padding: 16px; width: 100%;" matTooltip appTextEllipsis>
+        <input matInput type="text" placeholder="Buscar" [formControl]="formVariacao" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                {{option}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+
+    <button mat-raised-button style="margin: auto;" class="floating-btn" color="primary"
+        (click)="adicionar()">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>
+<mat-card class="mat-elevation-z0 component-container" style="display: flex; gap: 24px; overflow: auto;">
+    <mat-card-content>
+
+        <ng-container *ngFor="let unit of (groupedInventory$ | async | keyvalue)">
+            <div class="itens-dispensa">
+                <h3>{{ unit.key | titlecase }}</h3>
+                <mat-chip-list>
+                    <mat-chip *ngFor="let item of unit.value; trackBy: trackById" color="primary"
+                        (click)="openBottomSheet(item)">
+                        {{ item.name }} ({{ item.currentQuantity }})
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+        </ng-container>
+
+    </mat-card-content>
+</mat-card>

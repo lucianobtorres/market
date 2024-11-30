@@ -85,8 +85,8 @@
 }
 
 .value-update{
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
   height: fit-content;
   justify-content: center;

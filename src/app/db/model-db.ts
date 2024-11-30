@@ -1,4 +1,4 @@
-import { Items, Purchases, Lists, NotificationModel, PurchaseHistory, Inventory } from '../models/interfaces';
+import { Items, Purchases, Lists, NotificationModel, PurchaseHistory, Inventory, ProductMapping } from '../models/interfaces';
 import { Migrations } from './migrations';
 import Dexie, { Table } from 'dexie';
 
@@ -9,6 +9,7 @@ export interface VersionDB {
 }
 
 export class ModelDB extends Dexie {
+  versionDB!: Table<VersionDB, number>;
   notifications!: Table<NotificationModel, number>;
 
   lists!: Table<Lists, number>;
@@ -16,8 +17,7 @@ export class ModelDB extends Dexie {
   purchases!: Table<Purchases, number>;
   purchasesHistory!: Table<PurchaseHistory, number>;
   inventory!: Table<Inventory, number>;
-
-  versionDB!: Table<VersionDB, number>;
+  productMappings!: Table<ProductMapping, number>;
 
   constructor() {
     super('Model-DB');
@@ -93,6 +93,20 @@ export class ModelDB extends Dexie {
       purchases: '++id, name, quantity, unit, listId, purchaseDate',
       purchasesHistory: '++id, listId, dateCompleted, items, store',
       inventory: '++id, name, category, initialQuantity, currentQuantity, unit, lastRestockedDate, estimatedDepletionDate, consumptionRate',
+    });
+
+    console.debug('Versão 6 do banco')
+    this.version(6).stores({
+      versionDB: '++id, version',
+
+      notifications: '++id, title, message, read, timestamp',
+
+      lists: '++id, name, createdDate, status, share',
+      items: '++id, name, quantity, unit, listId, isPurchased, addedDate',
+      purchases: '++id, name, quantity, unit, listId, purchaseDate',
+      purchasesHistory: '++id, listId, dateCompleted, items, store',
+      inventory: '++id, name, category, initialQuantity, currentQuantity, unit, lastRestockedDate, estimatedDepletionDate, consumptionRate',
+      productMappings: "++id, userDefined, baseProduct, synonyms, exclusions"
     });
 
     Migrations.createMigrations(this);

@@ -49,6 +49,8 @@ import { HistoricoItemDetalhesComponent } from './historico/historico-detalhe/hi
 import { FormLEditHistoricoComponent } from './historico/form-edit-history/form-edit-history.component';
 import { FormLEditItemHistoricoComponent } from './historico/form-edit-item copy/form-edit-item.component';
 import { TimePickerComponent } from './time-picker/time-picker.component';
+import { VariacoesModalDialogComponent } from './variacoes-modal/variacoes-modal-dialog/variacoes-modal-dialog.component';
+import { VariacoesModalComponent } from './variacoes-modal/variacoes-modal.component';
 
 export const components = [
   HomeComponent,
@@ -86,7 +88,9 @@ export const components = [
   HistoricoItemDetalhesComponent,
   FormLEditItemHistoricoComponent,
   FormLEditHistoricoComponent,
-  TimePickerComponent
+  TimePickerComponent,
+  VariacoesModalComponent,
+  VariacoesModalDialogComponent
 ]
 
 const directives = [
