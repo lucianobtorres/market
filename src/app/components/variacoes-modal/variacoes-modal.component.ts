@@ -30,7 +30,10 @@ export class VariacoesModalComponent implements OnInit {
     private bottomSheet: MatBottomSheet,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: { itemName: string },
   ) {
-    this.itemName = data.itemName;
+    if (this.data) {
+      this.itemName = this.data.itemName;
+    }
+
     this.loadData();
 
     this.groupedInventory$ = this.sinonimosProduct$.pipe(
@@ -91,7 +94,6 @@ export class VariacoesModalComponent implements OnInit {
   }
 
   groupByUnit(sinonimoList: Inventory[]): { [unit: string]: Inventory[] } {
-    console.log('agrupou')
     const grouped: { [unit: string]: Inventory[] } = {};
 
     sinonimoList.forEach(item => {

@@ -6,7 +6,12 @@
         <div class="title-header">
             <mat-form-field>
                 <mat-label>Nome do Item</mat-label>
-                <input matInput [formControl]="editForm.controls.nome" placeholder="Ex: Leite" autofocus #campoFoco>
+                <input matInput [formControl]="editForm.controls.nome" placeholder="Ex: Leite" autofocus #campoFoco [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option}}
+                    </mat-option>
+                </mat-autocomplete>
                 <button matSuffix mat-icon-button (click)="toggleBarCode()">
                     <mat-icon [ngClass]="{'show-barcode': showBarCode}">photo_camera</mat-icon>
                 </button>

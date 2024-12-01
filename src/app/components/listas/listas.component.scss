@@ -54,3 +54,55 @@
     right: 36vw;
   }
 }
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#install-popup {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+#install-popup {
+  background: rgba(255, 255, 255, 0.6); /* Transparência */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  backdrop-filter: blur(10px); /* Desfoque no fundo */
+  -webkit-backdrop-filter: blur(10px); /* Compatibilidade com Safari */
+  color: #333;
+}
+
+.after {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  backdrop-filter: blur(10px); /* Desfoque no fundo */
+  -webkit-backdrop-filter: blur(10px); /* Compatibilidade com Safari */
+  color: #333;
+}
+
+body.landscape {
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  color: #fff;
+}
+
+body.landscape * {
+  display: none;
+}
+
+body.landscape::before {
+  content: "Use o app no modo retrato.";
+  font-size: 20px;
+  text-align: center;
+  color: white;
+}

@@ -6,3 +6,22 @@
 
 <button mat-button class="floating-btn" (click)="novaLista()"> + Nova Lista</button>
 
+<ng-container *ngIf="showInstallMessage">
+    <div id="install-popup"
+        style="display: none; position: fixed; bottom: 16px; border-radius: 16px; max-width: 92%; z-index: 1000; animation: fadeIn 0.3s ease-in-out;">
+        <div
+            style="border: 1px solid #ddd; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 16px; text-align: center; font-family: Arial, sans-serif; position: relative;">
+            <h2 style="color: slategrey; margin: 0; padding-bottom: 16px; filter: drop-shadow(2px 4px 6px gray);
+        ">Instalar na tela de início</h2>
+            <p style="margin: 0; font-size: 14px; color: #333;">
+                Toque no <strong>botão de compartilhamento</strong> <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/c/c8/Ei-share-apple.svg"
+                    alt="Share Icon" style="width: 16px; vertical-align: middle;" />
+                e selecione <strong>“Adicionar à Tela de Início”</strong>.
+            </p>
+            <div class="after"
+                style="position: absolute; bottom: -12px; right: 50%; transform: translateX(50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 12px solid rgba(255, 255, 255, 0.6);">
+            </div>
+        </div>
+    </div>
+</ng-container>

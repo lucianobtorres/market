@@ -16,6 +16,14 @@
                 <h2 (click)="enableEditing()"> {{ editForm.controls.nome.value | titlecase }} </h2>
             </ng-container> -->
             <h2> {{ itemDispensa.name | titlecase }} </h2>
+            <mat-slide-toggle style="
+                position: relative;
+                font-size: x-small;
+                top: -12px;
+            "
+                [checked]="autoReposicao"
+                (change)="onAutoReposicaoChange()"
+            >Reposição Automática</mat-slide-toggle>
         </div>
 
         <button mat-raised-button class="floating-btn" color="primary" [matMenuTriggerFor]="menulists">
@@ -68,16 +76,15 @@
     </ng-container>
 
 </div>
-<div *ngIf="!isHistOpen" style="display: flex; justify-content: space-around;">
-    <button mat-raised-button class="floating-btn" color="accent"
-        (click)="openPurchaseHistoryModal(itemDispensa.name)">
+<div *ngIf="!isHistOpen" style="display: flex; justify-content: space-around; gap: 8px;">
+    <button mat-raised-button class="floating-btn" color="accent" (click)="openPurchaseHistoryModal(itemDispensa.name)">
         <mat-icon>edit_calendar</mat-icon>
         Histórico de Compras
     </button>
     <button *ngIf="!isGrouped" mat-raised-button class="floating-btn" color="accent"
         (click)="openVariacoesModal(itemDispensa.name)">
         <mat-icon>alt_route</mat-icon>
-        Ver Variações {{qtdVariacoes ? '(' + qtdVariacoes + ')' : ''}}
+        Ver Variações {{ qtdVariacoesFormatted ? '(' + qtdVariacoesFormatted + ')' : '' }}
     </button>
     <button *ngIf="isGrouped" mat-raised-button class="floating-btn" color="warn"
         (click)="desagrupar.emit(itemDispensa.name); close()">
@@ -87,8 +94,8 @@
 
 </div>
 
-<div *ngIf="isHistOpen" class="search-panel" [ngClass]="{'open': isHistOpen}">
-    <app-variacoes-modal [itemName]="itemDispensa.name" (closeEmit)="closeHist()"></app-variacoes-modal>
+<div *ngIf="isVariacoesOpen " class="search-panel" [ngClass]="{'open': isVariacoesOpen }">
+    <app-variacoes-modal [itemName]="itemDispensa.name" (closeEmit)="closeVariacoes()"></app-variacoes-modal>
 </div>
 
 <div *ngIf="isHistOpen" class="search-panel" [ngClass]="{'open': isHistOpen}">

@@ -12,7 +12,8 @@ import { PurchaseHistoryModalDialogComponent } from '../../purchase-history-moda
 import { BehaviorSubject } from 'rxjs';
 import { UtilsNumber } from 'src/app/utils/utils-number';
 import { VariacoesModalDialogComponent } from '../../variacoes-modal/variacoes-modal-dialog/variacoes-modal-dialog.component';
-import { groupInventory } from '../group-inventory';
+import { notReposicao } from '../dispensa.component';
+
 
 export interface FormEdicaoInventory {
   nome: FormControl<string>;
@@ -26,6 +27,7 @@ export interface FormEdicaoInventory {
 export class DispensaItemDetalhesComponent {
   @Output() closeVars = new EventEmitter<void>();
   @Output() desagrupar = new EventEmitter<string>();
+  isVariacoesOpen = false;
   isHistOpen = false;
   editForm!: FormGroup<FormEdicaoInventory>;
   lastPrice$ = new BehaviorSubject<number>(0);
@@ -34,10 +36,20 @@ export class DispensaItemDetalhesComponent {
   lists: Lists[] = [];
   isGrouped: boolean = false;
   groupedInventory: { [unit: string]: any[] } = {};
+  autoReposicao = false;
+
+  get qtdVariacoesFormatted(): string | null {
+    if (this.qtdVariacoes == null) {
+      return null;
+    }
+    return Number.isInteger(this.qtdVariacoes)
+      ? this.qtdVariacoes.toString()
+      : this.qtdVariacoes.toFixed(1);
+  }
 
   constructor(
     private readonly fb: FormBuilder,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: {item: Inventory, qtdVars: number, grouped: boolean},
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: { item: Inventory, qtdVars: number, grouped: boolean },
     private readonly bottomSheetRef: MatBottomSheetRef<DispensaItemDetalhesComponent>,
     private readonly itemService: ItemsService,
     private readonly listsService: ItemListService,
@@ -47,6 +59,7 @@ export class DispensaItemDetalhesComponent {
     this.itemDispensa = data.item;
     this.qtdVariacoes = data.qtdVars;
     this.isGrouped = data.grouped || false;
+    this.autoReposicao = this.itemDispensa.category !== notReposicao;
   }
 
   isEditing = false;
@@ -171,17 +184,31 @@ export class DispensaItemDetalhesComponent {
       });
 
       dialogRef.afterClosed().subscribe(async (_) => {
-        this.closeHist();
+        this.closeVariacoes();
       });
     } else {
-      this.isHistOpen = true;
+      this.isVariacoesOpen = true;
     }
+  }
+
+  async closeVariacoes() {
+    await this.defineLastPrice();
+    this.isVariacoesOpen = false;
+    this.closeVars.emit();
   }
 
   async closeHist() {
     await this.defineLastPrice();
     this.isHistOpen = false;
     this.closeVars.emit();
+  }
+
+  onAutoReposicaoChange() {
+    this.itemDispensa.category = this.itemDispensa.category !== notReposicao
+      ? notReposicao
+      : '';
+
+    this.dbService.update(this.itemDispensa.id!, this.itemDispensa);
   }
 
   // allBaseProducts: string[] = []; // Carregado do banco
@@ -229,5 +256,4 @@ export class DispensaItemDetalhesComponent {
   //     db.productMappings.put(mapping);
   //   }
   // }
-
 }

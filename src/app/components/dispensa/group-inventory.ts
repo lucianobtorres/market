@@ -47,10 +47,7 @@ export class groupInventory {
 
   get currentQuantity(): number {
     return this.itens.reduce((total, item) => {
-      if (item.currentQuantity) {
-        return total + (item.currentQuantity ?? 0);
-      }
-      return total;
+        return total + (item.currentQuantity || 0);
     }, 0);
   }
 

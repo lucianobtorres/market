@@ -138,9 +138,45 @@
     }
 
     #splash-screen img {
-        max-width: 90%; /* A largura máxima será 90% da largura da tela */
-        max-height: 90%; /* A altura máxima será 90% da altura da tela */
-        object-fit: contain; /* Ajusta a proporção para que a imagem não fique distorcida */
+        max-width: 90%;
+        /* A largura máxima será 90% da largura da tela */
+        max-height: 90%;
+        /* A altura máxima será 90% da altura da tela */
+        object-fit: contain;
+        /* Ajusta a proporção para que a imagem não fique distorcida */
+    }
+
+    body.landscape {
+        overflow: hidden;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #000;
+        color: #fff;
+    }
+
+    body.landscape * {
+        display: none;
+    }
+
+    body.landscape::before {
+        border-radius: 16px;
+        margin-right: 16px;
+        content: "";
+        display: block;
+        width: 100px;
+        height: 100px;
+        background: url('assets/icons/icon-192x192.png') no-repeat center;
+        background-size: contain;
+    }
+
+    body.landscape::after {
+        content: "Por favor, use o app no modo retrato";
+        font-size: 20px;
+        margin-top: 20px;
+        text-align: center;
+        color: white;
     }
 </style>
 <noscript>
@@ -191,6 +227,25 @@
     <link rel="manifest" href="manifest.webmanifest?v=0.0.4">
     <meta name="theme-color" content="slategray">
 </head>
+
+<script>
+    function updateBodyClass()
+    {
+        if (window.innerHeight < window.innerWidth)
+        {
+            document.body.classList.add('landscape');
+        } else
+        {
+            document.body.classList.remove('landscape');
+        }
+    }
+    document.addEventListener('DOMContentLoaded', () =>
+    {
+        updateBodyClass(); // Executa ao carregar
+        window.addEventListener('resize', updateBodyClass); // Monitora redimensionamento
+        window.addEventListener('orientationchange', updateBodyClass); // Monitora mudanças de orientação
+    });
+</script>
 
 <body class="app-body">
     <div id="splash-screen">

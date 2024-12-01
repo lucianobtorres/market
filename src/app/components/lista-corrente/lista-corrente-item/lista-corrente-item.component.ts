@@ -14,6 +14,9 @@ import { InventoryService } from 'src/app/services/db/inventory.service';
 export class ListaCorrenteItemComponent implements OnInit {
   @Input() item!: Items;
   lastPrice: number | undefined;
+  get showLastPrice() {
+    return this.lastPrice && Number(UtilsNumber.convertValueToDecimal(this.item.price)) !== Number(UtilsNumber.convertValueToDecimal(this.lastPrice));
+  }
   get grow() {
     return Number(UtilsNumber.convertValueToDecimal(this.item.price)) > Number(UtilsNumber.convertValueToDecimal(this.lastPrice));
   }

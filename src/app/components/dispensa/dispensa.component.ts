@@ -12,6 +12,8 @@ import { ROTAS } from 'src/app/app-routing.module';
 import { groupInventory } from './group-inventory';
 
 
+export const notReposicao = 'disabled';
+
 @Component({
   selector: 'app-dispensa',
   templateUrl: './dispensa.component.html',
@@ -91,21 +93,29 @@ export class DispensaComponent implements OnInit {
 
     await db.inventory.toArray().then(items => {
       items.forEach(item => {
-        const group = this.productListSubject.value.find(mapping =>
-          mapping.baseProduct === item.name ||
-          mapping.synonyms.includes(item.name)
-        );
+        if (item.category === notReposicao && item.currentQuantity === 0) return;
 
-        const baseName = group?.baseProduct || item.name;
+          const group = this.productListSubject.value.find(mapping =>
+            mapping.baseProduct.toLowerCase() === item.name.toLowerCase() ||
+            mapping.synonyms.some(synonym => synonym.toLowerCase() === item.name.toLowerCase())
+          );
 
-        if (!groupedMap.has(baseName)) {
-          groupedMap.set(baseName, new groupInventory());
-        }
+          const baseName = group?.baseProduct || item.name;
 
-        groupedMap.get(baseName)?.itens.push(item);
+          if (!groupedMap.has(baseName)) {
+            groupedMap.set(baseName, new groupInventory());
+          }
+
+          const groupInventoryInstance = groupedMap.get(baseName);
+          if (group && group.baseProduct.toLowerCase() === item.name.toLowerCase()) {
+            groupInventoryInstance!.itens.unshift(item);
+          } else {
+            groupInventoryInstance!.itens.push(item);
+          }
       });
     });
 
+    console.log('groupedMap', groupedMap)
     const mappedItems = new Set(this.productListSubject.value.flatMap(x => x.synonyms.map(s => s.toLowerCase())));
     const values = Array.from(groupedMap.values()).filter(x => !mappedItems.has(x.name.toLowerCase()))
     this.inventoryListSubject.next(values);
@@ -125,9 +135,6 @@ export class DispensaComponent implements OnInit {
 
     inventoryList.forEach(groupItem => {
       groupItem.inCurrentList = activeItemNames.has(groupItem.name);
-    });
-
-    inventoryList.forEach(groupItem => {
       const needsReplenishment = groupItem.currentQuantity === 0 || groupItem.inCurrentList;
 
       if (needsReplenishment) {

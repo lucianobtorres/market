@@ -1,13 +1,14 @@
-import { AfterViewInit, Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { ItemUnit } from 'src/app/models/item-unit';
-import { Items, nameof } from 'src/app/models/interfaces';
+import { Inventory, Items, nameof } from 'src/app/models/interfaces';
 import { ItemsService } from 'src/app/services/db/items.service';
 import { UtilsNumber } from 'src/app/utils/utils-number';
 import { BarcodeScannerAddComponent } from '../barcode-scanner-add/barcode-scanner-add.component';
 import { db } from 'src/app/db/model-db';
+import { BehaviorSubject, map, Observable, startWith } from 'rxjs';
 
 
 interface FormAddShopping {
@@ -23,14 +24,16 @@ interface FormAddShopping {
   templateUrl: './form-add-item.component.html',
   styleUrls: ['./form-add-item.component.scss']
 })
-export class FormAddItemComponent implements AfterViewInit {
+export class FormAddItemComponent implements OnInit, AfterViewInit {
   editForm!: FormGroup<FormAddShopping>;
   expanded = false;
   idLista = 0;
   units = Object.values(ItemUnit);
+  filteredOptions = new Observable<string[]>();
   protected showBarCode = false;
   @ViewChild("campoFoco") campoFoco!: ElementRef;
   @ViewChild("scanner") scanner!: BarcodeScannerAddComponent;
+  private inventoryListSubject = new BehaviorSubject<Inventory[]>([]);
 
   public get valorCalculado() {
     return (UtilsNumber.convertValueToDecimal(this.editForm.value.preco?.toString()) ?? 0) * (this.editForm.controls.quantidade?.value ?? 1);
@@ -46,12 +49,30 @@ export class FormAddItemComponent implements AfterViewInit {
     this.setValues();
   }
 
+  async ngOnInit(): Promise<void> {
+    await db.inventory.toArray().then(items => this.inventoryListSubject.next(items));
+
+    this.filteredOptions = this.editForm.controls.nome.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
+  }
+
   ngAfterViewInit(): void {
     setTimeout(() => {
       const inputElement = this.campoFoco.nativeElement;
       inputElement.select();
       inputElement.focus();
     }, 200);
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    const itemFiltred = this.inventoryListSubject.value.filter(option =>
+      option.name.toLowerCase().includes(filterValue)
+    );
+
+    return itemFiltred?.map(x => x.name);
   }
 
   private setValues() {
