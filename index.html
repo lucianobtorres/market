@@ -225,7 +225,21 @@
 <style>html,body{overflow:hidden;touch-action:none}body{margin:0;font-family:Roboto,Helvetica Neue,sans-serif}:root,html,body{--back-accent:$background-accent-dark;--back-primary:$background-primary-dark}@font-face{font-family:Roboto;font-style:normal;font-weight:300;src:local("Roboto Light"),local("Roboto-Light"),url(Roboto-Light.3d1bbede3dff569a.woff) format("woff"),url(Roboto-Light.86fc2559ff73eac5.woff2) format("woff2");unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF}@font-face{font-family:Roboto;font-style:normal;font-weight:300;src:local("Roboto Light"),local("Roboto-Light"),url(Roboto-Light.3d1bbede3dff569a.woff) format("woff"),url(Roboto-Light.86fc2559ff73eac5.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:Roboto;font-style:normal;font-weight:400;src:local("Roboto"),local("Roboto-Regular"),url(Roboto-Regular.4557104648f65fcc.woff) format("woff"),url(Roboto-Regular.4e7449338f3a9fee.woff2) format("woff2");unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF}@font-face{font-family:Roboto;font-style:normal;font-weight:400;src:local("Roboto"),local("Roboto-Regular"),url(Roboto-Regular.4557104648f65fcc.woff) format("woff"),url(Roboto-Regular.4e7449338f3a9fee.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:Roboto;font-style:normal;font-weight:500;src:local("Roboto Medium"),local("Roboto-Medium"),url(Roboto-Medium.4fa4b1c02a877115.woff) format("woff"),url(Roboto-Medium.f8693cca22ae31bc.woff2) format("woff2");unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF}@font-face{font-family:Roboto;font-style:normal;font-weight:500;src:local("Roboto Medium"),local("Roboto-Medium"),url(Roboto-Medium.4fa4b1c02a877115.woff) format("woff"),url(Roboto-Medium.f8693cca22ae31bc.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}</style><link rel="stylesheet" href="styles.16ec525fbc6214d7.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.16ec525fbc6214d7.css"></noscript><script>
     function updateBodyClass()
     {
-        if (window.innerHeight < window.innerWidth)
+        const isIos = () =>
+        {
+            const userAgent = window.navigator.userAgent.toLowerCase();
+            return /iphone|ipad|ipod/.test(userAgent);
+        };
+
+        const isInStandaloneMode = () =>
+        {
+            return (
+                "standalone" in (window).navigator &&
+                (window).navigator.standalone
+            );
+        };
+
+        if (window.innerHeight < window.innerWidth && (isInStandaloneMode() || isIos()))
         {
             document.body.classList.add('landscape');
         } else
@@ -255,7 +269,7 @@
             </svg>
         </div>
     </app-root>
-<script src="runtime.6312181023aa9e5f.js" type="module"></script><script src="polyfills.5842fed68fd9c9c8.js" type="module"></script><script src="main.c749646bb45d5d8a.js" type="module"></script>
+<script src="runtime.6312181023aa9e5f.js" type="module"></script><script src="polyfills.5842fed68fd9c9c8.js" type="module"></script><script src="main.f1804ee870089fca.js" type="module"></script>
 
 
 </body></html>
