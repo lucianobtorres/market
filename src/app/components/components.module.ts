@@ -51,6 +51,11 @@ import { FormLEditItemHistoricoComponent } from './historico/form-edit-item copy
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { VariacoesModalDialogComponent } from './variacoes-modal/variacoes-modal-dialog/variacoes-modal-dialog.component';
 import { VariacoesModalComponent } from './variacoes-modal/variacoes-modal.component';
+import { HistoricoChartComponent } from './historico/historico-chart/historico-chart.component';
+import { NgChartsModule } from 'ng2-charts';
+import { BalloonGuideComponent } from './balloon-guide/balloon-guide.component';
+import { ChatAssistantComponent } from './chat-assistant/chat-assistant.component';
+import { BoasVindasComponent } from './boas-vindas/boas-vindas.component';
 
 export const components = [
   HomeComponent,
@@ -90,7 +95,11 @@ export const components = [
   FormLEditHistoricoComponent,
   TimePickerComponent,
   VariacoesModalComponent,
-  VariacoesModalDialogComponent
+  VariacoesModalDialogComponent,
+  HistoricoChartComponent,
+  BoasVindasComponent,
+  BalloonGuideComponent,
+  ChatAssistantComponent
 ]
 
 const directives = [
@@ -105,7 +114,7 @@ const pipes = [
   declarations: [components, directives, pipes],
   exports: [components, directives, pipes],
   imports: [
-    CommonModule,
+    CommonModule, NgChartsModule,
     CurrencyMaskModule,
     MaterialModule,
     MatToolbarModule,

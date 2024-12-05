@@ -1,0 +1,5 @@
+<div class="balloon">
+    <h4>{{ title }}</h4>
+    <p [innerHTML]="message"></p>
+    <button *ngIf="dismissable" (click)="dismiss()">Entendi</button>
+</div>

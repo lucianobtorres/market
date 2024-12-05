@@ -2,6 +2,7 @@
 
 :host {
   overflow: auto;
+  height: 100%;
   cursor: pointer;
 }
 
@@ -106,3 +107,5 @@ body.landscape::before {
   text-align: center;
   color: white;
 }
+
+

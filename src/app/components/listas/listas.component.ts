@@ -1,15 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { db } from 'src/app/db/model-db';
 import { ItemShoppingList } from 'src/app/models/interfaces';
+import { AgentService, Suggestion } from 'src/app/services/agente/agente.service';
 import { ItemListService } from 'src/app/services/item-list.service';
 
-// Detects if device is on iOS
-const isIos = () => {
-  const userAgent = window.navigator.userAgent.toLowerCase();
-  return /iphone|ipad|ipod/.test(userAgent);
-}
-// Detects if device is in standalone mode
-const isInStandaloneMode = () => (window.matchMedia('(display-mode: standalone)').matches);
 
 @Component({
   selector: 'app-listas',
@@ -18,9 +12,19 @@ const isInStandaloneMode = () => (window.matchMedia('(display-mode: standalone)'
 })
 export class ListasComponent implements OnInit {
   public itensList: ItemShoppingList[] = [];
-  showInstallMessage = isIos() && !isInStandaloneMode();
 
-  constructor(private readonly listsService: ItemListService) {
+  showInstallMessage = this.showIosInstallModal('iosnew');
+  suggestions: Suggestion[] = [];
+  context: any = {
+    pantryEmpty: false,
+    recentPurchases: [],
+    listEmpty: true,
+  };
+
+  constructor(
+    private readonly listsService: ItemListService,
+    private readonly agentService: AgentService
+  ) {
 
     document.addEventListener("DOMContentLoaded", () => {
       const popup = document.getElementById("install-popup");
@@ -48,9 +52,62 @@ export class ListasComponent implements OnInit {
     this.listsService.listas$.subscribe((listas) => {
       this.itensList = listas.filter(x => x.lists.status !== 'completed' || x.itens.some(y => !y.isPurchased));
     });
+
+    this.context.listEmpty = !this.itensList.length;
+    this.context.pantryEmpty = true;
+
+    this.suggestions = this.agentService.generateSuggestions(this.context);
+    console.log(this.suggestions)
+
+    setTimeout(async () => {
+      const hasInteracted = await this.agentService.hasInteracted({ text: this.balloonMessage, type: 'assistant' });
+      if (!hasInteracted) {
+        this.showBalloon = true;
+      }
+    }, 2000);
+  }
+  showBalloon: boolean = false;
+  balloonTitle: string = 'Bem-vindo!';
+  balloonMessage: string = `<p>Essa é uma <strong>lista de exemplo</strong>. Explore o sistema:</p>
+    <ul>
+      <li><a (click)="createNewList()">Crie sua própria lista</a></li>
+      <li><a (click)="importList()">Importe uma lista pronta</a></li>
+    </ul>
+  `;
+
+  handleAction(action: () => void): void {
+    action();
   }
 
   novaLista() {
     db.lists.add({ name: "Nova Lista", status: 'active', createdDate: new Date });
+  }
+
+  showIosInstallModal(localStorageKey: string): boolean {
+    // detect if the device is on iOS
+    const isIos = () => {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /iphone|ipad|ipod/.test(userAgent);
+    };
+
+    // check if the device is in standalone mode
+    const isInStandaloneMode = () => {
+      return (
+        "standalone" in (window as any).navigator &&
+        (window as any).navigator.standalone
+      );
+    };
+
+    // show the modal only once
+    const localStorageKeyValue = localStorage.getItem(localStorageKey);
+    const iosInstallModalShown = localStorageKeyValue
+      ? JSON.parse(localStorageKeyValue)
+      : false;
+    const shouldShowModalResponse =
+      isIos() && !isInStandaloneMode() && !iosInstallModalShown;
+    if (shouldShowModalResponse) {
+      localStorage.setItem(localStorageKey, "true");
+    }
+    return shouldShowModalResponse;
   }
 }

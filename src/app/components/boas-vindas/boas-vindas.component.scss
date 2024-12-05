@@ -1,0 +1,27 @@
+
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%; // Para ocupar a tela toda
+  text-align: center;
+  padding: 0 20px;
+}
+
+.help-text {
+  font-size: 18px;
+  color: slategray;
+  margin: 10px 0;
+}
+
+.link {
+  color: #00b894;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
+  color: #019473;
+}

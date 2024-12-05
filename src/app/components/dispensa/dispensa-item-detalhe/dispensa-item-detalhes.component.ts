@@ -39,7 +39,7 @@ export class DispensaItemDetalhesComponent {
   autoReposicao = false;
 
   get qtdVariacoesFormatted(): string | null {
-    if (this.qtdVariacoes == null) {
+    if (this.qtdVariacoes == null || this.qtdVariacoes <= 0) {
       return null;
     }
     return Number.isInteger(this.qtdVariacoes)
@@ -114,7 +114,8 @@ export class DispensaItemDetalhesComponent {
           listId: listaId,
           unit: item.unit,
           isPurchased: false,
-          quantity: 1
+          quantity: 1,
+          price: this.lastPrice$.value
         });
       } else {
         this.itemService.update(itemFound.id!, {

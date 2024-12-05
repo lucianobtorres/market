@@ -62,7 +62,44 @@ export class ListaCorrenteComponent implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: { idLista: number }
   ) { }
 
+  // private touchStartX = 0;
+  // private touchEndX = 0;
+
+  // onBackTouchStart = (event: TouchEvent): void => {
+  //   this.touchStartX = event.changedTouches[0].screenX;
+  // };
+
+  // onBackTouchEnd = (event: TouchEvent): void => {
+  //   this.touchEndX = event.changedTouches[0].screenX;
+  //   this.handleSwipe();
+  // };
+
+  // handleSwipe(): void {
+  //   // Verifica se o swipe foi para a direita
+  //   if (this.touchEndX > this.touchStartX + 50) { // Threshold de 50px
+  //     this.closeDialogIfOpen();
+  //   }
+  // }
+
+  // closeDialogIfOpen(): void {
+  //   // Fecha o diálogo se estiver aberto
+  //   console.log(this.dialog.openDialogs)
+  //   if (this.dialog.openDialogs.length > 0) {
+  //     this.dialog.closeAll();
+  //   }
+  // }
+
+  // ngOnDestroy(): void {
+  //   // Remove os eventos ao destruir o componente
+  //   document.removeEventListener('touchstart', this.onBackTouchStart);
+  //   document.removeEventListener('touchend', this.onBackTouchEnd);
+  // }
+
   ngOnInit(): void {
+    // Adiciona os eventos de toque
+    // document.addEventListener('touchstart', this.onBackTouchStart);
+    // document.addEventListener('touchend', this.onBackTouchEnd);
+
     if (this.data) {
       this.idLista = this.data.idLista;
     }

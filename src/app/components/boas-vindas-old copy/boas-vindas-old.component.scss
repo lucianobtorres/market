@@ -1,0 +1,90 @@
+.boas-vindas {
+  max-width: 60%;
+  margin: auto;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.carrossel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.slides {
+  display: flex;
+  transition: transform .5s ease;
+}
+
+.slide {
+  flex: 0 0 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  text-align: center;
+  color: #333;
+  background: #fff;
+  border-radius: 10px;
+  transform-style: preserve-3d;
+  transition: transform .5s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide img {
+  max-width: 40%;
+  max-height: 40%;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+img {
+  overflow-clip-margin: content-box;
+  overflow: clip;
+}
+
+.prev, .next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  color: #64ee85;
+  padding: 10px;
+  cursor: pointer;
+  border-style: none;
+}
+
+.indicadores {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.indicador {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  background-color: #ddd;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color .3s;
+}
+
+.indicador.active {
+  background-color: #64ee85;
+}
+
+.prev {
+  left: 10px;
+}
+
+.prev:hover, .next:hover {
+  color: #0af;
+}
+.next{
+  right: 10px;
+}

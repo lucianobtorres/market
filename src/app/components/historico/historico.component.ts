@@ -1,13 +1,9 @@
-import { Component, ChangeDetectionStrategy, OnInit, ViewChild, ElementRef, Renderer2 } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { Component, OnInit, Renderer2, ViewChildren, QueryList } from "@angular/core";
 import { MatBottomSheet } from "@angular/material/bottom-sheet";
 import { Router } from "@angular/router";
-import { BehaviorSubject, Observable, combineLatest, map, debounceTime } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 import { db } from "src/app/db/model-db";
-import { Inventory, Items, ItemShoppingList, Lists, PurchaseHistory, PurchaseItem } from "src/app/models/interfaces";
-import { ItemUnitDescriptions } from "src/app/models/item-unit";
-import { ItemListService } from "src/app/services/item-list.service";
-import { HistoricoItemDetalhesComponent } from "./historico-detalhe/historico-item-detalhes.component";
+import { Lists, PurchaseHistory, PurchaseItem } from "src/app/models/interfaces";
 import { PurchaseHistoryService } from "src/app/services/db/purchases-history.service";
 import { liveQuery } from "dexie";
 import { instanceOfMapLocate, MapLocate } from "src/app/services/map.service";
@@ -18,6 +14,7 @@ import { DialogArgs, ConfirmDialogComponent } from "../shared/confirm-dialog/con
 import { MatDialog } from "@angular/material/dialog";
 import { FormLEditItemHistoricoComponent } from "./form-edit-item copy/form-edit-item.component";
 import { FormLEditHistoricoComponent } from "./form-edit-history/form-edit-history.component";
+import { MatExpansionPanel } from "@angular/material/expansion";
 
 export interface PurchaseHistoryRecord extends PurchaseHistory {
   mercado?: MapLocate,
@@ -41,14 +38,16 @@ function instanceOfPurchaseHistoryRecord(obj: unknown): obj is PurchaseHistoryRe
   styleUrls: ['./historico.component.scss'],
 })
 export class HistoricoComponent implements OnInit {
+  @ViewChildren('panel') panels!: QueryList<MatExpansionPanel>;
   protected arrayItems$ = new BehaviorSubject<PurchaseHistoryRecord[]>([]);
   private itens$ = liveQuery(() => db.purchasesHistory.toArray());
   showSubItems = false;
+  averageSpending: number = 0;
+selectedTabIndex = 0;
 
   constructor(
     private readonly router: Router,
     private bottomSheet: MatBottomSheet,
-    private itemListService: ItemListService,
     private dbService: PurchaseHistoryService,
     private dialog: MatDialog,
     private readonly renderer: Renderer2,
@@ -76,7 +75,13 @@ export class HistoricoComponent implements OnInit {
       );
 
       this.arrayItems$.next(allRecords.sort((a, b) => b.dateCompleted.getTime() - a.dateCompleted.getTime()));
+      this.calculateInsights();
     });
+  }
+
+  calculateInsights() {
+    const total = this.arrayItems$.value.reduce((sum, entry) => sum + entry.totalPrice, 0);
+    this.averageSpending = total / this.arrayItems$.value.length;
   }
 
   async getLista(item: PurchaseHistory): Promise<Lists | undefined> {
@@ -185,4 +190,17 @@ export class HistoricoComponent implements OnInit {
   trackByFnItem(index: number, item: PurchaseItem): any {
     return item.id; // Identificador único
   }
+
+  openDetail(index: number): void {
+    console.log('index', index)
+    const panelArray = this.panels.toArray();
+    console.log('panelArray', panelArray)
+    const panelToOpen = panelArray[index];
+    console.log('panelToOpen', panelToOpen)
+
+    if (panelToOpen) {
+      panelToOpen.open(); // Abre o painel desejado.
+    }
+  }
+
 }

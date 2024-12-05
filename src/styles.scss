@@ -17,6 +17,8 @@ body {
 }
 
 body.light-theme {
+  --primary-color:  $primary-color-light;
+
   .mat-chip.mat-standard-chip {
     background-color: $primary-color-light;
     box-sizing: border-box;
@@ -58,6 +60,8 @@ body.light-theme {
 }
 
 body.dark-theme {
+  --primary-color:  $primary-color-dark;
+
   .mat-chip.mat-standard-chip {
     background-color: $primary-color-dark;
     box-sizing: border-box;

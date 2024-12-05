@@ -4,6 +4,10 @@
     </mat-list-item>
 </mat-list>
 
+<app-boas-vindas *ngIf="!itensList.length"></app-boas-vindas>
+
+<app-balloon-guide *ngIf="showBalloon" [title]="balloonTitle" [message]="balloonMessage"></app-balloon-guide>
+
 <button mat-button class="floating-btn" (click)="novaLista()"> + Nova Lista</button>
 
 <ng-container *ngIf="showInstallMessage">
@@ -15,8 +19,8 @@
         ">Instalar na tela de início</h2>
             <p style="margin: 0; font-size: 14px; color: #333;">
                 Toque no <strong>botão de compartilhamento</strong> <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/c/c8/Ei-share-apple.svg"
-                    alt="Share Icon" style="width: 16px; vertical-align: middle;" />
+                    src="https://upload.wikimedia.org/wikipedia/commons/c/c8/Ei-share-apple.svg" alt="Share Icon"
+                    style="width: 16px; vertical-align: middle;" />
                 e selecione <strong>“Adicionar à Tela de Início”</strong>.
             </p>
             <div class="after"

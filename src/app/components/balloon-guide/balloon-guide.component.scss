@@ -1,0 +1,53 @@
+@use "theme-variables" as *;
+
+body.light-theme :host>.balloon{
+  background-color: $background-accent-light;
+}
+
+body.dark-theme :host>.balloon{
+  background-color: $background-accent-dark;
+
+}
+
+:host {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 320px;
+}
+
+.balloon {
+  margin: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: $radius-default;
+  padding: 16px;
+  z-index: 1000;
+
+  h4 {
+    margin: 0 0 8px 0;
+    font-size: 1.2rem;
+    color: #00b894; // Cor primária
+  }
+
+  p {
+    margin: 0;
+    font-size: 1rem;
+
+    a {
+      color: #00b894;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+
+  button {
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: #00b894;
+    color: white;
+    border: none;
+    border-radius: $radius-default;
+    cursor: pointer;
+  }
+}

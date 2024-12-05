@@ -25,6 +25,10 @@ footer {
   overflow: hidden;
   width: 100%;
 
+  button.active-menu-item {
+    filter: drop-shadow(1px 1px 1px darkblue);
+  }
+
   button:not(.active-menu-item) {
     color: $color-low-emphasis;
   }

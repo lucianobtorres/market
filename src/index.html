@@ -187,9 +187,21 @@
 <html lang="pt-br">
 
 <head>
-    <title>PWA-Market</title>
+    <title>PoupeAI</title>
     <meta charset="utf-8">
     <base href="/">
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i)
+        {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-KH2VWKGK');</script>
+    <!-- End Google Tag Manager -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
@@ -231,7 +243,21 @@
 <script>
     function updateBodyClass()
     {
-        if (window.innerHeight < window.innerWidth)
+        const isIos = () =>
+        {
+            const userAgent = window.navigator.userAgent.toLowerCase();
+            return /iphone|ipad|ipod/.test(userAgent);
+        };
+
+        const isInStandaloneMode = () =>
+        {
+            return (
+                "standalone" in (window).navigator &&
+                (window).navigator.standalone
+            );
+        };
+
+        if (window.innerHeight < window.innerWidth && (isInStandaloneMode() || isIos()))
         {
             document.body.classList.add('landscape');
         } else
@@ -248,6 +274,12 @@
 </script>
 
 <body class="app-body">
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KH2VWKGK" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div id="splash-screen">
         <img src="assets/splash/logo-640x1136.png" alt="Logo" />
     </div>
