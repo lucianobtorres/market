@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1733262863385,
+  "timestamp": 1733379597569,
   "index": "/market/index.html",
   "assetGroups": [
     {
@@ -11,7 +11,7 @@
         "ignoreVary": true
       },
       "urls": [
-        "/market/784.c0d04af461a53c8a.js",
+        "/market/784.a0635bdd79566590.js",
         "/market/assets/font/Roboto-Black.woff",
         "/market/assets/font/Roboto-Black.woff2",
         "/market/assets/font/Roboto-BlackItalic.woff",
@@ -56,6 +56,10 @@
         "/market/assets/icons/logo-512x512.png",
         "/market/assets/icons/logo-72x72.png",
         "/market/assets/icons/logo-96x96.png",
+        "/market/assets/img/3d-clock-money.jpg",
+        "/market/assets/img/3d-monitor-money.jpg",
+        "/market/assets/img/3d-orcamento-categorizado.jpg",
+        "/market/assets/img/3d-sugestoes-personalizadas.jpg",
         "/market/assets/img/icon.svg",
         "/market/assets/img/logo.svg",
         "/market/assets/splash/icon-1242x2208.png",
@@ -73,10 +77,10 @@
         "/market/assets/version.json",
         "/market/favicon.ico",
         "/market/index.html",
-        "/market/main.b35bc251539ba486.js",
+        "/market/main.95429bc42d00967d.js",
         "/market/manifest.webmanifest",
         "/market/polyfills.5842fed68fd9c9c8.js",
-        "/market/runtime.6312181023aa9e5f.js"
+        "/market/runtime.3a29379a478bd4f6.js"
       ],
       "patterns": []
     },
@@ -105,7 +109,7 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/market/784.c0d04af461a53c8a.js": "d348b88f49f92eb8a66d731fa2da6092f6abf680",
+    "/market/784.a0635bdd79566590.js": "5e5b390d50cf5f1b286014ff9d99f392fd2abda2",
     "/market/Roboto-Light.3d1bbede3dff569a.woff": "42eb5fdef68306d937a8fba20dd8da1b0de2bafa",
     "/market/Roboto-Light.86fc2559ff73eac5.woff2": "8237523ff588300ff5d2da67a20bce60701a14b8",
     "/market/Roboto-Medium.4fa4b1c02a877115.woff": "3e38dce596d2b9ab706d7371a28613d618b32220",
@@ -156,6 +160,10 @@
     "/market/assets/icons/logo-512x512.png": "7d44c4d2b4fdd06246cd44e13f65039446033d70",
     "/market/assets/icons/logo-72x72.png": "7d44c4d2b4fdd06246cd44e13f65039446033d70",
     "/market/assets/icons/logo-96x96.png": "7d44c4d2b4fdd06246cd44e13f65039446033d70",
+    "/market/assets/img/3d-clock-money.jpg": "c6d57c3cc8a18e5f0ae27cdd5f69306d8397c07d",
+    "/market/assets/img/3d-monitor-money.jpg": "6abd6d4698dfb3f10c1b604d409bb4140725010b",
+    "/market/assets/img/3d-orcamento-categorizado.jpg": "34240491a1f098c29a1c49384dc566372477d39a",
+    "/market/assets/img/3d-sugestoes-personalizadas.jpg": "969f1e82513571ab70559d30cdcfac898e93d1e1",
     "/market/assets/img/icon.svg": "1ce2a00970f82d733c6a28d7defcc60e60b7dda5",
     "/market/assets/img/logo.svg": "34a6b8545d23ecbebce6f3fda8e6c2da89f177ae",
     "/market/assets/splash/icon-1242x2208.png": "5206130c76233262728c560ab187e5e4275d29f1",
@@ -174,14 +182,14 @@
     "/market/favicon.ico": "4c9b988c7cc9017dc463089f350fdddfeb3284b1",
     "/market/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.3a4cb006b229e5d7.woff2": "a80466bc637c657f0dc739e0924b025034a92ea9",
     "/market/gok-H7zzDkdnRel8-DQ6KAXJ69wP1tGnf4ZGhUce.8fdb895cfe88be90.woff2": "b83aec9cceb453c24574d43f1ef4fde2a40eea65",
-    "/market/index.html": "e0a0346b5b32c1fe007d2c95903ff4a906e68439",
+    "/market/index.html": "68db2feb0236ef5f71ba2bf6bcd89c4da4f432be",
     "/market/layers-2x.9859cd1231006a4a.png": "152a162333e46d24f9d89f566312fc0c64011dee",
     "/market/layers.ef6db8722c2c3f9a.png": "c9e7528e491a39232ba24a2706c6c739d6fb0f06",
-    "/market/main.b35bc251539ba486.js": "6eb520899ad86f463fbb0cf51a26cf94d86e5a1e",
+    "/market/main.95429bc42d00967d.js": "25856375a25fd5dcaf9eb333fd7a4fc43f561be0",
     "/market/manifest.webmanifest": "7e91b6f83ccfb3f0451058cd6d7dbc0a4ead711f",
     "/market/marker-icon.d577052aa271e13f.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
     "/market/polyfills.5842fed68fd9c9c8.js": "da785fc66aafa79749437577573ab53c3f55f9e9",
-    "/market/runtime.6312181023aa9e5f.js": "43ad1a5f35c23191a9016c7cde72f123ba10b420"
+    "/market/runtime.3a29379a478bd4f6.js": "05190c577aa4c3baf1d69857f7600a5bbeda4055"
   },
   "navigationUrls": [
     {
