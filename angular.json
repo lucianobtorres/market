@@ -55,8 +55,8 @@
               "src/styles.scss",
               "node_modules/leaflet/dist/leaflet.css",
               "src/theme/app-theme.scss",
-              "src/assets/font/font-roboto.css",
-              "src/assets/font/icon.css"
+              "src/assets/font/roboto-font.css",
+              "src/assets/font/material-icons.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -138,8 +138,8 @@
             "styles": [
               "src/theme/app-theme.scss",
               "src/styles.scss",
-              "src/assets/font/font-roboto.css",
-              "src/assets/font/icon.css"
+              "src/assets/font/roboto-font.css",
+              "src/assets/font/material-icons.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

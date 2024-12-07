@@ -56,6 +56,8 @@ import { NgChartsModule } from 'ng2-charts';
 import { BalloonGuideComponent } from './balloon-guide/balloon-guide.component';
 import { ChatAssistantComponent } from './chat-assistant/chat-assistant.component';
 import { BoasVindasComponent } from './boas-vindas/boas-vindas.component';
+import { QrCodeReaderComponent } from './qr-code-reader/qr-code-reader.component';
+
 
 export const components = [
   HomeComponent,
