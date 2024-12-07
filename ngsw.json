@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1733539280231,
+  "timestamp": 1733539743342,
   "index": "/market/index.html",
   "assetGroups": [
     {
@@ -78,7 +78,7 @@
         "/market/assets/version.json",
         "/market/favicon.ico",
         "/market/index.html",
-        "/market/main.21c2488aee3a7246.js",
+        "/market/main.86896e0977d69da9.js",
         "/market/manifest.webmanifest",
         "/market/polyfills.5842fed68fd9c9c8.js",
         "/market/runtime.ae37ce1fa900edf8.js"
@@ -168,10 +168,10 @@
     "/market/assets/splash/logo-640x1136.png": "56a1984356b089fde7d30cd22eda6ba6444a0a66",
     "/market/assets/version.json": "d628a12fae2bfeec5ae642cd213951b54965a079",
     "/market/favicon.ico": "4c9b988c7cc9017dc463089f350fdddfeb3284b1",
-    "/market/index.html": "0178764c520ae5f307a813c189a1098f8a69a4cf",
+    "/market/index.html": "94398a1ad23161a49a3463b614af3ce24abbd2f6",
     "/market/layers-2x.9859cd1231006a4a.png": "152a162333e46d24f9d89f566312fc0c64011dee",
     "/market/layers.ef6db8722c2c3f9a.png": "c9e7528e491a39232ba24a2706c6c739d6fb0f06",
-    "/market/main.21c2488aee3a7246.js": "e6ab11fe7d611d9b89ba961ab9feb82e85d0945e",
+    "/market/main.86896e0977d69da9.js": "8e639a8d6da602fd3248a6b6860ed031e1e78934",
     "/market/manifest.webmanifest": "7e91b6f83ccfb3f0451058cd6d7dbc0a4ead711f",
     "/market/marker-icon.d577052aa271e13f.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
     "/market/polyfills.5842fed68fd9c9c8.js": "da785fc66aafa79749437577573ab53c3f55f9e9",
