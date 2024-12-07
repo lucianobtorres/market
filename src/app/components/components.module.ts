@@ -101,7 +101,8 @@ export const components = [
   HistoricoChartComponent,
   BoasVindasComponent,
   BalloonGuideComponent,
-  ChatAssistantComponent
+  ChatAssistantComponent,
+  QrCodeReaderComponent
 ]
 
 const directives = [
