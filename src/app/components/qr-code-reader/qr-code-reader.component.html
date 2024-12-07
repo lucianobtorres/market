@@ -1,0 +1,26 @@
+<div>
+    <h2>Leitor de QR Code de Nota Fiscal</h2>
+    <div>
+        <div>
+            <div *ngIf="errorMessage" class="error">
+                {{ errorMessage }}
+            </div>
+            <button (click)="switchCamera()">Trocar Câmera</button>
+            <button (click)="changeZoom(1)">1x</button>
+            <button (click)="changeZoom(2)">2x</button>
+            <button (click)="changeZoom(3)">3x</button>
+        </div>
+        <video #videoElement autoplay playsinline></video>
+
+    </div>
+    <!-- <button (click)="onScanQrCode(videoElement)">Escanear QR Code</button> -->
+
+    <div *ngIf="productList.length">
+        <h3>Itens da Nota Fiscal</h3>
+        <ul>
+            <li *ngFor="let product of productList">
+                {{ product.name }} - {{ product.quantity }} {{ product.unit }} - R$ {{ product.price }}
+            </li>
+        </ul>
+    </div>
+</div>
