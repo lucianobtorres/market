@@ -15,6 +15,7 @@ export class QrCodeReaderComponent implements OnInit, OnDestroy {
   videoInputDevices: MediaDeviceInfo[] = [];
   currentDeviceId: string | null = null;
   errorMessage: string | null = null;
+  errorMessage2: string | null = null;
 
   currentZoom: number = 2; // Zoom inicial
 
@@ -65,13 +66,34 @@ export class QrCodeReaderComponent implements OnInit, OnDestroy {
       this.scannerControls = await this.qrCodeReader.decodeFromVideoDevice(
         undefined,
         this.videoElement.nativeElement,
-        (result, error) => {
+        async (result, error) => {
           if (result) {
+            const qrCodeUrl = result.getText();
             this.errorMessage = 'QR Code detected:' + result.getText();
+            // const qrCodeUrl = await this.nfeService.decodeQrCode(this.videoElement.nativeElement);
             this.stopScanner(); // Para o scanner após detectar o QR Code
+
+            window.open(qrCodeUrl, "_blank")
+            var iframe = document.createElement('iframe');
+            iframe.src = qrCodeUrl;
+            document.body.appendChild(iframe);
+
+            iframe.onload = function () {
+              var contentDoc = iframe.contentDocument || iframe.contentWindow?.document;
+              console.log(contentDoc?.documentElement.outerHTML);
+            };
+
+            // this.nfeService.getNfeXml(qrCodeUrl).subscribe({
+            //   next: (xml) => {
+            //     this.errorMessage = xml;
+            //     this.xmlData = xml;
+            //     this.productList = this.nfeService.parseNfeXml(xml);
+            //   },
+            //   error: (err) => this.errorMessage = 'Erro ao buscar XML:' + JSON.stringify(err),
+            // });
           }
           if (error) {
-            console.warn('Decode error:', error);
+            this.errorMessage = 'Decode error:' + error;
           }
         }
       );

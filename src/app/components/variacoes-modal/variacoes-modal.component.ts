@@ -71,15 +71,15 @@ export class VariacoesModalComponent implements OnInit {
 
       this.inventoryListSubject.next(
         items.filter(x =>
-          x.name.toLowerCase() !== this.itemName.toLowerCase() &&
-          !mappedItems.has(x.name.toLowerCase())
+          x.name.trim().toLowerCase() !== this.itemName.trim().toLowerCase() &&
+          !mappedItems.has(x.name.trim().toLowerCase())
         ));
 
       const sinonimosProduct = new Set(this.produto.synonyms.map(s => s.toLowerCase()));
 
       this.sinonimosProductSubject.next(
         items.filter(x =>
-          sinonimosProduct.has(x.name.toLowerCase())
+          sinonimosProduct.has(x.name.trim().toLowerCase())
         ));
     });
   }
@@ -90,7 +90,7 @@ export class VariacoesModalComponent implements OnInit {
       option.name.toLowerCase().includes(filterValue)
     );
 
-    return itemFiltred?.map(x => x.name);
+    return itemFiltred?.map(x => x.name.trim());
   }
 
   groupByUnit(sinonimoList: Inventory[]): { [unit: string]: Inventory[] } {
@@ -107,7 +107,7 @@ export class VariacoesModalComponent implements OnInit {
 
     // Ordena cada grupo de itens por nome
     Object.keys(grouped).forEach(unit => {
-      grouped[unit].sort((a, b) => a.name.localeCompare(b.name));
+      grouped[unit].sort((a, b) => a.name.trim().localeCompare(b.name.trim()));
     });
 
     return grouped;
@@ -122,7 +122,7 @@ export class VariacoesModalComponent implements OnInit {
     const value = this.formVariacao.value.toLowerCase().trim();
     if (!value) return;
 
-    const itemList = this.inventoryListSubject.value.find(x => x.name.toLowerCase() === value.toLowerCase())
+    const itemList = this.inventoryListSubject.value.find(x => x.name.trim().toLowerCase() === value.trim().toLowerCase())
     if (!itemList) return;
 
     this.produto.synonyms.push(value);

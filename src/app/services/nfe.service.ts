@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BrowserMultiFormatReader, Exception, Result } from '@zxing/library';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -37,8 +37,22 @@ export class NfeService {
    * Faz a requisição para obter o XML da nota fiscal.
    * @param url URL do QR Code da nota fiscal
    */
+  getNfeXml2(url: string): Observable<string> {
+    // const proxiedUrl = `/nfe${new URL(url).pathname}`;
+    const proxiedUrl = 'https://cors-anywhere.herokuapp.com/';
+    return this.http.get(proxiedUrl, { responseType: 'text' });
+  }
+
   getNfeXml(url: string): Observable<string> {
-    return this.http.get(url, { responseType: 'text' });
+    const proxiedUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+    return this.http.get(proxiedUrl).pipe(
+      map((response: any) => response.contents), // O XML estará dentro de 'contents'
+      catchError((error) => {
+        console.error('Erro ao usar o proxy:', error);
+        return throwError(() => error);
+      })
+    );
+
   }
 
   /**

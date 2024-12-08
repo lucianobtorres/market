@@ -43,8 +43,8 @@ export class InventoryService extends DBRepository<Inventory> {
   addItemDispensa(element: PurchaseItem) {
     const hoje = new Date();
     const itemDispensa: Inventory = {
-      name: element.name,
-      category: "teste",
+      name: element.name.trim(),
+      category: "",
       initialQuantity: 0,
       currentQuantity: element.quantity ?? 1,
       unit: element.unit,

@@ -30,7 +30,7 @@
                 <mat-chip-list>
                     <mat-chip *ngFor="let item of unit.value; trackBy: trackById" color="primary"
                         (click)="openBottomSheet(item)">
-                        {{ item.name }} ({{ item.currentQuantity }})
+                        {{ item.name.trim() }} ({{ item.currentQuantity }})
                     </mat-chip>
                 </mat-chip-list>
             </div>

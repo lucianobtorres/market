@@ -36,6 +36,11 @@
         </button>
 
         <mat-menu #menu="matMenu">
+            <button mat-menu-item [matMenuTriggerFor]="sortMenu">
+                <mat-icon>sort</mat-icon>
+                <span>Ordenar</span>
+            </button>
+            <mat-divider></mat-divider>
             <button mat-menu-item (click)="arquivarCompra()">
                 <mat-icon>archive</mat-icon>
                 <span>Dispensa</span>
@@ -50,12 +55,32 @@
             </button>
         </mat-menu>
 
+        <mat-menu #sortMenu="matMenu" class="sort-menu">
+            <button mat-menu-item (click)="sortList('inclusion')" [ngClass]="getSortClass('inclusion')">
+                <mat-icon>list</mat-icon>
+                Ordem de inclusão
+            </button>
+            <button mat-menu-item (click)="sortList('asc')" [ngClass]="getSortClass('asc')">
+                <mat-icon>sort_by_alpha</mat-icon>
+                Nome (A → Z)
+            </button>
+            <button mat-menu-item (click)="sortList('desc')" [ngClass]="getSortClass('desc')">
+                <mat-icon>sort_by_alpha</mat-icon>
+                Nome (Z → A)
+            </button>
+        </mat-menu>
+
     </div>
+    <mat-form-field class="search-field">
+        <mat-label>Pesquisar</mat-label>
+        <input matInput [formControl]="searchControl" placeholder="pesquisar"/>
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
 
     <div class="edicao-container">
         <div class="list-container">
             <mat-list class="list-wait">
-                <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice"
+                <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice" [class.editing]="item.id === editedItemId"
                     (click)="editItem(item, itemListWait, indice)" class="swipeable-item"><app-lista-corrente-item
                         [item]="item"></app-lista-corrente-item>
                 </mat-list-item>
@@ -63,13 +88,19 @@
 
             <mat-list class="list-done">
                 <mat-list-item id="itens" *ngFor="let item of itemListDone; index as indice"
-                    (click)="editItem(item, itemListDone, indice)">
+                    (click)="editItem(item, itemListDone, indice)" [class.editing]="item.id === editedItemId">
                     <app-lista-corrente-item [item]="item"></app-lista-corrente-item>
                 </mat-list-item>
             </mat-list>
         </div>
 
-        <button mat-button class="floating-btn" (click)="addItem()" *ngIf="!isSearchOpen"> + Adicionar itens</button>
+        <!-- <button mat-button class="floating-btn" (click)="addItem()" *ngIf="!isSearchOpen"> + Adicionar itens</button> -->
+        <button mat-raised-button class="floating-btn" (click)="addItem();" *ngIf="!isSearchOpen">
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <mat-icon>add_circle</mat-icon>
+                <small>Adicionar itens</small>
+            </div>
+        </button>
 
         <div *ngIf="isSearchOpen" class="search-panel" [ngClass]="{'open': isSearchOpen}">
             <app-search-list [idLista]="idLista" (closeEmit)="closeSearch()"></app-search-list>

@@ -6,7 +6,8 @@
         <div class="title-header">
             <mat-form-field>
                 <mat-label>Nome do Item</mat-label>
-                <input matInput [formControl]="editForm.controls.nome" placeholder="Ex: Leite" autofocus #campoFoco [matAutocomplete]="auto">
+                <input matInput [formControl]="editForm.controls.nome" placeholder="Ex: Leite" autofocus #campoFoco
+                    [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete">
                     <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                         {{option}}
@@ -66,8 +67,14 @@
 
         <div class="actions" style="justify-content: space-around;">
 
-            <button mat-icon-button (click)="goToNextItem(); scanner" color="primary">
+            <!-- <button mat-icon-button (click)="goToNextItem(); scanner" color="primary">
                 <mat-icon>add_circle</mat-icon>
+            </button> -->
+            <button mat-raised-button class="floating-btn" (click)="goToNextItem();" >
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <mat-icon>add_circle</mat-icon>
+                    <small>Adicionar novo item</small>
+                </div>
             </button>
         </div>
     </form>

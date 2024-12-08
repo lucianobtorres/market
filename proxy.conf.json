@@ -1,0 +1,10 @@
+{
+  "/nfe": {
+    "target": "http://www4.fazenda.rj.gov.br",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/nfe": ""
+    }
+  }
+}

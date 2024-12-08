@@ -10,7 +10,7 @@ export class groupInventory {
 
   get name(): string {
     return this.itens.length
-      ? this.itens[0].name
+      ? this.itens[0].name.trim()
       : '';
   }
 

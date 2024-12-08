@@ -11,6 +11,11 @@ import { ItemListService } from 'src/app/services/item-list.service';
 import { InventoryService } from 'src/app/services/db/inventory.service';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 import { FormAddItemComponent } from './form-add-item/form-add-item.component';
+import { FormControl } from '@angular/forms';
+import { debounceTime } from 'rxjs';
+
+
+type OrdenacaoItems = 'inclusion' | 'asc' | 'desc';
 
 @Component({
   selector: 'app-lista-corrente',
@@ -24,16 +29,43 @@ export class ListaCorrenteComponent implements OnInit {
   private list: Lists = {} as Lists;
   private items: Items[] = [];
 
+  protected searchControl = new FormControl();
+  searchTerm: string = '';
+
   get listNome(): string {
     return this.list.name;
   }
 
+  sortOption: OrdenacaoItems = 'inclusion';
+
   get itemListWait(): Items[] {
-    return this.items.filter(x => !x.isPurchased);
+    const listWait = this.items.filter(x => !x.isPurchased);
+    switch (this.sortOption) {
+      case 'asc':
+        listWait.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'desc':
+        listWait.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+    }
+
+    if (this.searchTerm) {
+      return listWait.filter(x => x.name.toLowerCase().includes(this.searchTerm.toLowerCase()))
+    }
+
+    return listWait;
   }
 
   get itemListDone(): Items[] {
-    return this.items.filter(x => x.isPurchased);
+    const listDone = this.items
+      .filter(x => x.isPurchased)
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    if (this.searchTerm) {
+      return listDone.filter(x => x.name.toLowerCase().includes(this.searchTerm.toLowerCase()))
+    }
+
+    return listDone;
   }
 
   get subtotalValue(): number {
@@ -94,11 +126,18 @@ export class ListaCorrenteComponent implements OnInit {
   //   document.removeEventListener('touchstart', this.onBackTouchStart);
   //   document.removeEventListener('touchend', this.onBackTouchEnd);
   // }
-
+  getSortClass(order: string): Record<string, boolean> {
+    return {
+      active: this.sortOption === order,
+    };
+  }
   ngOnInit(): void {
     // Adiciona os eventos de toque
     // document.addEventListener('touchstart', this.onBackTouchStart);
     // document.addEventListener('touchend', this.onBackTouchEnd);
+
+    const savedPreference = localStorage.getItem('sortPreference');
+    this.sortList((savedPreference as OrdenacaoItems) || 'inclusion');
 
     if (this.data) {
       this.idLista = this.data.idLista;
@@ -114,6 +153,13 @@ export class ListaCorrenteComponent implements OnInit {
         }
       }
     });
+
+
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300))
+      .subscribe(value => {
+        this.searchTerm = value;
+      });
   }
 
   openSearch(): void {
@@ -152,7 +198,10 @@ export class ListaCorrenteComponent implements OnInit {
     return UtilsMobile.isMobile();
   }
 
+  editedItemId?: number = undefined;
+
   editItem(item: Items, items: Items[], index: number): void {
+    this.editedItemId = item.id;
     const bottomSheetRef = this.bottomSheet.open(FormListaCorrenteItemComponent, {
       data: { itemsList: items, currentIndex: index },
       // disableClose: true
@@ -162,6 +211,8 @@ export class ListaCorrenteComponent implements OnInit {
       if (result) {
         Object.assign(item, result);
       }
+
+      this.editedItemId = undefined;
     });
   }
 
@@ -326,5 +377,10 @@ export class ListaCorrenteComponent implements OnInit {
     }
 
     this.isEditing = false;
+  }
+
+  sortList(order: OrdenacaoItems): void {
+    localStorage.setItem('sortPreference', order);
+    this.sortOption = order;
   }
 }

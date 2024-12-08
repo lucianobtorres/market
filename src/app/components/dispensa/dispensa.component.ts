@@ -96,18 +96,18 @@ export class DispensaComponent implements OnInit {
         if (item.category === notReposicao && item.currentQuantity === 0) return;
 
           const group = this.productListSubject.value.find(mapping =>
-            mapping.baseProduct.toLowerCase() === item.name.toLowerCase() ||
-            mapping.synonyms.some(synonym => synonym.toLowerCase() === item.name.toLowerCase())
+            mapping.baseProduct.trim().toLowerCase() === item.name.trim().toLowerCase() ||
+            mapping.synonyms.some(synonym => synonym.toLowerCase() === item.name.trim().toLowerCase())
           );
 
-          const baseName = group?.baseProduct || item.name;
+          const baseName = group?.baseProduct || item.name.trim();
 
           if (!groupedMap.has(baseName)) {
             groupedMap.set(baseName, new groupInventory());
           }
 
           const groupInventoryInstance = groupedMap.get(baseName);
-          if (group && group.baseProduct.toLowerCase() === item.name.toLowerCase()) {
+          if (group && group.baseProduct.trim().toLowerCase() === item.name.trim().toLowerCase()) {
             groupInventoryInstance!.itens.unshift(item);
           } else {
             groupInventoryInstance!.itens.push(item);

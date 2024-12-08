@@ -54,7 +54,7 @@ export class HistoricoItemDetalhesComponent {
   }
 
   private async defineLastPrice() {
-    const lastPrice = await this.dbService.getLastPrice(this.itemDispensa.name);
+    const lastPrice = await this.dbService.getLastPrice(this.itemDispensa.name.trim());
     const priceConverted = UtilsNumber.convertValueToDecimal(lastPrice);
     this.lastPrice$.next(priceConverted ?? 0);
   }
@@ -62,7 +62,7 @@ export class HistoricoItemDetalhesComponent {
   private setValues() {
     const data: Inventory = this.itemDispensa;
     this.editForm = this.fb.group({
-      nome: this.fb.nonNullable.control(data.name, Validators.required)
+      nome: this.fb.nonNullable.control(data.name.trim(), Validators.required)
     });
   }
 
@@ -85,10 +85,10 @@ export class HistoricoItemDetalhesComponent {
         .equals(listaId!)
         .toArray();
 
-      const itemFound = itensList.find(x => x.name === item.name);
+      const itemFound = itensList.find(x => x.name.trim() === item.name.trim());
       if (!itemFound) {
         this.itemService.add({
-          name: this.itemDispensa.name,
+          name: this.itemDispensa.name.trim(),
           addedDate: new Date(),
           listId: listaId,
           unit: item.unit,

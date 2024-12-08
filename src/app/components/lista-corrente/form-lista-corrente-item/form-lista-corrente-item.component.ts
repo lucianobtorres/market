@@ -9,6 +9,7 @@ import { UtilsNumber } from 'src/app/utils/utils-number';
 
 
 export interface FormEdicaoShopping {
+  isPurchased: FormControl<boolean>;
   nome: FormControl<string>;
   quantidade: FormControl<number>;
   unidade: FormControl<ItemUnit | null>;
@@ -69,6 +70,7 @@ export class FormListaCorrenteItemComponent implements AfterViewInit{
     const data: Items = this.item;
     const preco = UtilsNumber.convertValueToDecimal(`${data.price}`);
     this.editForm = this.fb.group({
+      isPurchased: this.fb.nonNullable.control(data.isPurchased),
       nome: this.fb.nonNullable.control(data.name, Validators.required),
       quantidade: this.fb.nonNullable.control(data.quantity || 1, [Validators.required, Validators.min(1)]),
       unidade: [data.unit || 'un' as ItemUnit, Validators.required],
@@ -81,8 +83,8 @@ export class FormListaCorrenteItemComponent implements AfterViewInit{
     if (this.editForm.valid) {
       const updatedItem: Items = {
         id: this.item.id,
-        isPurchased: this.item.isPurchased,
-        name: this.editForm.value.nome ?? '',
+        isPurchased: this.editForm.value.isPurchased ?? false,
+        name: (this.editForm.value.nome ?? '').trim(),
         quantity: this.editForm.value.quantidade ?? 1,
         price: UtilsNumber.convertValueToDecimal(this.editForm.value.preco?.toString()),
         unit: this.editForm.value.unidade ?? ItemUnit.UNID,

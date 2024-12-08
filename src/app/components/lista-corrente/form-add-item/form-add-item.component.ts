@@ -69,10 +69,10 @@ export class FormAddItemComponent implements OnInit, AfterViewInit {
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
     const itemFiltred = this.inventoryListSubject.value.filter(option =>
-      option.name.toLowerCase().includes(filterValue)
+      option.name.trim().toLowerCase().includes(filterValue)
     );
 
-    return itemFiltred?.map(x => x.name);
+    return itemFiltred?.map(x => x.name.trim());
   }
 
   private setValues() {
@@ -87,13 +87,15 @@ export class FormAddItemComponent implements OnInit, AfterViewInit {
     if (this.scanner) {
       this.scanner.limparImage();
     }
+
+    this.ngAfterViewInit();
   }
 
   async saveCurrentItem() {
     if (this.editForm.valid) {
       const updatedItem: Items = {
         isPurchased: false,
-        name: this.editForm.value.nome ?? '',
+        name: (this.editForm.value.nome ?? '').trim(),
         quantity: this.editForm.value.quantidade ?? 1,
         price: UtilsNumber.convertValueToDecimal(this.editForm.value.preco?.toString()),
         unit: this.editForm.value.unidade ?? ItemUnit.UNID,
@@ -105,7 +107,7 @@ export class FormAddItemComponent implements OnInit, AfterViewInit {
       const existingItem = await db.items
         .where(nameof<Items>('listId'))
         .equals(this.idLista)
-        .and(item => item.name === updatedItem.name).first();
+        .and(item => item.name.trim() === updatedItem.name.trim()).first();
 
       if (!existingItem) this.dbService.add(updatedItem);
       else {

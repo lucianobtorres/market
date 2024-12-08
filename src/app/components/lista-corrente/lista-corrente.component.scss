@@ -42,7 +42,7 @@ mat-list-item#itens {
 }
 
 .edicao-container {
-  padding-block: 16px;
+  padding-bottom: 16px;
   display: flex;
   width: 100%;
   justify-content: space-evenly;
@@ -82,11 +82,11 @@ mat-list-item#itens {
   justify-content: flex-end;
   gap: 16px;
   align-items: center;
-}
 
-mat-divider {
-  width: 1px;
-  height: 16px;
+  mat-divider {
+    width: 1px;
+    height: 16px;
+  }
 }
 
 h3 {
@@ -102,6 +102,7 @@ mat-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  margin-inline: 8px;
 }
 
 .list-wait {
@@ -176,4 +177,23 @@ app-lista-corrente-item {
   .search-panel {
     display: block;
   }
+}
+
+.mat-menu-item.active {
+  font-weight: bold;
+  color: #00b894;
+  mat-icon {
+    color: #00b894;
+  }
+}
+
+.mat-list-item.editing {
+  background-color: rgba(0, 184, 148, 0.2);
+  outline: none;
+}
+
+.search-field{
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
 }

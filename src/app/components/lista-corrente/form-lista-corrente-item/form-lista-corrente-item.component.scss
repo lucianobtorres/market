@@ -32,6 +32,10 @@
     align-items: center;
 
     .title-header {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
       margin-right: auto;
       padding-right: 8px;
       letter-spacing: 1px;
