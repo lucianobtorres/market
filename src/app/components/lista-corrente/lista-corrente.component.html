@@ -73,16 +73,30 @@
     </div>
     <mat-form-field class="search-field">
         <mat-label>Pesquisar</mat-label>
-        <input matInput [formControl]="searchControl" placeholder="pesquisar"/>
+        <input matInput
+            [formControl]="searchControl"
+            [matAutocomplete]="auto"
+            [matAutocompletePosition]="'above'"
+            placeholder="pesquisar" />
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngIf="searchTerm">
+                <mat-chip-list>
+                    <mat-chip style="color: #fff;" (click)="$event.stopPropagation(); addItemSimples(searchTerm);">
+                        <mat-icon style="margin: 0;">add_circle</mat-icon>
+                        <small style="margin-inline: 8px;">{{ searchTerm }}</small>
+                    </mat-chip>
+                </mat-chip-list>
+            </mat-option>
+        </mat-autocomplete>
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 
     <div class="edicao-container">
         <div class="list-container">
             <mat-list class="list-wait">
-                <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice" [class.editing]="item.id === editedItemId"
-                    (click)="editItem(item, itemListWait, indice)" class="swipeable-item"><app-lista-corrente-item
-                        [item]="item"></app-lista-corrente-item>
+                <mat-list-item id="itens" *ngFor="let item of itemListWait; index as indice"
+                    [class.editing]="item.id === editedItemId" (click)="editItem(item, itemListWait, indice)"
+                    class="swipeable-item"><app-lista-corrente-item [item]="item"></app-lista-corrente-item>
                 </mat-list-item>
             </mat-list>
 

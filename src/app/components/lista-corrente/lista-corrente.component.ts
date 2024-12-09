@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Optional, Output } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { FormListaCorrenteItemComponent } from './form-lista-corrente-item/form-lista-corrente-item.component';
-import { Items, Lists, PurchaseHistory } from 'src/app/models/interfaces';
+import { Items, Lists, nameof, PurchaseHistory } from 'src/app/models/interfaces';
 
 import { db } from 'src/app/db/model-db';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
@@ -12,7 +12,9 @@ import { InventoryService } from 'src/app/services/db/inventory.service';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 import { FormAddItemComponent } from './form-add-item/form-add-item.component';
 import { FormControl } from '@angular/forms';
-import { debounceTime } from 'rxjs';
+import { debounceTime, Observable } from 'rxjs';
+import { ItemUnit } from 'src/app/models/item-unit';
+import { ItemsService } from 'src/app/services/db/items.service';
 
 
 type OrdenacaoItems = 'inclusion' | 'asc' | 'desc';
@@ -37,6 +39,8 @@ export class ListaCorrenteComponent implements OnInit {
   }
 
   sortOption: OrdenacaoItems = 'inclusion';
+
+  filteredOptions = new Observable<string[]>();
 
   get itemListWait(): Items[] {
     const listWait = this.items.filter(x => !x.isPurchased);
@@ -91,6 +95,8 @@ export class ListaCorrenteComponent implements OnInit {
     private readonly bottomSheet: MatBottomSheet,
     private readonly inventoryService: InventoryService,
     private readonly listsService: ItemListService,
+
+    private readonly dbService: ItemsService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: { idLista: number }
   ) { }
 
@@ -382,5 +388,28 @@ export class ListaCorrenteComponent implements OnInit {
   sortList(order: OrdenacaoItems): void {
     localStorage.setItem('sortPreference', order);
     this.sortOption = order;
+  }
+
+  displayOption(option: any): string {
+    return option ? option.name : '';
+  }
+
+  async addItemSimples(therm: string) {
+    const updatedItem: Items = {
+      isPurchased: false,
+      name: (therm ?? '').trim(),
+      quantity: 1,
+      unit: ItemUnit.UNID,
+      listId: this.idLista,
+      addedDate: new Date(),
+    };
+
+    const existingItem = this.items.find(x => x.name.toLowerCase() === therm.toLowerCase());
+
+    if (!existingItem) this.dbService.add(updatedItem);
+    else {
+      updatedItem.quantity = existingItem.quantity! + 1;
+      this.dbService.update(existingItem.id!, updatedItem);
+    }
   }
 }

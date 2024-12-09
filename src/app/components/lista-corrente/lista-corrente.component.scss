@@ -1,199 +1,200 @@
 @use 'theme-variables' as *;
 
 :host {
-  overflow: hidden;
-  height: 100%;
-  display: flex;
-  justify-content: center;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 :host ::ng-deep .mat-form-field-wrapper {
-  padding-bottom: 0;
+    padding-bottom: 0;
 }
 
 .list-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 mat-list-item#itens:last-child::after {
-  border-bottom: none;
-  content: none;
+    border-bottom: none;
+    content: none;
 }
 
 mat-list-item#itens,
 mat-list-item#itens {
-  min-height: auto;
-  align-items: flex-start;
-  height: auto;
+    min-height: auto;
+    align-items: flex-start;
+    height: auto;
 }
 
 .header {
-  width: 100%;
-  display: flex;
-  padding: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  align-items: center;
+    width: 100%;
+    display: flex;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    align-items: center;
 }
 
 .edicao-container {
-  padding-bottom: 16px;
-  display: flex;
-  width: 100%;
-  justify-content: space-evenly;
-  height: 100%;
-  overflow: hidden;
-  gap: 8px;
+    padding-bottom: 16px;
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    height: 100%;
+    overflow: hidden;
+    gap: 8px;
 }
 
 .list-container {
-  overflow: auto;
-  width: 100%;
+    overflow: auto;
+    width: 100%;
 }
 
 @media (min-width: 768px) {
-  .list-container {
-    width: auto;
-    min-width: 40%;
-  }
+    .list-container {
+        width: auto;
+        min-width: 40%;
+    }
 }
 
 .title {
-  margin: auto;
-  font-family: 'roboto';
-  gap: 8px;
-  display: flex;
-  flex-direction: column;
+    margin: auto;
+    font-family: 'roboto';
+    gap: 8px;
+    display: flex;
+    flex-direction: column;
 }
 
 .title-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .total-value {
-  display: flex;
-  justify-content: flex-end;
-  gap: 16px;
-  align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    align-items: center;
 
-  mat-divider {
-    width: 1px;
-    height: 16px;
-  }
+    mat-divider {
+        width: 1px;
+        height: 16px;
+    }
 }
 
 h3 {
-  margin: 0;
+    margin: 0;
 }
 
 .swipeable-item {
-  width: 100%;
-  transition: background-color 0.3s ease;
+    width: 100%;
+    transition: background-color 0.3s ease;
 }
 
 mat-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  margin-inline: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-inline: 8px;
 }
 
 .list-wait {
-  border-radius: $radius-default;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: $radius-default;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .list-done {
-  filter: opacity(50%);
+    filter: opacity(50%);
 
-  mat-list-item:hover {
-    background-color: inherit;
-  }
+    mat-list-item:hover {
+        background-color: inherit;
+    }
 }
 
 mat-list-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
 }
 
 mat-list-item::after {
-  content: "";
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 0;
-  height: 1px;
-  background-color: #ccc;
+    content: "";
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 0;
+    height: 1px;
+    background-color: #ccc;
 }
 
 app-lista-corrente-item {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
 }
 
 .floating-btn {
-  position: fixed;
-  bottom: 10vh;
-  right: 8vw;
-  z-index: 100;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  box-sizing: content-box;
-  min-width: fit-content;
+    position: fixed;
+    bottom: 10vh;
+    right: 8vw;
+    z-index: 100;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-sizing: content-box;
+    min-width: fit-content;
 }
 
 @media (max-width: 600px) {
-  .floating-btn {
-    bottom: 5vh;
-    right: 8vw;
-  }
+    .floating-btn {
+        bottom: 5vh;
+        right: 8vw;
+    }
 }
 
 @media (min-width: 1200px) {
-  .floating-btn {
-    right: 36vw;
-  }
+    .floating-btn {
+        right: 36vw;
+    }
 }
 
 .search-panel {
-  overflow: hidden;
-  border-radius: 16px;
+    overflow: hidden;
+    border-radius: 16px;
 }
 
 @media (min-width: 768px) {
-  .search-panel {
-    display: block;
-  }
+    .search-panel {
+        display: block;
+    }
 }
 
 .mat-menu-item.active {
-  font-weight: bold;
-  color: #00b894;
-  mat-icon {
+    font-weight: bold;
     color: #00b894;
-  }
+
+    mat-icon {
+        color: #00b894;
+    }
 }
 
 .mat-list-item.editing {
-  background-color: rgba(0, 184, 148, 0.2);
-  outline: none;
+    background-color: rgba(0, 184, 148, 0.2);
+    outline: none;
 }
 
-.search-field{
-  width: 100%;
-  padding: 16px;
-  box-sizing: border-box;
+.search-field {
+    width: 100%;
+    padding: 16px;
+    box-sizing: border-box;
 }

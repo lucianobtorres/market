@@ -128,9 +128,7 @@ export class SearchListComponent implements OnInit {
     }
 
     // Filtra os itens com base no termo de busca
-    const filtro = this.itemsSearch$.value.filter(x =>
-      x.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filtro = this.itemsSearch$.value.filter(x => x.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
     // Verifica se existe um item com nome exatamente igual ao termo de busca
     const itemExato = filtro.find(x => x.name.toLowerCase() === searchTerm.toLowerCase());
