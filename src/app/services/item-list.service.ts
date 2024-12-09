@@ -97,7 +97,10 @@ export class ItemListService {
   private async setShare(listaId: number, remove: boolean = false): Promise<Lists | null> {
     const lista = await db.lists.get(listaId);
     if (lista) {
-      lista.share = remove ? undefined : uuidv4();
+      if (lista.share && !remove) return lista;
+      if (remove) lista.share = undefined;
+      else lista.share = uuidv4();
+
       await db.lists.put(lista);
       return lista;
     }
