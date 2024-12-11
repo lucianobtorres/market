@@ -1,5 +1,13 @@
-<div class="balloon">
-    <h4>{{ title }}</h4>
+<div #balloon class="tooltip-balloon">
+    <div #triangle class="triangle"></div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h4>{{ title }}</h4>
+
+        <button class="launch" mat-icon-button (click)="openChat()" matTooltip="informações...">
+            <mat-icon>auto_awesome</mat-icon>
+        </button>
+
+    </div>
     <p [innerHTML]="message"></p>
     <button *ngIf="dismissable" (click)="dismiss()">Entendi</button>
 </div>

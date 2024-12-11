@@ -6,10 +6,16 @@
 
 <app-boas-vindas *ngIf="!itensList.length"></app-boas-vindas>
 
-<app-balloon-guide *ngIf="showBalloon" [title]="balloonTitle" [message]="balloonMessage"></app-balloon-guide>
+<app-balloon-guide *ngIf="showBalloon"
+    [title]="balloonTitle"
+    [message]="balloonMessage"
+    [targetElementId]="'itens'"
+    [position]="'bottom'"
+></app-balloon-guide>
+
 <!-- <app-qr-code-reader></app-qr-code-reader> -->
 <!-- <button mat-button class="floating-btn" (click)="novaLista()"> + Nova Lista</button> -->
-<button mat-raised-button class="floating-btn" (click)="novaLista();">
+<button mat-raised-button class="floating-btn" (click)="novaLista();" id="nova-lista">
     <div style="display: flex; gap: 8px; align-items: center;">
         <mat-icon>add_circle</mat-icon>
         <small>Nova Lista</small>

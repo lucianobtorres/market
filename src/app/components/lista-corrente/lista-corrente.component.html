@@ -73,7 +73,7 @@
     </div>
     <mat-form-field class="search-field">
         <mat-label>Pesquisar</mat-label>
-        <input matInput
+        <input matInput #campoSearch
             [formControl]="searchControl"
             [matAutocomplete]="auto"
             [matAutocompletePosition]="'above'"

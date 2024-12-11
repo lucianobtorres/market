@@ -1,31 +1,26 @@
 @use "theme-variables" as *;
 
-body.light-theme :host>.balloon{
+body.light-theme :host>.tooltip-balloon{
   background-color: $background-accent-light;
 }
 
-body.dark-theme :host>.balloon{
+body.dark-theme :host>.tooltip-balloon{
   background-color: $background-accent-dark;
 
 }
 
-:host {
+.tooltip-balloon {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  max-width: 320px;
-}
-
-.balloon {
+  transition: opacity 0.3s;
+  z-index: 1000;
   margin: 16px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: $radius-default;
   padding: 16px;
   z-index: 1000;
 
-  h4 {
-    margin: 0 0 8px 0;
+  div > h4 {
+    margin: 0 ;
     font-size: 1.2rem;
     color: #00b894; // Cor primária
   }
@@ -41,13 +36,29 @@ body.dark-theme :host>.balloon{
     }
   }
 
-  button {
+  button:not(.launch) {
     margin-top: 12px;
     padding: 8px 16px;
     background: #00b894;
-    color: white;
+    color: #fff;
     border: none;
     border-radius: $radius-default;
     cursor: pointer;
   }
+
+  .launch {
+    opacity: 0.4;
+  }
+}
+
+.triangle {
+  position: absolute;
+  bottom: -8px;
+  transform: rotate(45deg);
+  z-index: -10;
+  border: 0;
+  height: 20px;
+  width: 20px;
+  border-radius: 4px;
+  background: inherit;
 }

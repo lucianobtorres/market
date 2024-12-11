@@ -66,8 +66,9 @@ export class ListasComponent implements OnInit {
       }
     }, 2000);
   }
+
   showBalloon: boolean = false;
-  balloonTitle: string = 'Bem-vindo!';
+  balloonTitle: string = 'Bem-vindo ao PoupeAI!';
   balloonMessage: string = `<p>Essa é uma <strong>lista de exemplo</strong>. Explore o sistema:</p>
     <ul>
       <li><a (click)="createNewList()">Crie sua própria lista</a></li>

@@ -57,6 +57,7 @@ import { BalloonGuideComponent } from './balloon-guide/balloon-guide.component';
 import { ChatAssistantComponent } from './chat-assistant/chat-assistant.component';
 import { BoasVindasComponent } from './boas-vindas/boas-vindas.component';
 import { QrCodeReaderComponent } from './qr-code-reader/qr-code-reader.component';
+import { ChatAssistantModalDialogComponent } from './chat-assistant/chat-assistant-modal-dialog/chat-assistant-modal-dialog.component';
 
 
 export const components = [
@@ -102,6 +103,7 @@ export const components = [
   BoasVindasComponent,
   BalloonGuideComponent,
   ChatAssistantComponent,
+  ChatAssistantModalDialogComponent,
   QrCodeReaderComponent
 ]
 

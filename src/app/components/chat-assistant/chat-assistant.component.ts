@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Optional, Output } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { ChatAssistantModalDialogComponent } from './chat-assistant-modal-dialog/chat-assistant-modal-dialog.component';
 
 export interface ChatMessage {
   text: string;
@@ -11,13 +13,19 @@ export interface ChatMessage {
   styleUrls: ['./chat-assistant.component.scss']
 })
 export class ChatAssistantComponent implements OnInit {
+  @Output() closeEmit = new EventEmitter<void>();
   messages: ChatMessage[] = [];
   userInput: string = '';
 
+  constructor(
+    private dialog: MatDialog,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: { contextMessage: string },
+  ) { }
+
   ngOnInit(): void {
-    // Carregar o histórico do localStorage
     const savedMessages = localStorage.getItem('chatHistory');
     this.messages = savedMessages ? JSON.parse(savedMessages) : [];
+    if (this.data && this.data.contextMessage.length) this.messages.push({ text: this.data.contextMessage, type: 'assistant' });
   }
 
   sendMessage(): void {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Optional, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewChild } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { FormListaCorrenteItemComponent } from './form-lista-corrente-item/form-lista-corrente-item.component';
 import { Items, Lists, nameof, PurchaseHistory } from 'src/app/models/interfaces';
@@ -393,7 +393,7 @@ export class ListaCorrenteComponent implements OnInit {
   displayOption(option: any): string {
     return option ? option.name : '';
   }
-
+  @ViewChild('campoSearch') campoSearch!: ElementRef;
   async addItemSimples(therm: string) {
     const updatedItem: Items = {
       isPurchased: false,
@@ -411,5 +411,11 @@ export class ListaCorrenteComponent implements OnInit {
       updatedItem.quantity = existingItem.quantity! + 1;
       this.dbService.update(existingItem.id!, updatedItem);
     }
+
+    setTimeout(() => {
+      const inputElement = this.campoSearch.nativeElement;
+      inputElement.focus();
+      inputElement.select();
+    }, 200);
   }
 }
