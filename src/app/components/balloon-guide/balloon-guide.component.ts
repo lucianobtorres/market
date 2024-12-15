@@ -1,28 +1,41 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { AgentService } from 'src/app/services/agente/agente.service';
 import { ChatAssistantModalDialogComponent } from '../chat-assistant/chat-assistant-modal-dialog/chat-assistant-modal-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { InactivityService } from 'src/app/services/inactivity.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-balloon-guide',
   templateUrl: './balloon-guide.component.html',
   styleUrls: ['./balloon-guide.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BalloonGuideComponent implements AfterViewInit {
+export class BalloonGuideComponent implements OnInit, AfterViewInit {
   @Output() openChatEvent = new EventEmitter<void>();
   @Input() targetElementId?: string;
   @Input() title!: string;
   @Input() message!: string;
+  messageSafe!: SafeHtml;
   @Input() dismissable: boolean = true;
   @Input() position: 'top' | 'bottom' | 'left' | 'right' = 'top';
   @ViewChild('balloon') balloonRef!: ElementRef;
   @ViewChild('triangle') triangleRef!: ElementRef;
+  @ViewChild('messageInner', { static: true }) messageInner!: ElementRef;
 
   constructor(
     private dialog: MatDialog,
     private agenteService: AgentService,
     private renderer: Renderer2,
+    private inactivityService: InactivityService,
+    private sanitizer: DomSanitizer,
   ) { }
+
+  ngOnInit() {
+    if (this.message.length) this.messageSafe = this.sanitizer.bypassSecurityTrustHtml(this.message);
+    else this.dismiss();
+  }
+
   ngAfterViewInit(): void {
     if (this.targetElementId) {
       this.positionBalloon();
@@ -69,12 +82,12 @@ export class BalloonGuideComponent implements AfterViewInit {
           this.renderer.setStyle(triangle, 'right', `${-8}px`);
           this.renderer.setStyle(triangle, 'top', `${targetRect.top - 20 + (targetRect.height / 2)}px`);
           break;
-          case 'right':
-            topBalloon = targetRect.top + targetRect.height / 2 - balloonRect.height / 2;
-            leftBalloon = targetRect.right + offset;
-            this.renderer.setStyle(triangle, 'left', `${-8}px`);
-            this.renderer.setStyle(triangle, 'top', `${targetRect.top - 20 + (targetRect.height / 2)}px`);
-            break;
+        case 'right':
+          topBalloon = targetRect.top + targetRect.height / 2 - balloonRect.height / 2;
+          leftBalloon = targetRect.right + offset;
+          this.renderer.setStyle(triangle, 'left', `${-8}px`);
+          this.renderer.setStyle(triangle, 'top', `${targetRect.top - 20 + (targetRect.height / 2)}px`);
+          break;
       }
 
       // Ajusta posicionamento horizontal para não sair da tela
@@ -111,9 +124,10 @@ export class BalloonGuideComponent implements AfterViewInit {
   }
 
   dismiss() {
-    const balloon = document.querySelector('.tooltip-balloon') as HTMLElement;
-    if (balloon) balloon.style.display = 'none';
+    const balloon = this.balloonRef.nativeElement;
+    this.renderer.setStyle(balloon, 'display', 'none');
     this.agenteService.recordInteraction({ text: this.message, type: 'assistant' });
+    this.inactivityService.closeAgent();
   }
 
   openChat() {
@@ -129,8 +143,6 @@ export class BalloonGuideComponent implements AfterViewInit {
       this.closeDiag();
     });
   }
-  async closeDiag() {
-    //
 
-  }
+  async closeDiag() { }
 }

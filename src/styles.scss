@@ -2,6 +2,7 @@
 @use 'theme-mixins' as *;
 @use 'app-theme' as *;
 @use '@angular/material' as mat;
+
 @import '@angular/material/theming';
 
 html, body {
@@ -196,4 +197,17 @@ input.input-element {
   // margin: 6px;
   // background: #424242;
   // border-radius: 16px;
+}
+
+.suggestion-link {
+  background: none;
+  border: none;
+  color: #00b894; /* Cor primária, semelhante ao link */
+  text-decoration: underline; /* Decoração de link */
+  cursor: pointer; /* Indica que é clicável */
+}
+
+.suggestion-link:hover {
+  text-decoration: none; /* Retira o sublinhado ao passar o mouse */
+  color: #1abc9c; /* Cor de destaque ao passar o mouse */
 }

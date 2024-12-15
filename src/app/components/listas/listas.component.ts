@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { db } from 'src/app/db/model-db';
 import { ItemShoppingList } from 'src/app/models/interfaces';
-import { AgentService, Suggestion } from 'src/app/services/agente/agente.service';
+import { AgentService, ContextStrategy, Suggestion, suggestionClass } from 'src/app/services/agente/agente.service';
+import { NlpService } from 'src/app/services/agente/nlp.service';
+import { InactivityService } from 'src/app/services/inactivity.service';
 import { ItemListService } from 'src/app/services/item-list.service';
 
 
@@ -10,22 +12,23 @@ import { ItemListService } from 'src/app/services/item-list.service';
   templateUrl: './listas.component.html',
   styleUrls: ['./listas.component.scss'],
 })
-export class ListasComponent implements OnInit {
+export class ListasComponent implements OnInit, AfterViewInit {
   public itensList: ItemShoppingList[] = [];
 
   showInstallMessage = this.showIosInstallModal('iosnew');
   suggestions: Suggestion[] = [];
-  context: any = {
+  context: ContextStrategy = {
     pantryEmpty: false,
     recentPurchases: [],
-    listEmpty: true,
+    listCount: 0,
   };
 
   constructor(
     private readonly listsService: ItemListService,
-    private readonly agentService: AgentService
+    private readonly agentService: AgentService,
+    private inactivityService: InactivityService,
+    private elementRef: ElementRef,
   ) {
-
     document.addEventListener("DOMContentLoaded", () => {
       const popup = document.getElementById("install-popup");
 
@@ -48,16 +51,20 @@ export class ListasComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.listsService.listas$.subscribe((listas) => {
       this.itensList = listas.filter(x => x.lists.status !== 'completed' || x.itens.some(y => !y.isPurchased));
     });
 
-    this.context.listEmpty = !this.itensList.length;
-    this.context.pantryEmpty = true;
+    this.context.listCount = this.itensList.length;
+    this.context.pantryEmpty = (await db.inventory
+      .filter(item => item.currentQuantity > 0)
+      .toArray()).length === 0;
+
+    this.context.hasSomeHistory = await (await db.purchasesHistory.toArray()).length > 0;
+    this.context.recentPurchases = await db.purchasesHistory.toArray();
 
     this.suggestions = this.agentService.generateSuggestions(this.context);
-    console.log(this.suggestions)
 
     setTimeout(async () => {
       const hasInteracted = await this.agentService.hasInteracted({ text: this.balloonMessage, type: 'assistant' });
@@ -65,6 +72,37 @@ export class ListasComponent implements OnInit {
         this.showBalloon = true;
       }
     }, 2000);
+  }
+
+  ngAfterViewInit(): void {
+    this.inactivityService.showAgent$.subscribe((show) => {
+      this.showBalloon = show;
+      if (show) {
+        this.balloonTitle = 'Dicas'
+        this.balloonMessage = this.agentService.getSuggestionsHtml(this.suggestions);
+
+        setTimeout(() => {
+          const itens = this.elementRef.nativeElement.querySelectorAll(`.${suggestionClass}`);
+          itens?.forEach((tag: HTMLElement) => tag.addEventListener('click', this.handleLinkClick.bind(this)));
+        }, 100);
+
+      } else {
+        setTimeout(() => {
+          const itens = this.elementRef.nativeElement.querySelectorAll(`.${suggestionClass}`);
+          itens?.forEach((tag: HTMLElement) => tag.removeEventListener('click', this.handleLinkClick.bind(this)))
+        }, 100);
+      }
+    });
+  }
+
+  handleLinkClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    if (target) {
+      this.agentService.handleAction(target.innerText, this.suggestions);
+      this.inactivityService.closeAgent();
+
+      this.suggestions = this.agentService.generateSuggestions(this.context);
+    }
   }
 
   showBalloon: boolean = false;
@@ -76,9 +114,6 @@ export class ListasComponent implements OnInit {
     </ul>
   `;
 
-  handleAction(action: () => void): void {
-    action();
-  }
 
   novaLista() {
     db.lists.add({ name: "Nova Lista", status: 'active', createdDate: new Date });

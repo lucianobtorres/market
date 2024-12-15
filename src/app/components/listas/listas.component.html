@@ -6,7 +6,7 @@
 
 <app-boas-vindas *ngIf="!itensList.length"></app-boas-vindas>
 
-<app-balloon-guide *ngIf="showBalloon"
+<app-balloon-guide *ngIf="showBalloon && balloonMessage.length"
     [title]="balloonTitle"
     [message]="balloonMessage"
     [targetElementId]="'itens'"

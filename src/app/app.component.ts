@@ -5,6 +5,7 @@ import { ROTAS } from './app-routing.module';
 import { ThemeService } from './services/theme.service';
 import { ItemListService } from './services/item-list.service';
 import { SwUpdate } from '@angular/service-worker';
+import { InactivityService } from './services/inactivity.service';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ export class AppComponent implements AfterViewInit, OnInit {
     private themeService: ThemeService,
     private itemShoppingListService: ItemListService,
     private swUpdate: SwUpdate,
+    private inactivityService: InactivityService,
   ) {
     router.canceledNavigationResolution = 'computed';
 
@@ -33,6 +35,15 @@ export class AppComponent implements AfterViewInit, OnInit {
     window.onpopstate = function () {
       history.go(1);
     };
+  }
+
+
+  @HostListener('document:mousemove', ['$event'])
+  @HostListener('document:keydown', ['$event'])
+  @HostListener('document:touchstart', ['$event'])
+  @HostListener('document:touchmove', ['$event'])
+  handleUserInteraction(): void {
+    this.inactivityService.resetTimer(null);
   }
 
   @HostListener('window:resize', [])
@@ -46,6 +57,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
     this.checkForUpdates();
+    this.inactivityService.start();
 
     const splash = document.getElementById('splash-screen');
     if (splash) {

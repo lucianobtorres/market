@@ -8,6 +8,6 @@
         </button>
 
     </div>
-    <p [innerHTML]="message"></p>
+    <p #messageInner [innerHTML]="messageSafe"></p>
     <button *ngIf="dismissable" (click)="dismiss()">Entendi</button>
 </div>
