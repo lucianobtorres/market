@@ -1,14 +1,17 @@
-<button mat-button (click)="closeEmit.emit()" style="position: absolute; margin: 16px; border-radius: 16px; padding: 0; padding-right: 16px;">
+<button mat-button (click)="closeEmit.emit()"
+    style="position: absolute; margin: 16px; border-radius: 16px; padding: 0; padding-right: 16px;">
     <mat-icon>chevron_left</mat-icon>voltar
 </button>
 <div class="chat-container">
     <div class="chat-messages">
         <div *ngFor="let message of messages" [class]="message.type">
             <span [innerHTML]="message.text"></span>
+            <!-- <span [innerHTML]="messageSafe"></span> -->
         </div>
     </div>
     <mat-form-field class="chat-input" style="width: 100%; padding: 0;">
-        <input matInput [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Digite sua mensagem..." autofocus />
-        <mat-icon matSuffix  matTooltip="Enviar" (click)="sendMessage()">done</mat-icon>
+        <input matInput [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Digite sua mensagem..."
+            autofocus />
+        <mat-icon matSuffix matTooltip="Enviar" (click)="sendMessage()">done</mat-icon>
     </mat-form-field>
 </div>
