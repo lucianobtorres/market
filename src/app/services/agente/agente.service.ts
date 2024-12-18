@@ -1,19 +1,18 @@
 import { Injectable } from "@angular/core";
-import { PantryContext, PantrySuggestionStrategy } from "./pantry-suggestion-strategy";
-import { HistoryContext, HistorySuggestionStrategy } from "./history-suggestion-strategy";
+import { PantrySuggestionStrategy } from "./strategies/pantry-suggestion-strategy";
+import { HistorySuggestionStrategy } from "./strategies/history-suggestion-strategy";
 import { ChatMessage } from "src/app/components/chat-assistant/chat-assistant.component";
-import { ListContext, ListSuggestionStrategy } from "./list-suggestion-strategy";
+import { ListSuggestionStrategy } from "./strategies/list-suggestion-strategy";
 import { NlpService } from "./nlp.service";
+import { ContextStrategy, Suggestion, SuggestionStrategy } from "./strategies/suggestion-strategy";
 
 
 export const suggestionClass = 'suggestion-link';
-export type ContextStrategy = Partial<HistoryContext & ListContext & PantryContext>;
 
 @Injectable({
   providedIn: 'root',
 })
 export class AgentService {
-  private strategies: SuggestionStrategy[] = [];
   messages: ChatMessage[] = [];
 
   interactions: Set<string> = new Set();
@@ -21,12 +20,6 @@ export class AgentService {
   constructor(
     private nlp: NlpService,
   ) {
-    this.strategies = [
-      new ListSuggestionStrategy(),
-      new PantrySuggestionStrategy(),
-      new HistorySuggestionStrategy(),
-    ];
-
     nlp.registerStrategy(new PantrySuggestionStrategy());
     nlp.registerStrategy(new HistorySuggestionStrategy());
     nlp.registerStrategy(new ListSuggestionStrategy());
@@ -45,12 +38,11 @@ export class AgentService {
   generateSuggestions(context: ContextStrategy): Suggestion[] {
     const suggestions: Suggestion[] = [];
 
-    this.strategies.forEach((strategy) => {
+    this.nlp.strategies.forEach((strategy) => {
       suggestions.push(...strategy.generate(context));
     });
 
     const dynamicLimit = this.calculateDynamicLimit(context);
-
     const shuffledSuggestions = suggestions.sort(() => Math.random() - 0.5);
 
     return shuffledSuggestions.slice(0, dynamicLimit);
@@ -61,12 +53,11 @@ export class AgentService {
       const regex = new RegExp(`(${suggestion.linkText})`, 'gi');
       let replacedText = suggestion.text;
 
-      // Verifica se o linkText está presente no texto
       if (!regex.test(suggestion.text)) {
-        // Se não estiver, adiciona o link no final do texto
-        replacedText += ` <span class="${suggestionClass}" (click)="handleAction('${suggestion.linkText}')">${suggestion.linkText}</span>`;
+        if (suggestion.linkText?.length) {
+          replacedText += ` <span class="${suggestionClass}" (click)="handleAction('${suggestion.linkText}')">${suggestion.linkText}</span>`;
+        }
       } else {
-        // Substitui o linkText pelo link correspondente
         replacedText = replacedText.replace(regex, `<span class="${suggestionClass}" (click)="handleAction('${suggestion.linkText}')">$1</span>`);
       }
 
@@ -86,7 +77,7 @@ export class AgentService {
   private calculateDynamicLimit(context: ContextStrategy): number {
     let limit = 3;
 
-    this.strategies.forEach((strategy) => {
+    this.nlp.strategies.forEach((strategy) => {
       limit += strategy.calculateDynamicLimit(context);
     });
 
@@ -107,28 +98,11 @@ export class AgentService {
     this.messages.push(key);
     localStorage.setItem('chatHistory', JSON.stringify(this.messages));
   }
-}
 
-// Tipo de dados para sugestões
-export interface Suggestion {
-  text: string;
-  linkText?: string;
-  action?: () => void;
-}
-
-export interface Intent {
-  name: string,
-  entities: string[],
-  examples: string[]
-}
-
-export interface SuggestionStrategy {
-  intents: Intent[];
-
-  generate(context: any): Suggestion[];
-  calculateDynamicLimit(context: ContextStrategy): number
-  canHandle(intent: string): boolean;
-  execute(intent: string, entities: { [key: string]: any }): Promise<Suggestion[]>;
+  async getAssistantResponse(input: string): Promise<string> {
+    const suggestions = await this.nlp.processInput(input);
+    return this.getSuggestionsHtml(suggestions);
+  }
 }
 
 function generateHash(text: string): Promise<string> {

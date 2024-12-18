@@ -1,5 +1,5 @@
 import { db } from "src/app/db/model-db";
-import { Intent, Suggestion, SuggestionStrategy } from "./agente.service";
+import { SuggestionStrategy, Suggestion } from "./suggestion-strategy";
 
 export class HistoryContext {
   recentPurchases: { items: { name: string; }[]; }[] = [];
@@ -8,26 +8,29 @@ export class HistoryContext {
 
 type intentOption = 'last_purchase' | 'purchase_frequency';
 
-export class HistorySuggestionStrategy implements SuggestionStrategy {
-  intents: Intent[] = [{
-    name: "last_purchase",
-    entities: ["item"],
-    examples: [
-      "quando comprei leite pela última vez",
-      "última compra de arroz",
-      "último item comprado"
-    ]
-  },
-  {
-    name: "purchase_frequency",
-    entities: ["item"],
-    examples: [
-      "com que frequência compro leite",
-      "quantas vezes comprei arroz",
-      "histórico de compras de itens"
-    ]
-  }]
+export class HistorySuggestionStrategy extends SuggestionStrategy {
 
+  constructor() {
+    super();
+    this.intents = [{
+      name: "last_purchase",
+      entities: ["item"],
+      examples: [
+        "quando comprei leite pela última vez",
+        "última compra de arroz",
+        "último item comprado"
+      ]
+    },
+    {
+      name: "purchase_frequency",
+      entities: ["item"],
+      examples: [
+        "com que frequência compro leite",
+        "quantas vezes comprei arroz",
+        "histórico de compras de itens"
+      ]
+    }]
+  }
   generate(context: HistoryContext): Suggestion[] {
     const suggestions: Suggestion[] = [];
     if (context.hasSomeHistory) {
@@ -119,7 +122,7 @@ export class HistorySuggestionStrategy implements SuggestionStrategy {
     return ['last_purchase', 'purchase_frequency'].includes(intent);
   }
 
-  async execute(intent: intentOption, entities: { [key: string]: any }): Promise<Suggestion[]> {
+  async chatResponse(intent: intentOption, entities: { [key: string]: any }): Promise<Suggestion[]> {
     const suggestions: Suggestion[] = [];
 
     if (intent === 'last_purchase' && entities['itemName']) {

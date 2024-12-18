@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { db } from 'src/app/db/model-db';
 import { ItemShoppingList } from 'src/app/models/interfaces';
-import { AgentService, ContextStrategy, Suggestion, suggestionClass } from 'src/app/services/agente/agente.service';
-import { NlpService } from 'src/app/services/agente/nlp.service';
+import { AgentService, suggestionClass } from 'src/app/services/agente/agente.service';
+import { ContextStrategy, Suggestion } from 'src/app/services/agente/strategies/suggestion-strategy';
 import { InactivityService } from 'src/app/services/inactivity.service';
 import { ItemListService } from 'src/app/services/item-list.service';
 

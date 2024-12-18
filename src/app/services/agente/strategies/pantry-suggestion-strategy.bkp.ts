@@ -1,6 +1,6 @@
 import { db } from "src/app/db/model-db";
-import { Intent, Suggestion, SuggestionStrategy } from "./agente.service";
 import { Inventory, nameof } from "src/app/models/interfaces";
+import { Suggestion } from "./suggestion-strategy";
 
 const item = "(?:\\b(?:e|ou)\\s+)?([^\\s]+)";
 // const item = "(.+?)";
@@ -13,8 +13,9 @@ class PantryContext {
 
 type intentOption = 'check_pantry' | 'check_item';
 
-class PantrySuggestionStrategy2 implements SuggestionStrategy {
-  intents: Intent[] = [
+// class PantrySuggestionStrategy2 extends SuggestionStrategy {
+class PantrySuggestionStrategy2 {
+  intents = [
     {
       name: "check_pantry",
       entities: [],

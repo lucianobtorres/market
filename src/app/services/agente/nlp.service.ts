@@ -1,31 +1,17 @@
 import { Injectable } from "@angular/core";
-import { ContextStrategy, Intent, Suggestion, SuggestionStrategy } from "./agente.service";
-import { db } from "src/app/db/model-db";
-import { liveQuery } from "dexie";
+import { SuggestionStrategy, Intent, Suggestion } from "./strategies/suggestion-strategy";
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class NlpService {
-  private strategies: SuggestionStrategy[] = [];
-  private _itens: string[] = [];
-  get itens() {
-    return this._itens;
-  }
-
+  strategies: SuggestionStrategy[] = [];
   private intents: Intent[] = [];
   private conversationContext: {
     lastIntent?: string;
     lastEntities?: { [key: string]: any };
   } = {};
-
-  constructor() {
-    liveQuery(() => db.inventory.toArray()).subscribe(itens => {
-      console.log(itens)
-      this._itens = itens.map(x => x.name.toLowerCase());
-    });
-  }
 
   registerStrategy(strategy: SuggestionStrategy): void {
     this.strategies.push(strategy);
@@ -47,7 +33,7 @@ export class NlpService {
     }
 
     // Passo 3: Executar a estratégia
-    return strategy.execute(intent, entities);
+    return strategy.chatResponse(intent, entities);
   }
 
   private detectIntentAndEntities(input: string): { intent: string; entities: { [key: string]: any } } {
@@ -58,23 +44,14 @@ export class NlpService {
         const regex = new RegExp(example, "i");
         const match = regex.exec(normalizedInput);
 
-        console.log(match)
         if (match) {
           const entities: { [key: string]: any } = {};
 
           // Captura entidades do regex
           if (intent.entities && match.length > 1) {
-            console.log(intent.entities)
             intent.entities.forEach((entity, index) => {
               entities[entity] = match[index + 1]; // Aqui já está extraído, como "arro" em vez de "arroz"
             });
-          }
-
-          // Ajusta a entidade com fuzzy matching
-          if (entities['itemName']) {
-            const closestItem = this.getClosestItem(entities['itemName'], this.itens);
-            console.log(this.itens, closestItem)
-            entities['itemName'] = closestItem || entities['itemName']; // Substitui pelo match mais próximo
           }
 
           // Atualiza o contexto
@@ -107,44 +84,5 @@ export class NlpService {
     }
 
     return inferredEntities;
-  }
-
-  private getClosestItem(query: string, items: string[]): string | null {
-    let bestMatch = null;
-    let highestScore = 0;
-
-    for (const item of items) {
-      const similarity = this.calculateSimilarity(query, item);
-      if (similarity > highestScore && similarity > 0.6) { // Ajuste o limite de similaridade
-        highestScore = similarity;
-        bestMatch = item;
-      }
-    }
-
-    return bestMatch;
-  }
-
-  private calculateSimilarity(a: string, b: string): number {
-    const distance = this.levenshteinDistance(a, b);
-    return 1 - distance / Math.max(a.length, b.length);
-  }
-
-  private levenshteinDistance(a: string, b: string): number {
-    const matrix = Array.from({ length: a.length + 1 }, (_, i) => Array(b.length + 1).fill(0));
-
-    for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
-    for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
-
-    for (let i = 1; i <= a.length; i++) {
-      for (let j = 1; j <= b.length; j++) {
-        matrix[i][j] = Math.min(
-          matrix[i - 1][j] + 1,
-          matrix[i][j - 1] + 1,
-          matrix[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
-        );
-      }
-    }
-
-    return matrix[a.length][b.length];
   }
 }

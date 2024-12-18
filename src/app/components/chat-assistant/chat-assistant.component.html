@@ -3,9 +3,9 @@
     <mat-icon>chevron_left</mat-icon>voltar
 </button>
 <div class="chat-container">
-    <div class="chat-messages">
+    <div #container class="chat-messages">
         <div *ngFor="let message of messages" [class]="message.type">
-            <span [innerHTML]="message.text"></span>
+            <span [innerHTML]="getSafeMessage(message.text)"></span>
             <!-- <span [innerHTML]="messageSafe"></span> -->
         </div>
     </div>

@@ -1,10 +1,8 @@
 import { db } from "src/app/db/model-db";
-import { Intent, Suggestion, SuggestionStrategy } from "./agente.service";
 import { Inventory, nameof } from "src/app/models/interfaces";
 import { liveQuery } from "dexie";
+import { pseudo_entity, Suggestion, SuggestionStrategy } from "./suggestion-strategy";
 
-const item = "(?:\\b(?:e|ou)\\s+)?([^\\s]+)";
-// const item = "(.+?)";
 export class PantryContext {
   pantryEmpty: boolean = false;
   pantryCriticalItems: { name: string; }[] = [];
@@ -12,66 +10,123 @@ export class PantryContext {
   hasDuplicates?: boolean;
 }
 
-type intentOption = 'check_pantry' | 'check_item' | 'add_items' | 'manage_duplicates' | 'seasonal_items' | 'adjust_dispense';
+const intentOptions = [
+  'check_pantry',
+  'check_item',
+  'add_items',
+  'manage_duplicates',
+  'seasonal_items',
+  'adjust_dispense',
+] as const;
 
-export class PantrySuggestionStrategy implements SuggestionStrategy {
-  intents: Intent[] = [
-    {
-      name: "check_pantry",
-      entities: [],
-      examples: [
-        "o que tem na dispensa",
-        "preciso verificar a dispensa",
-      ]
-    },
-    {
-      name: "check_item",
-      entities: ["itemName"],
-      examples: [
-        `tem ${item} na dispensa`,
-        `tem ${item}`,
-        `comprei ${item}`,
-        `(?:e|ou) ${item}`
-      ]
-    }
-  ];
-  entities = [
-    {
-      name: "itemName",
-      type: "string",
-      description: "Qualquer item na dispensa",
-      pattern: "\\b(leite|arroz|feijão|banana|...|outrosItensPossiveis)\\b"
-    }
-  ]
+type intentOption = (typeof intentOptions)[number];
 
+export class PantrySuggestionStrategy extends SuggestionStrategy {
   private pantryCriticalItems: Inventory[] = [];
   private hasDuplicates: boolean = false;
   private averageConsumptionRate: number | null = null;
   private isPantryEmpty = false;
 
+  private _itens: string[] = [];
+  get itens() {
+    return this._itens;
+  }
+
   constructor() {
-    // LiveQuery para manter os dados atualizados
+    super();
+
+    this.initializeIntents();
+
     liveQuery(() => db.inventory.toArray()).subscribe(items => {
       this.updatePantryCriticalItems(items);
       this.updateHasDuplicates(items);
       this.updateAverageConsumptionRate(items);
       this.isPantryEmpty = items.length <= 0;
+      this._itens = items.map(x => x.name.toLowerCase());
     });
   }
 
+  private initializeIntents() {
+    this.intents = [
+      {
+        name: "check_pantry",
+        entities: [],
+        examples: [
+          "o que tem na dispensa",
+          "preciso verificar a dispensa",
+        ]
+      },
+      {
+        name: "check_item",
+        entities: ["itemName"],
+        examples: [
+          `tem ${pseudo_entity} na dispensa`,
+          `tem ${pseudo_entity}`,
+          `comprei ${pseudo_entity}`,
+          `(?:e|ou) ${pseudo_entity}`
+        ]
+      }
+    ];
+  }
+
   canHandle(intent: intentOption): boolean {
-    return ['check_pantry', 'check_item', 'add_items', 'manage_duplicates', 'seasonal_items', 'adjust_dispense'].includes(intent);
+    return intentOptions.includes(intent);
   }
 
   calculateDynamicLimit(context: PantryContext): number {
     let limit = 0;
-    if (context.pantryCriticalItems?.length > 5) limit += 2;
+    if (this.pantryCriticalItems?.length > 5) limit += 2;
 
     return limit;
   }
 
-  async execute(intent: intentOption, entities: { [key: string]: any }): Promise<Suggestion[]> {
+  generate(context: PantryContext): Suggestion[] {
     const suggestions: Suggestion[] = [];
+
+    // Sugestões caso a dispensa esteja vazia
+    if (this.isPantryEmpty) {
+      suggestions.push(...this.suggestAddItems());
+    }
+
+    // Sugestões para itens críticos
+    if (this.pantryCriticalItems.length > 0) {
+      this.pantryCriticalItems.forEach(item => {
+        suggestions.push({
+          text: `O item ${item.name} está acabando.`,
+          linkText: "Reabasteça agora.",
+          action: () => console.log(`Ação: Reabastecer ${item.name}`),
+        });
+      });
+    }
+
+    // Sugestões baseadas no consumo médio
+    if (this.averageConsumptionRate !== null) {
+      suggestions.push({
+        text: "Baseado no seu consumo, recomendamos reabastecer itens frequentes.",
+        linkText: "Adicionar itens sugeridos",
+        action: () => console.log("Ação: Adicionar itens sugeridos baseados no consumo médio"),
+      });
+    }
+
+    // Sugestões para itens duplicados
+    if (this.hasDuplicates) {
+      suggestions.push(...this.suggestManageDuplicates());
+    }
+
+    return suggestions;
+  }
+
+  async chatResponse(intent: intentOption, entities: { [key: string]: any }): Promise<Suggestion[]> {
+    const suggestions: Suggestion[] = [];
+    if (entities['itemName']) {
+      const closestItems = this.getClosestTherm(entities['itemName'], this.itens);
+      if (closestItems.length === 1) {
+        entities['itemName'] = closestItems[0];
+      } else if (closestItems.length > 1) {
+        const itemOptions = closestItems.join(', '); // Ex.: "leite condensado, leite desnatado"
+        entities['itemName'] = itemOptions || entities['itemName']; // Substitui pelo melhor match
+      }
+    }
 
     switch (intent) {
       case 'check_pantry':
@@ -111,11 +166,11 @@ export class PantrySuggestionStrategy implements SuggestionStrategy {
     return suggestions;
   }
 
-  private async suggestPantryOverview(): Promise<Suggestion> {
-    const pantryItems = await db.inventory.toArray();
+  private suggestPantryOverview(): Suggestion {
     return {
-      text: `Você tem ${pantryItems.length} itens na dispensa.`,
-      action: () => { }
+      text: `Você tem ${this.itens.length} itens na dispensa.`,
+      linkText: "itens na dispensa",
+      action: () => console.log(` ${this.itens.length}`),
     };
   }
 
@@ -138,9 +193,9 @@ export class PantrySuggestionStrategy implements SuggestionStrategy {
 
   private suggestAddItems(): Suggestion[] {
     return [{
-      text: "Sua dispensa está vazia. ",
-      linkText: "Adicione itens.",
-      action: () => console.log("Ação: Abrir tela de adicionar itens"),
+      text: "Sua dispensa ainda está vazia. ",
+      linkText: "Adicione itens à dispensa.",
+      action: () => console.log("Ação: Abrir tela de adicionar itens na dispensa"),
     }];
   }
 
@@ -166,42 +221,6 @@ export class PantrySuggestionStrategy implements SuggestionStrategy {
       linkText: "ajustar sua dispensa",
       action: () => console.log("Ação: Gerenciar itens 'não repor'"),
     }];
-  }
-
-  generate(context: PantryContext): Suggestion[] {
-    const suggestions: Suggestion[] = [];
-
-    // Sugestões caso a dispensa esteja vazia
-    if (this.isPantryEmpty) {
-      suggestions.push(...this.suggestAddItems());
-    }
-
-    // Sugestões para itens críticos
-    if (this.pantryCriticalItems.length > 0) {
-      this.pantryCriticalItems.forEach(item => {
-        suggestions.push({
-          text: `O item ${item.name} está acabando.`,
-          linkText: "Reabasteça agora.",
-          action: () => console.log(`Ação: Reabastecer ${item.name}`),
-        });
-      });
-    }
-
-    // Sugestões baseadas no consumo médio
-    if (this.averageConsumptionRate !== null) {
-      suggestions.push({
-        text: "Baseado no seu consumo, recomendamos reabastecer itens frequentes.",
-        linkText: "Adicionar itens sugeridos",
-        action: () => console.log("Ação: Adicionar itens sugeridos baseados no consumo médio"),
-      });
-    }
-
-    // Sugestões para itens duplicados
-    if (this.hasDuplicates) {
-      suggestions.push(...this.suggestManageDuplicates());
-    }
-
-    return suggestions;
   }
 
   private updatePantryCriticalItems(items: Inventory[]): void {

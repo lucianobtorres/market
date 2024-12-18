@@ -1,5 +1,5 @@
 import { db } from "src/app/db/model-db";
-import { Intent, Suggestion, SuggestionStrategy } from "./agente.service";
+import { Suggestion, SuggestionStrategy } from "./suggestion-strategy";
 
 export class ListContext {
   hasSomeHistory: boolean = false;
@@ -10,8 +10,7 @@ export class ListContext {
 
 type intentOption = 'check_list' | 'check_item';
 
-export class ListSuggestionStrategy implements SuggestionStrategy {
-  intents: Intent[] = [];
+export class ListSuggestionStrategy extends SuggestionStrategy {
   generate(context: ListContext): Suggestion[] {
     const suggestions: Suggestion[] = [];
 
@@ -99,7 +98,7 @@ export class ListSuggestionStrategy implements SuggestionStrategy {
     return ['check_list', 'check_item'].includes(intent);
   }
 
-  async execute(intent: intentOption, entities: { [key: string]: any }): Promise<Suggestion[]> {
+  async chatResponse(intent: intentOption, entities: { [key: string]: any }): Promise<Suggestion[]> {
     const suggestions: Suggestion[] = [];
 
     if (intent === 'check_list' && entities['itemName']) {

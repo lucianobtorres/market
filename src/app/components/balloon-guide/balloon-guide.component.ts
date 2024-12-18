@@ -132,7 +132,7 @@ export class BalloonGuideComponent implements OnInit, AfterViewInit {
 
   openChat() {
     const dialogRef = this.dialog.open(ChatAssistantModalDialogComponent, {
-      data: { contextMessage: this.message },
+      data: { contextMessage: this.messageSafe },
       width: '100vw',
       height: '100vh',
       maxWidth: '100vw',
