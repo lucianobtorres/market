@@ -11,6 +11,7 @@ export class NlpService {
   private conversationContext: {
     lastIntent?: string;
     lastEntities?: { [key: string]: any };
+    lastExample?: string;
   } = {};
 
   registerStrategy(strategy: SuggestionStrategy): void {
@@ -33,15 +34,15 @@ export class NlpService {
     }
 
     // Passo 3: Executar a estratégia
-    return strategy.chatResponse(intent, entities);
+    return strategy.chatResponse(intent, entities, input);
   }
 
-  private detectIntentAndEntities(input: string): { intent: string; entities: { [key: string]: any } } {
+  private detectIntentAndEntities(input: string): { intent: string; entities: { [key: string]: any }, example: string } {
     const normalizedInput = input.toLowerCase();
 
     for (const intent of this.intents) {
       for (const example of intent.examples) {
-        const regex = new RegExp(example, "i");
+        const regex = new RegExp(example.replace(/\$\{pseudo_quantity\}/g, "(\\d+)"), "i");
         const match = regex.exec(normalizedInput);
 
         if (match) {
@@ -55,8 +56,8 @@ export class NlpService {
           }
 
           // Atualiza o contexto
-          this.conversationContext = { lastIntent: intent.name, lastEntities: entities };
-          return { intent: intent.name, entities };
+          this.conversationContext = { lastIntent: intent.name, lastEntities: entities, lastExample: example };
+          return { intent: intent.name, entities, example };
         }
       }
     }
@@ -66,11 +67,15 @@ export class NlpService {
       const previousEntities = this.conversationContext.lastEntities || {};
       const inferredEntities = this.inferEntitiesFromContext(normalizedInput, previousEntities);
       if (Object.keys(inferredEntities).length > 0) {
-        return { intent: this.conversationContext.lastIntent, entities: inferredEntities };
+        return {
+          intent: this.conversationContext.lastIntent,
+          entities: inferredEntities,
+          example: this.conversationContext.lastExample || ''
+        };
       }
     }
 
-    return { intent: '', entities: {} }; // Caso nenhuma intenção seja encontrada
+    return { intent: '', entities: {}, example: '' }; // Caso nenhuma intenção seja encontrada
   }
 
   private inferEntitiesFromContext(input: string, previousEntities: { [key: string]: any }): { [key: string]: any } {

@@ -58,6 +58,7 @@ import { ChatAssistantComponent } from './chat-assistant/chat-assistant.componen
 import { BoasVindasComponent } from './boas-vindas/boas-vindas.component';
 import { QrCodeReaderComponent } from './qr-code-reader/qr-code-reader.component';
 import { ChatAssistantModalDialogComponent } from './chat-assistant/chat-assistant-modal-dialog/chat-assistant-modal-dialog.component';
+import { RevealLastInputDirective } from '../directives/reveal-last-input.directive';
 
 
 export const components = [
@@ -108,7 +109,7 @@ export const components = [
 ]
 
 const directives = [
-  TextEllipsisDirective, IconOutlinedDirective
+  TextEllipsisDirective, IconOutlinedDirective, RevealLastInputDirective
 ];
 
 const pipes = [

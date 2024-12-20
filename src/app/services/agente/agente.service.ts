@@ -4,7 +4,7 @@ import { HistorySuggestionStrategy } from "./strategies/history-suggestion-strat
 import { ChatMessage } from "src/app/components/chat-assistant/chat-assistant.component";
 import { ListSuggestionStrategy } from "./strategies/list-suggestion-strategy";
 import { NlpService } from "./nlp.service";
-import { ContextStrategy, Suggestion, SuggestionStrategy } from "./strategies/suggestion-strategy";
+import { ContextStrategy, Suggestion } from "./strategies/suggestion-strategy";
 
 
 export const suggestionClass = 'suggestion-link';

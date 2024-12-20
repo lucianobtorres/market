@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class InactivityService {
-  private inactivityTimeout: number = 3000; // 30 segundos
+  private inactivityTimeout: number = 30000; // 30 segundos
   private timer: any;
 
   private showAgent = new BehaviorSubject<boolean>(false);

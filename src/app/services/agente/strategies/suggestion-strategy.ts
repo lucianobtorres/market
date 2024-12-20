@@ -5,6 +5,7 @@ import { PantryContext } from "./pantry-suggestion-strategy";
 export type ContextStrategy = Partial<HistoryContext & ListContext & PantryContext>;
 
 export const pseudo_entity = "(?:\\b(?:e|ou)\\s+)?([\\wÀ-ÿ]+(?:\\s+[\\wÀ-ÿ]+)*)";
+export const pseudo_quantity = "(?:\\b(?:uma|um|dois|três|quatro|cinco|seis|sete|oito|nove|dez)\\b|\\d+(?:\\.\\d+)?)(?:\\s*(?:unidades?|g|ml|kg|l|m²|cm³|m³)?)";
 
 // Tipo de dados para sugestões
 export interface Suggestion {
@@ -25,7 +26,7 @@ export abstract class SuggestionStrategy {
   abstract generate(context: any): Suggestion[];
   abstract calculateDynamicLimit(context: ContextStrategy): number
   abstract canHandle(intent: string): boolean;
-  abstract chatResponse(intent: string, entities: { [key: string]: any }): Promise<Suggestion[]>;
+  abstract chatResponse(intent: string, entities: { [key: string]: any }, inputExample? :string): Promise<Suggestion[]>;
 
   protected getClosestTherm(input: string, items: string[], threshold: number = 0.6): string[] {
     const normalizedItems = items.map(this.normalizeItemName);

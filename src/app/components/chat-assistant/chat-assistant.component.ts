@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Inject, OnInit, Optional, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Inject, OnInit, Optional, Output, Renderer2, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AgentService } from 'src/app/services/agente/agente.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -18,15 +18,34 @@ export class ChatAssistantComponent implements OnInit, AfterViewInit {
   messages: ChatMessage[] = [];
   userInput: string = '';
   @ViewChild('container', { static: true }) chatContainer!: ElementRef;
+  @ViewChild('chatContent') chatContent!: ElementRef;
+
   messageSafe!: SafeHtml;
+  lastInputValue?: string;
 
   constructor(
     private agente: AgentService,
     private sanitizer: DomSanitizer,
+    private renderer: Renderer2,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: { contextMessage: string },
   ) { }
 
   ngAfterViewInit(): void {
+    const contentElement = this.chatContent.nativeElement;
+
+    // Adiciona o listener de scroll
+    this.renderer.listen(contentElement, 'scroll', () => {
+      const containerElement = contentElement.parentElement;
+
+      if (contentElement.scrollTop > 0) {
+        // Adiciona a classe 'scrolled'
+        this.renderer.addClass(containerElement, 'scrolled');
+      } else {
+        // Remove a classe 'scrolled'
+        this.renderer.removeClass(containerElement, 'scrolled');
+      }
+    });
+
     this.scrollToBottom();
   }
 
